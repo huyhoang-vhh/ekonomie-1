@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
+<script>window.NO_SEM = true;</script>
 <title>EKONOMIE I</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -3187,6 +3188,12 @@ const slideHref = n => `slidy/prednaska-${String(n).padStart(2, '0')}.pdf`;
 /* na GitHub Pages slidy nejsou (window.NO_SLIDES nastaví skript zverejnit-github.sh) */
 const HAS_SLIDES = !window.NO_SLIDES;
 const slideLink = (n, cls = 'chip') => !HAS_SLIDES ? '' : `<a class="${cls}" href="${slideHref(n)}" target="_blank" rel="noopener">Slidy z přednášky ${n} (PDF, ${SLIDE_PAGES[n - 1]} stran) ↗</a>`;
+/* zadání seminářů 1–9 (e-klub, převedeno do PDF): seminare/seminar-NN.pdf; k přednášce 10 seminář není */
+const SEM = { 1: ['Úvod do ekonomie', 1], 2: ['Ekonomie jako věda', 4], 3: ['Teorie nabídky a poptávky', 2], 4: ['Nabídka, poptávka a vládní politiky', 4], 5: ['Aplikace teorie spotřebitelské volby', 2], 6: ['Teorie firmy I: produkční funkce', 2], 7: ['Teorie firmy II: maximalizace zisku', 3], 8: ['Teorie firmy III: minimalizace nákladů', 2], 9: ['Dokonalá a nedokonalá konkurence', 4] };
+const HAS_SEM = !window.NO_SEM;
+const semHref = n => `seminare/seminar-${String(n).padStart(2, '0')}.pdf`;
+const pgWord = k => k === 1 ? 'strana' : k < 5 ? 'strany' : 'stran';
+const semLink = (n, cls = 'chip') => !HAS_SEM || !SEM[n] ? '' : `<a class="${cls}" href="${semHref(n)}" target="_blank" rel="noopener">Seminář ${n}: zadání (PDF, ${SEM[n][1]} ${pgWord(SEM[n][1])}) ↗</a>`;
 const readMap = () => store.get('rd', {});
 function viewTheoryIndex() {
   const rd = readMap(), done = THEORY.filter(t => rd[t.n]).length, nxt = THEORY.find(t => !rd[t.n]) || THEORY[0];
@@ -3194,7 +3201,8 @@ function viewTheoryIndex() {
 <div class="ctas"><button class="pill" data-go="teorie-l${nxt.n}">${done ? 'Pokračovat' : 'Začít'}: ${nxt.n}. ${nxt.short}</button><button class="pill ghost" data-go="tahak">Tahák vzorců</button></div>
 <div class="lprog"><div class="meter"><i style="width:${10 * done}%"></i></div><span class="muted small">prostudováno ${done} z 10 přednášek</span></div>`, 'center')
     + band('alt', `<div class="lgrid lgrid-t">${THEORY.map(t => `<button class="lcard${rd[t.n] ? ' done' : ''}" data-go="teorie-l${t.n}"><span class="no">Přednáška ${t.n}${rd[t.n] ? ' · ✓ prostudováno' : ''}</span><b>${t.title}</b><span class="muted">${t.key[0]}</span><span class="lmeta">${t.secs.length} oddílů · ${(t.secs.map(x => x.html).join('').match(/data-fig=/g) || []).length} grafů · ${QB.filter(q => q[0] === t.n).length} otázek</span></button>`).join('')}</div>
-${HAS_SLIDES ? `<div class="note"><b>Původní slidy z přednášek (verze 2026/27)</b><div class="chips">${THEORY.map(t => `<a class="chip" href="${slideHref(t.n)}" target="_blank" rel="noopener">${t.n}. ${t.short} ↗</a>`).join('')}</div></div>` : ''}`);
+${HAS_SLIDES ? `<div class="note"><b>Původní slidy z přednášek (verze 2026/27)</b><div class="chips">${THEORY.map(t => `<a class="chip" href="${slideHref(t.n)}" target="_blank" rel="noopener">${t.n}. ${t.short} ↗</a>`).join('')}</div></div>` : ''}
+${HAS_SEM ? `<div class="note"><b>Zadání seminářů (k přednáškám 1–9)</b><div class="chips">${Object.entries(SEM).map(([k, v]) => `<a class="chip" href="${semHref(k)}" target="_blank" rel="noopener">${k}. ${v[0]} ↗</a>`).join('')}</div></div>` : ''}`);
 }
 function lectureCheck(n) {
   const ids = QB.map((q, i) => [q, i]).filter(([q]) => q[0] === n).map(([, i]) => i);
@@ -3207,13 +3215,13 @@ ${c.set.map((qi, k) => qHTML(QB[qi], qi, { pick: c.pick[qi] ?? null, reveal: tru
 function viewTheory(n) {
   const t = THEORY[n - 1], prev = THEORY[n - 2], next = THEORY[n], rd = readMap();
   const toc = `<nav class="ltoc" aria-label="Obsah přednášky"><span class="lbl">Přednáška ${n}</span><a href="#s${n}-0" data-jump="s${n}-0">V kostce</a>${t.secs.map((s, i) => `<a href="#s${n}-${i + 1}" data-jump="s${n}-${i + 1}"><span>${n}.${i + 1}</span>${s.t}</a>`).join('')}<a href="#s${n}-chk" data-jump="s${n}-chk"><span>✓</span>Rychlá kontrola</a>
-<div class="ltoc-x">${slideLink(n)}<button class="chip" data-go="kviz-${n}">Kvíz k přednášce</button></div></nav>`;
+<div class="ltoc-x">${slideLink(n)}${semLink(n)}<button class="chip" data-go="kviz-${n}">Kvíz k přednášce</button></div></nav>`;
   return band('', `<span class="eyebrow">Přednáška ${n} z 10${rd[n] ? ' · ✓ prostudováno' : ''}</span><h1 class="h1">${t.title}</h1>
-<div class="ctas">${slideLink(n, 'pill ghost')}<button class="pill ghost" data-go="kviz-${n}">Kvíz k přednášce ${n}</button></div>`, 'center')
+<div class="ctas">${slideLink(n, 'pill ghost')}${semLink(n, 'pill ghost')}<button class="pill ghost" data-go="kviz-${n}">Kvíz k přednášce ${n}</button></div>`, 'center')
     + band('alt', `<div class="lwrap">${toc}<div class="topic"><div class="kostka" id="s${n}-0"><h2>V kostce: co si odnést</h2><ul>${t.key.map(k => `<li>${k}</li>`).join('')}</ul><p class="muted small">Tip: grafy mají kroky 1, 2, 3… a tlačítko ▶ Přehrát. Posuvníky pod grafem si zkus sám.</p></div>
 ${t.secs.map((s, i) => `<section class="lsec" id="s${n}-${i + 1}"><h2 class="h2 sh"><span class="num">${n}.${i + 1}</span>${s.t}</h2><div class="prose">${s.html}</div></section>`).join('')}
 ${lectureCheck(n)}
-<div class="note done-note"><b>${rd[n] ? '✓ Tuhle přednášku máš prostudovanou.' : 'Máš přečteno?'}</b><div class="chips"><button class="chip" data-read="${n}"${rd[n] ? ' aria-pressed="true"' : ''}>${rd[n] ? 'Zrušit označení' : '✓ Označit jako prostudované'}</button><button class="chip" data-go="kviz-${n}">Kvíz k přednášce ${n}</button>${FAM_IDS.filter(id => FAM[id].l === n).map(id => `<button class="chip" data-go="priklady-${id}">Příklady: ${FAM[id].title}</button>`).join('')}<button class="chip" data-gl="${n}">Kartičky pojmů</button></div></div>
+<div class="note done-note"><b>${rd[n] ? '✓ Tuhle přednášku máš prostudovanou.' : 'Máš přečteno?'}</b><div class="chips">${semLink(n)}<button class="chip" data-read="${n}"${rd[n] ? ' aria-pressed="true"' : ''}>${rd[n] ? 'Zrušit označení' : '✓ Označit jako prostudované'}</button><button class="chip" data-go="kviz-${n}">Kvíz k přednášce ${n}</button>${FAM_IDS.filter(id => FAM[id].l === n).map(id => `<button class="chip" data-go="priklady-${id}">Příklady: ${FAM[id].title}</button>`).join('')}<button class="chip" data-gl="${n}">Kartičky pojmů</button></div></div>
 <div class="qnav">${prev ? `<button class="pill ghost" data-go="teorie-l${n - 1}">← ${prev.n}. ${prev.short}</button>` : '<span></span>'}${next ? `<button class="pill" data-go="teorie-l${n + 1}">${next.n}. ${next.short} →</button>` : '<button class="pill" data-go="testy">Cvičné testy →</button>'}</div></div></div>`);
 }
 function viewCheat() {
