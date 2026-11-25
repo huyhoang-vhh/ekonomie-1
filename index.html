@@ -3105,7 +3105,7 @@ const IES_SELF = 'eko';
 const IES_GH = /(^|\.)github\.io$/.test(location.hostname) || /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
 const IES_URL = IES_GH
   ? { hub: '/', mat: '/matematika-1/', eko: '/ekonomie-1/' }
-  : { hub: 'IES_HUB_ARTIFACT', mat: 'https://claude.ai/artifact/GBUD1Pozz6yiuu1kuV3z4H', eko: 'https://claude.ai/artifact/Pxpy6GJsuRUEFgzC3kgg71' };
+  : { hub: 'https://claude.ai/artifact/A2jswPH4vjmm3EAghcXGCg', mat: 'https://claude.ai/artifact/GBUD1Pozz6yiuu1kuV3z4H', eko: 'https://claude.ai/artifact/Pxpy6GJsuRUEFgzC3kgg71' };
 function iesSwitch() {
   const it = [['hub', 'Studium IES', 'Rozcestník: termíny, pokrok a plán na dnes'], ['mat', 'Matematika I', 'Písemky, důkazy, pojmy a definice'], ['eko', 'Ekonomie I', 'Teorie s grafy, kvíz, testy a kartičky']];
   const tg = IES_GH ? '' : ' target="_blank" rel="noopener"';
