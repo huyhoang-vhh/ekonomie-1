@@ -1095,6 +1095,33 @@ kbd { font: 600 11px var(--font); padding: 2px 6px; border-radius: 6px; backgrou
 .hsplit.solo .hp-row .meter { flex: none; width: 100%; height: 6px; }
 .hsplit.solo .hp-row { justify-content: space-between; }
 
+/* =================== pravidla animací (2026-11-25) ===================
+   UI animace do ~250 ms (Doherty: odezva hned), postupný nástup (stagger 35 ms), menu vyrůstá z tlačítka,
+   časté ovládání (pilulky, čipy, odpovědi) bez efektů navíc, okamžitá odezva na stisk (:active).
+   Výrazné zůstává jen to, co je „vrchol“: úvodní pás, odpočet a kreslení grafu. */
+.fx .rv { transform: translate3d(0, 10px, 0); transition: opacity .24s var(--ease-out), transform .28s var(--ease-out); transition-delay: calc(var(--d, 0) * 35ms); }
+.fx .tl-i.rv::before { transition: transform .3s var(--ease-out) .05s; }
+.meter i { transition: transform .45s var(--ease-out) .05s; }
+.pill { transition: transform .15s var(--ease-out), box-shadow .2s var(--ease-out), filter .15s, background-color .15s; }
+.pill::after { display: none; }
+.tile, .tcard, .step3, .pp-nb, .prow, .rcard { transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out); }
+::view-transition-new(root) { animation-duration: .22s; }
+::view-transition-old(root) { animation-duration: .15s; }
+.dd-box { transform-origin: 24px 0; animation: dd-in .14s var(--ease-out); }
+@keyframes dd-in { from { opacity: 0; transform: translateY(-4px) scale(.97); } }
+.chip:active, .dd-i:active, .opt:active, .seg button:active, .prow:active, .srch-i:active, .tile:active { transform: scale(.98); transition-duration: .06s; }
+.pill:not(:disabled):active { transform: scale(.97); transition-duration: .06s; }
+@media (prefers-reduced-motion: reduce) { .chip:active, .dd-i:active, .opt:active, .seg button:active, .prow:active, .srch-i:active, .tile:active, .pill:active { transform: none; } }
+
+/* =================== bez kapitálek (2026-11-25): štítky a podtitulky normálním písmem ===================
+   ALL CAPS podtitulky působí jako generický „AI“ design a hůř se čtou; nechávám jen velikost, barvu a tučnost. */
+.thm .lbl, .lbl, .pp-h, .why-l, .kp .lbl, .dd-h, .hp-tag, .srch-k, .soon, .badge { text-transform: none; letter-spacing: -.005em; }
+.thm .lbl, .lbl, .kp .lbl, .why-l, .hp-tag, .srch-k { font-size: 13px; }
+.pp-h { font-size: 14px; }
+.dd-h { font-size: 13px; }
+.tag, .prow-no small, th { text-transform: none; letter-spacing: 0; }
+.prow-no small { font-size: 11px; }
+
 /* ===== EKO I: doplňky ke společnému stylu ===== */
 :root { --cs: #0a6cff; --ps: #1d8a3a; --tx: #e5832b; --dwl: #d70015; }
 :root[data-theme="dark"] { --cs: #2997ff; --ps: #32d74b; --tx: #ff9f45; --dwl: #ff453a; }
@@ -1145,8 +1172,8 @@ figure.efig figcaption { font-size: 14px; color: var(--ink-2); line-height: 1.45
 .fg text.cbt { font-size: 17px; font-weight: 700; fill: var(--ink); } .fg text.cbs { font-size: 12px; } .fg text.cft { font-size: 13px; }
 .fg .cfl { fill: none; stroke-width: 3; stroke-linejoin: round; } .fg .cfl.real { stroke: var(--cD); opacity: .55; } .fg .cfl.money { stroke: var(--cG); opacity: .55; stroke-dasharray: 8 6; } .fg .cfl.gov { stroke: var(--cM); stroke-width: 2.2; }
 .fg .cdot.real { fill: var(--cD); } .fg .cdot.money { fill: var(--cG); }
-.fg.intro .cv:not(.old) { stroke-dasharray: 1; stroke-dashoffset: 1; animation: fdraw 1.1s var(--ease-out, ease) forwards; }
-.fg.intro .dt, .fg.intro .lb { animation: ffade .6s .7s both; }
+.fg.intro .cv:not(.old) { stroke-dasharray: 1; stroke-dashoffset: 1; animation: fdraw .8s var(--ease-out, ease) forwards; }
+.fg.intro .dt, .fg.intro .lb { animation: ffade .25s .55s both; }
 @keyframes fdraw { to { stroke-dashoffset: 0; } } @keyframes ffade { from { opacity: 0; } }
 .a-cs { fill: var(--cD); fill-opacity: .18; } .a-ps { fill: var(--cG); fill-opacity: .2; }
 .a-tax { fill: var(--cS); fill-opacity: .26; } .a-dwl { fill: var(--cR); fill-opacity: .3; }
@@ -1170,7 +1197,7 @@ figure.efig figcaption { font-size: 14px; color: var(--ink-2); line-height: 1.45
 .fstep[aria-current="step"] { background: var(--blue); color: #fff; box-shadow: none; } .fstep[aria-current="step"] b { background: #fff; color: var(--blue); box-shadow: none; }
 .fplay { padding: 0 16px; background: var(--ink); color: var(--bg); box-shadow: none; margin-left: auto; }
 .fstep:focus-visible, .fplay:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-.fnote { font-size: 16px; line-height: 1.5; padding: 12px 16px; border-radius: 12px; background: color-mix(in srgb, var(--blue) 10%, var(--tile)); box-shadow: inset 3px 0 0 var(--blue); animation: ffade .35s both; }
+.fnote { font-size: 16px; line-height: 1.5; padding: 12px 16px; border-radius: 12px; background: color-mix(in srgb, var(--blue) 10%, var(--tile)); box-shadow: inset 3px 0 0 var(--blue); animation: ffade .2s both; }
 .fctl { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-end; }
 .fctl label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--ink-2); flex: 1 1 220px; }
 .fctl label b { color: var(--ink); font-variant-numeric: tabular-nums; }
@@ -1339,6 +1366,16 @@ a.chip:hover, a.pill:hover { text-decoration: none; }
 a.dd-i, a.dd-i:hover { text-decoration: none; }
 span.dd-i[aria-current] { cursor: default; }
 .ies-sw > .nv-b span { font-weight: 600; letter-spacing: .02em; }
+
+/* odkaz „Přeskočit na obsah“ – viditelný jen při ovládání klávesnicí */
+.skip { position: fixed; left: 12px; top: 8px; z-index: 100; transform: translateY(-160%); background: var(--ink); color: var(--bg); border: 0; border-radius: 10px; padding: 10px 16px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+.skip:focus-visible { transform: none; outline: 2px solid var(--blue); outline-offset: 2px; }
+#view:focus { outline: none; }
+
+/* bez kapitálek (2026-11-25) – části specifické pro Ekonomii */
+.lcard .no, .box-l, .kostka h2, .ltoc .lbl, .tbl th { text-transform: none; letter-spacing: -.005em; }
+.fg text.ptit { text-transform: none; letter-spacing: 0; }
+.lcard .no, .box-l, .ltoc .lbl { font-size: 13px; }
 
 </style>
 
@@ -3043,7 +3080,7 @@ function rvCheck() {
     else if (el.matches('.display')) fxCount(el.querySelector('.grad') || el);
     const end = ev => { if (ev.target === el && !ev.pseudoElement && ev.propertyName === 'opacity') { fxDone(el); el.removeEventListener('transitionend', end); } };
     el.addEventListener('transitionend', end);
-    setTimeout(() => fxDone(el), 1700); /* pojistka, kdyby transitionend nepřišel */
+    setTimeout(() => fxDone(el), 700); /* pojistka, kdyby transitionend nepřišel */
   });
 }
 const rvSoon = () => { if (!rvT) rvT = setTimeout(rvCheck, 40); };
@@ -3119,6 +3156,11 @@ function iesSwitch() {
     : `<a class="dd-i" href="${IES_URL[k]}"${tg}><b>${t}</b><span>${d}</span></a>`).join('')}</div></div></div></div>`;
 }
 
+/* „Přeskočit na obsah“ pro ovládání klávesnicí (první Tab na stránce) */
+(() => { const m = document.getElementById('view'); if (!m || document.querySelector('.skip')) return; m.setAttribute('tabindex', '-1');
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'skip'; b.textContent = 'Přeskočit na obsah';
+  b.addEventListener('click', () => { m.focus({ preventScroll: true }); m.scrollIntoView(); }); document.body.prepend(b); })();
+
 /* ---------- stav a navigace ---------- */
 const $view = document.getElementById('view');
 const TEST_RE = /^test-(\d+)$/;
@@ -3172,6 +3214,8 @@ const twiceAt = {};
 function twice(k, msg) { if (Date.now() - (twiceAt[k] || 0) < 5000) { twiceAt[k] = 0; return true; } twiceAt[k] = Date.now(); toast(msg, 'warn'); return false; }
 const scrollMem = {};
 function go(token, push = true, restore = false) {
+  token = String(token || '');
+  if (!/^[a-z0-9-]{1,80}$/i.test(token)) token = 'domu'; /* bezpečnost: do stavu a úložiště jen platné cesty (ne HTML z adresy) */
   token = token.replace(/^l-(\d+)$/, 'teorie-l$1');
   if (state.test && state.test.running && !TEST_RE.test(token) && token !== 'nahodny' && Object.keys(state.test.ans).length && !twice('leave', 'Test ještě běží. Klikni znovu pro odchod (odpovědi se neuloží).')) return;
   if (state.test && state.view !== token) { stopTimer(); state.test = null; }
@@ -3229,7 +3273,7 @@ const semLink = (n, cls = 'chip') => semItems(n).map(it => semA(n, it, cls)).joi
 const readMap = () => store.get('rd', {});
 function viewTheoryIndex() {
   const rd = readMap(), done = THEORY.filter(t => rd[t.n]).length, nxt = THEORY.find(t => !rd[t.n]) || THEORY[0];
-  return band('', `<span class="eyebrow">Teorie</span><h1 class="h1">Deset přednášek. Krok za krokem.</h1><p class="lead">Každá přednáška začíná shrnutím „V kostce“, pak jde výklad s grafy, které si můžeš přehrát krok po kroku, a na konci rychlá kontrola.</p>
+  return band('', `<span class="eyebrow">Teorie</span><h1 class="h1">Deset přednášek krok za krokem</h1><p class="lead">Každá přednáška začíná shrnutím „V kostce“, pak jde výklad s grafy, které si můžeš přehrát krok po kroku, a na konci rychlá kontrola.</p>
 <div class="ctas"><button class="pill" data-go="teorie-l${nxt.n}">${done ? 'Pokračovat' : 'Začít'}: ${nxt.n}. ${nxt.short}</button><button class="pill ghost" data-go="tahak">Tahák vzorců</button></div>
 <div class="lprog"><div class="meter"><i style="width:${10 * done}%"></i></div><span class="muted small">prostudováno ${done} z 10 přednášek</span></div>`, 'center')
     + band('alt', `<div class="lgrid lgrid-t">${THEORY.map(t => `<button class="lcard${rd[t.n] ? ' done' : ''}" data-go="teorie-l${t.n}"><span class="no">Přednáška ${t.n}${rd[t.n] ? ' · ✓ prostudováno' : ''}</span><b>${t.title}</b><span class="muted">${t.key[0]}</span><span class="lmeta">${t.secs.length} oddílů · ${(t.secs.map(x => x.html).join('').match(/data-fig=/g) || []).length} grafů · ${QB.filter(q => q[0] === t.n).length} otázek</span></button>`).join('')}</div>
@@ -3258,7 +3302,7 @@ ${lectureCheck(n)}
 }
 function viewCheat() {
   const groups = THEORY.map(t => [t, FORMULAS.filter(f => f[0] === t.n)]).filter(([, f]) => f.length);
-  return band('', `<span class="eyebrow">Tahák</span><h1 class="h1">Všechny vzorce na jedné stránce.</h1><p class="lead">Seřazené podle přednášek. Klikni na název přednášky pro výklad.</p>`, 'center')
+  return band('', `<span class="eyebrow">Tahák</span><h1 class="h1">Všechny vzorce na jedné stránce</h1><p class="lead">Seřazené podle přednášek. Klikni na název přednášky pro výklad.</p>`, 'center')
     + band('alt', `<div class="cheat">${groups.map(([t, fs]) => `<div class="cheat-g"><h3><span class="num">${t.n}.</span><a href="#teorie-l${t.n}" data-go="teorie-l${t.n}" style="color:inherit">${t.title}</a></h3>${fs.map(f => `<div class="cheat-r"><span>${f[1]}</span><div>${f[2]}</div></div>`).join('')}</div>`).join('')}</div>`);
 }
 
@@ -3272,7 +3316,7 @@ function startQuiz(key) {
 }
 function viewQuizIndex() {
   const qs = qStat(), per = n => { const ids = QB.map((q, i) => [q, i]).filter(([q]) => q[0] === n); return [ids.filter(([, i]) => qs[i] === 1).length, ids.length]; };
-  return band('', `<span class="eyebrow">Kvíz</span><h1 class="h1">Otázka po otázce.</h1><p class="lead">Vyber odpověď a hned uvidíš, jestli je správně a proč. Web si pamatuje, co umíš a kde chybuješ.</p>
+  return band('', `<span class="eyebrow">Kvíz</span><h1 class="h1">Otázka po otázce</h1><p class="lead">Vyber odpověď a hned uvidíš, jestli je správně a proč. Web si pamatuje, co umíš a kde chybuješ.</p>
 <div class="ctas"><button class="pill" data-go="kviz-vse">Všechny otázky (${QB.length})</button><button class="pill ghost" data-go="kviz-zk">Jen na úrovni zkoušky (${QB.filter(q => q[5] === 'z').length})</button>${qWrong().length ? `<button class="pill ghost" data-go="kviz-chyby">Jen moje chyby (${qWrong().length})</button>` : ''}</div>`, 'center')
     + band('alt', `<h2 class="h2">Podle přednášek</h2><div class="lgrid">${THEORY.map(t => { const [k, n] = per(t.n); return `<button class="lcard" data-go="kviz-${t.n}"><span class="no">Přednáška ${t.n}</span><b>${t.title}</b><span class="muted">umíš ${k} z ${n} · ${QB.filter(q => q[0] === t.n && q[5] === 'z').length} na úrovni zkoušky</span><div class="meter"><i style="width:${n ? 100 * k / n : 0}%"></i></div></button>`; }).join('')}</div>`);
 }
@@ -3287,7 +3331,7 @@ const qzNextOpen = (z, from) => { for (let d = 1; d <= z.set.length; d++) { cons
 function viewQuiz(key) {
   if (!state.qz || state.qz.key !== key) startQuiz(key);
   const z = state.qz, n = z.set.length, title = key === 'vse' ? 'Všechny otázky' : key === 'chyby' ? 'Moje chyby' : key === 'zk' ? 'Otázky na úrovni zkoušky' : `Přednáška ${key}: ${THEORY[key - 1].title}`;
-  if (!n) return band('', `<h1 class="h1">Žádné chyby.</h1><p class="lead">Všechny otázky, na které jsi odpovídal(a), máš naposledy správně.</p><div class="ctas"><button class="pill" data-go="kviz">Zpět na kvíz</button></div>`, 'center');
+  if (!n) return band('', `<h1 class="h1">Žádné chyby</h1><p class="lead">Všechny otázky, na které jsi odpovídal(a), máš naposledy správně.</p><div class="ctas"><button class="pill" data-go="kviz">Zpět na kvíz</button></div>`, 'center');
   const answered = Object.keys(z.picks).length, sc = qzScore(z), open = n - answered;
   if (z.done) {
     const p = answered ? Math.round(100 * sc / answered) : 0;
@@ -3315,7 +3359,7 @@ function quizPick(j) {
 
 /* ---------- Příklady ---------- */
 function viewProblemsIndex() {
-  return band('', `<span class="eyebrow">Příklady</span><h1 class="h1">Počítej, dokud to nejde samo.</h1><p class="lead">Typy výpočtů ze seminářů a slidů. Každý příklad má nová čísla, kontrolu výsledku a celý postup.</p>`, 'center')
+  return band('', `<span class="eyebrow">Příklady</span><h1 class="h1">Počítej, dokud to nejde samo</h1><p class="lead">Typy výpočtů ze seminářů a slidů. Každý příklad má nová čísla, kontrolu výsledku a celý postup.</p>`, 'center')
     + band('alt', THEORY.filter(t => FAM_IDS.some(id => FAM[id].l === t.n)).map(t => `<h2 class="h2" style="font-size:24px">Přednáška ${t.n}: ${t.title}</h2><div class="lgrid">${FAM_IDS.filter(id => FAM[id].l === t.n).map(id => `<button class="lcard" data-go="priklady-${id}"><span class="no">${id}</span><b>${FAM[id].title}</b><span class="muted">nekonečno variant s postupem</span></button>`).join('')}</div>`).join(''));
 }
 function viewProblems(id) {
@@ -3352,7 +3396,7 @@ function viewTests() {
   const rows = []; let sum = 0, cnt = 0, best = 0;
   for (let i = 1; i <= N_TESTS; i++) { const rec = testRec(i); if (rec) { sum += rec.pct; cnt++; best = Math.max(best, rec.pct); } rows.push(`<button class="trow" data-go="test-${i}"><span class="tn">${String(i).padStart(2, '0')}</span><span class="tt">Cvičný test ${i}<br><span class="muted small">${T_CONCEPT + T_NUM} otázek · ${T_MIN} min</span></span>${rec ? `<span class="ts ${rec.pct >= 60 ? 'pass' : 'fail'}">${rec.score}/${rec.n} · ${rec.pct} %</span>` : '<span class="muted small">nezačato</span>'}</button>`); }
   const nextT = (() => { for (let i = 1; i <= N_TESTS; i++) if (!testRec(i)) return i; return 1; })();
-  return band('', `<span class="eyebrow">Cvičné testy</span><h1 class="h1">Jako u zkoušky.</h1><p class="lead">${T_CONCEPT} otázek z teorie a ${T_NUM} početních, vždy 5 možností a jedna správná. Stopky ${T_MIN} minut. Vyhodnotí se až na konci.</p>
+  return band('', `<span class="eyebrow">Cvičné testy</span><h1 class="h1">Jako u zkoušky</h1><p class="lead">${T_CONCEPT} otázek z teorie a ${T_NUM} početních, vždy 5 možností a jedna správná. Stopky ${T_MIN} minut. Vyhodnotí se až na konci.</p>
 <p class="muted small">Formát podle starých testů z e-klubu: 35 otázek, většinou koncepční se záludnými možnostmi („vždy“, „jen pokud“, „nic z uvedeného“), pár krátkých výpočtů. Čas 80 minut odpovídá délce termínu (12:30–13:50). Přesný formát závěrečného testu zveřejňuje vyučující v SIS/Moodle.</p>
 <div class="ctas"><button class="pill" data-go="test-${nextT}">Další nezačatý test</button><button class="pill ghost" data-rnd>Náhodný test</button></div>`, 'center')
     + (cnt ? band('', `<div class="stats"><div class="stat"><b>${cnt}</b><span>hotových testů</span></div><div class="stat"><b>${Math.round(sum / cnt)} %</b><span>průměrná úspěšnost</span></div><div class="stat"><b>${best} %</b><span>nejlepší výsledek</span></div></div>`) : '')
@@ -3404,7 +3448,7 @@ function viewCards() {
   const set = glSet(), gk = glKnown(); if (state.card >= set.length) state.card = 0;
   const g = set.length ? GLOSS[set[state.card]] : null, q = (state.glq || '').toLowerCase();
   const list = GLOSS.map((x, i) => [x, i]).filter(([x]) => (!state.gl || x[0] === state.gl) && (!q || (x[1] + ' ' + x[2] + ' ' + x[3]).toLowerCase().includes(q)));
-  return band('', `<span class="eyebrow">Kartičky</span><h1 class="h1">Pojmy česky i anglicky.</h1>
+  return band('', `<span class="eyebrow">Kartičky</span><h1 class="h1">Pojmy česky i anglicky</h1>
 <div class="chips"><button class="chip" data-gl="0"${!state.gl ? ' aria-pressed="true"' : ''}>Vše</button>${THEORY.map(t => `<button class="chip" data-gl="${t.n}"${state.gl === t.n ? ' aria-pressed="true"' : ''}>${t.n}. ${t.short}</button>`).join('')}</div>
 <label class="toggle"><input type="checkbox" id="glNew"${state.glOnlyNew ? ' checked' : ''}> Jen pojmy, které ještě neumím</label>`, 'center')
     + band('alt', g ? `<button class="flash" data-flip aria-label="Otočit kartičku"><span class="muted small">${state.card + 1} / ${set.length} · přednáška ${g[0]} · ${state.flip ? 'odpověď' : 'klikni nebo mezerník pro otočení'}</span>${state.flip ? `<span class="fw">${g[1]}</span><span class="fe">${esc(g[2])}</span><span class="fd">${esc(g[3])}</span>` : `<span class="fw">${state.glDir ? esc(g[2]) : g[1]}</span><span class="muted">${state.glDir ? 'Jak se to řekne česky a co to znamená?' : 'Jak se to řekne anglicky a co to znamená?'}</span>`}</button>
@@ -3414,7 +3458,7 @@ function viewCards() {
 
 /* ---------- Termíny ---------- */
 function viewTerms() {
-  return band('', `<span class="eyebrow">Termíny a podmínky</span><h1 class="h1">Jeden test rozhoduje.</h1><p class="lead">Závěrečný kumulativní test tvoří 100 % hodnocení. Bonus až 10 % za aktivitu na seminářích a kvízy v Moodle.</p>`, 'center')
+  return band('', `<span class="eyebrow">Termíny a podmínky</span><h1 class="h1">Jeden test rozhoduje</h1><p class="lead">Závěrečný kumulativní test tvoří 100 % hodnocení. Bonus až 10 % za aktivitu na seminářích a kvízy v Moodle.</p>`, 'center')
     + band('alt', `<div class="tbl"><table><thead><tr><th>Termín</th><th>Datum</th><th>Čas</th><th>Místo</th></tr></thead><tbody>${EVENTS.map(e => `<tr${daysTo(e.d) < 0 ? ' class="past"' : ''}><td><b>${e.what}</b></td><td>${fmtD(e.d)}</td><td>${e.t}</td><td>${e.where}</td></tr>`).join('')}</tbody></table></div>
 <div class="note"><b>Co platí</b><ul><li>Test je kumulativní: přednášky 1–10.</li><li>Bonusové body: aktivita na semináři a kvízy v Moodle (zveřejněny ve středu, odevzdání do následujícího pondělí do půlnoci).</li><li>Semináře jen prezenčně: středa 12:30 (aula 314) a 14:00 (aula 206).</li><li>Literatura: Mankiw, <i>Zásady ekonomie</i>; Samuelson, Nordhaus, <i>Ekonomie</i>.</li></ul></div>
 <p class="muted small">Podle úvodního semináře (30. 9. 2026), zkontrolováno ${CHECKED}. Rozhodující jsou údaje v SIS a Moodle; přihlašování na termín probíhá v SIS.</p>`, 'narrow');
