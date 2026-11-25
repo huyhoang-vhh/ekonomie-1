@@ -1321,6 +1321,11 @@ a.chip:hover, a.pill:hover { text-decoration: none; }
 .box.idea p { font-size: 17px; }
 .band:not(.alt):not(.dark) .box.idea { background: color-mix(in srgb, var(--blue) 7%, var(--tile-on-bg)); }
 .tag.zk { color: var(--hard); }
+.qprog button { all: unset; cursor: pointer; width: 12px; height: 12px; border-radius: 50%; background: var(--line); }
+.qprog button:hover { box-shadow: 0 0 0 2px var(--ink-2); }
+.qprog button.ok { background: var(--ok); } .qprog button.bad { background: var(--bad); } .qprog button.cur { box-shadow: 0 0 0 2px var(--blue); }
+.qprog button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+@media (max-width: 734px) { .qprog button { width: 14px; height: 14px; } }
 
 </style>
 
@@ -3223,7 +3228,7 @@ function startQuiz(key) {
   if (key === 'chyby') idx = qWrong();
   else if (key === 'zk') idx = idx.filter(i => QB[i][5] === 'z');
   else if (key !== 'vse') idx = idx.filter(i => QB[i][0] === +key);
-  state.qz = { key, set: rng(Date.now() % 1e9).shuffle(idx), i: 0, pick: null, score: 0, res: [] };
+  state.qz = { key, set: rng(Date.now() % 1e9).shuffle(idx), i: 0, picks: {}, done: false };
 }
 function viewQuizIndex() {
   const qs = qStat(), per = n => { const ids = QB.map((q, i) => [q, i]).filter(([q]) => q[0] === n); return [ids.filter(([, i]) => qs[i] === 1).length, ids.length]; };
@@ -3237,26 +3242,33 @@ function qHTML(q, i, opts = {}) {
 <div class="q-t">${text}</div><div class="opts">${o.map((t, j) => `<button type="button" class="opt${locked ? (j === a ? ' ok' : j === pick ? ' bad' : '') : ''}" data-opt="${j}" aria-pressed="${pick === j}"${locked ? ' tabindex="-1"' : ''}><span class="ol">${L[j].toLowerCase()}</span><span>${t}</span></button>`).join('')}</div>
 ${locked ? `<div class="why-box">${pick === a ? '<b class="okc">Správně.</b>' : `<b class="badc">Špatně, správně je ${L[a].toLowerCase()}).</b>`}<div>${why}</div><a class="more" href="#teorie-l${l}" data-go="teorie-l${l}">Výklad: přednáška ${l}, ${THEORY[l - 1].title}</a></div>` : ''}</article>`;
 }
+const qzScore = z => z.set.reduce((s, qi, j) => s + (z.picks[j] === QB[qi][3] ? 1 : 0), 0);
+const qzNextOpen = (z, from) => { for (let d = 1; d <= z.set.length; d++) { const j = (from + d) % z.set.length; if (z.picks[j] == null) return j; } return -1; };
 function viewQuiz(key) {
   if (!state.qz || state.qz.key !== key) startQuiz(key);
-  const z = state.qz, title = key === 'vse' ? 'Všechny otázky' : key === 'chyby' ? 'Moje chyby' : key === 'zk' ? 'Otázky na úrovni zkoušky' : `Přednáška ${key}: ${THEORY[key - 1].title}`;
-  if (!z.set.length) return band('', `<h1 class="h1">Žádné chyby.</h1><p class="lead">Všechny otázky, na které jsi odpovídal(a), máš naposledy správně.</p><div class="ctas"><button class="pill" data-go="kviz">Zpět na kvíz</button></div>`, 'center');
-  if (z.i >= z.set.length) {
-    const p = Math.round(100 * z.score / z.set.length);
-    return band('', `<span class="eyebrow">${title}</span><div class="res-big">${z.score} / ${z.set.length}</div><p class="lead">${p} % správně. ${p >= 80 ? 'Výborně, tohle umíš.' : p >= 60 ? 'Dobrý základ. Projdi si vysvětlení u chyb.' : 'Vrať se k teorii a zkus to znovu.'}</p>
-<div class="ctas"><button class="pill" data-qagain>Znovu (jiné pořadí)</button>${qWrong().length ? `<button class="pill ghost" data-go="kviz-chyby">Jen chyby (${qWrong().length})</button>` : ''}${/^\d+$/.test(key) ? `<button class="pill ghost" data-go="teorie-l${key}">Teorie k přednášce</button>` : ''}</div>`, 'center');
+  const z = state.qz, n = z.set.length, title = key === 'vse' ? 'Všechny otázky' : key === 'chyby' ? 'Moje chyby' : key === 'zk' ? 'Otázky na úrovni zkoušky' : `Přednáška ${key}: ${THEORY[key - 1].title}`;
+  if (!n) return band('', `<h1 class="h1">Žádné chyby.</h1><p class="lead">Všechny otázky, na které jsi odpovídal(a), máš naposledy správně.</p><div class="ctas"><button class="pill" data-go="kviz">Zpět na kvíz</button></div>`, 'center');
+  const answered = Object.keys(z.picks).length, sc = qzScore(z), open = n - answered;
+  if (z.done) {
+    const p = answered ? Math.round(100 * sc / answered) : 0;
+    return band('', `<span class="eyebrow">${title}</span><div class="res-big">${sc} / ${answered}</div><p class="lead">${answered ? `${p} % správně ze zodpovězených otázek.` : 'Zatím jsi nic nezodpověděl(a).'}${open ? ` Nezodpovězeno zůstalo ${open} z ${n}.` : ''} ${answered ? (p >= 80 ? 'Výborně, tohle umíš.' : p >= 60 ? 'Dobrý základ. Projdi si vysvětlení u chyb.' : 'Vrať se k teorii a zkus to znovu.') : ''}</p>
+<div class="ctas">${open ? `<button class="pill" data-qresume>Pokračovat v nezodpovězených (${open})</button>` : ''}<button class="pill${open ? ' ghost' : ''}" data-qagain>Znovu (jiné pořadí)</button>${qWrong().length ? `<button class="pill ghost" data-go="kviz-chyby">Jen chyby (${qWrong().length})</button>` : ''}${/^\d+$/.test(key) ? `<button class="pill ghost" data-go="teorie-l${key}">Teorie k přednášce</button>` : ''}</div>`, 'center');
   }
-  const qi = z.set[z.i];
-  return band('', `<div class="qnav"><button class="chip" data-go="kviz">← Všechny kvízy</button><span class="muted small">${title} · otázka ${z.i + 1} z ${z.set.length} · správně ${z.score}</span></div>
-<div class="qprog">${z.set.map((_, j) => `<i class="${j < z.res.length ? (z.res[j] ? 'ok' : 'bad') : ''}${j === z.i ? ' cur' : ''}"></i>`).join('')}</div>
-${qHTML(QB[qi], qi, { pick: z.pick, reveal: true, cls: z.pick == null ? 'qin' : '' })}
-<div class="qnav">${z.pick != null ? `<span class="muted small">Enter = další otázka</span><button class="pill" data-qnext>${z.i + 1 < z.set.length ? 'Další otázka →' : 'Výsledek'}</button>` : `<span class="muted small">Klávesy: a–e odpověď, S přeskočit</span><div class="chips"><button class="chip" data-qskip${z.i + 1 >= z.set.length ? ' disabled' : ''}>Přeskočit (vrátí se na konec)</button><button class="chip" data-qdk>Nevím, ukaž odpověď</button></div>`}</div>`, 'narrow');
+  const qi = z.set[z.i], pick = z.picks[z.i] ?? null, nxt = qzNextOpen(z, z.i), last = z.i + 1 >= n;
+  const qin = z.lastI !== z.i ? 'qin' : ''; z.lastI = z.i;
+  return band('', `<div class="qnav"><button class="chip" data-go="kviz">← Všechny kvízy</button><span class="muted small">${title} · otázka ${z.i + 1} z ${n} · zodpovězeno ${answered} · správně ${sc}</span></div>
+<div class="qprog" role="group" aria-label="Přehled otázek">${z.set.map((q2, j) => `<button type="button" class="${z.picks[j] != null ? (z.picks[j] === QB[q2][3] ? 'ok' : 'bad') : ''}${j === z.i ? ' cur' : ''}" data-qj="${j}" aria-label="Otázka ${j + 1}"></button>`).join('')}</div>
+${qHTML(QB[qi], qi, { pick, reveal: true, cls: qin })}
+<div class="tnav"><button class="pill ghost" data-qmove="-1"${z.i ? '' : ' disabled'}>← Předchozí</button>
+<div class="chips">${pick == null ? `<button class="chip" data-qdk>Nevím, ukaž odpověď</button>` : ''}${nxt >= 0 && nxt !== z.i + 1 && (pick != null || last) ? `<button class="chip" data-qj="${nxt}">Další nezodpovězená →</button>` : ''}<button class="chip" data-qend>Ukončit a vyhodnotit</button></div>
+${last ? `<button class="pill" data-qend>Výsledek</button>` : `<button class="pill${pick == null ? ' ghost' : ''}" data-qmove="1">${pick == null ? 'Přeskočit →' : 'Další →'}</button>`}</div>
+<p class="muted small tkeys">Klávesy: a–e odpověď · ← → předchozí / další (přeskočit) · Enter další</p>`, 'narrow');
 }
-function quizSkip() { const z = state.qz; if (!z || z.pick != null || z.i + 1 >= z.set.length) return; z.set.push(z.set.splice(z.i, 1)[0]); toast('Otázka přeskočena, vrátí se na konci.'); rerender(); }
+function quizMove(d) { const z = state.qz; if (!z) return; const j = z.i + d; if (j < 0) return; if (j >= z.set.length) { z.done = true; } else z.i = j; rerender(); scrollTo({ top: 0 }); }
 function quizPick(j) {
-  const z = state.qz; if (!z || z.pick != null || z.i >= z.set.length) return;
+  const z = state.qz; if (!z || z.done || z.picks[z.i] != null) return;
   const qi = z.set[z.i], ok = j === QB[qi][3];
-  z.pick = j; z.res.push(ok); if (ok) z.score++;
+  z.picks[z.i] = j;
   const qs = qStat(); qs[qi] = ok ? 1 : 0; store.set('qs', qs);
   rerender();
 }
@@ -3428,9 +3440,11 @@ document.addEventListener('click', e => {
     const T = state.test; if (T && !T.done) { T.ans[k] = j; rerender(); }
     return;
   }
-  if (t.closest('[data-qnext]')) { const z = state.qz; z.i++; z.pick = null; rerender(); scrollTo({ top: 0 }); return; }
-  if (t.closest('[data-qskip]')) { quizSkip(); return; }
-  if (t.closest('[data-qdk]')) { const z = state.qz; if (z && z.pick == null) { const qi = z.set[z.i]; z.pick = -1; z.res.push(false); const qs = qStat(); qs[qi] = 0; store.set('qs', qs); rerender(); } return; }
+  const qmv = t.closest('[data-qmove]'); if (qmv && state.qz) { quizMove(+qmv.dataset.qmove); return; }
+  const qj = t.closest('[data-qj]'); if (qj && state.qz) { state.qz.i = +qj.dataset.qj; rerender(); return; }
+  if (t.closest('[data-qend]') && state.qz) { state.qz.done = true; rerender(); scrollTo({ top: 0 }); return; }
+  if (t.closest('[data-qresume]') && state.qz) { const z = state.qz, j = qzNextOpen(z, -1); z.done = false; if (j >= 0) z.i = j; rerender(); return; }
+  if (t.closest('[data-qdk]')) { const z = state.qz; if (z && z.picks[z.i] == null) { const qi = z.set[z.i]; z.picks[z.i] = -1; const qs = qStat(); qs[qi] = 0; store.set('qs', qs); rerender(); } return; }
   const tq = t.closest('[data-tq]'); if (tq && state.test && !state.test.done) { state.test.cur = +tq.dataset.tq; rerender(); return; }
   const tm = t.closest('[data-tmove]'); if (tm && state.test) { const T = state.test; T.cur = Math.max(0, Math.min(T.qs.length - 1, T.cur + +tm.dataset.tmove)); rerender(); return; }
   if (t.closest('[data-tflag]') && state.test) { const T = state.test; T.flag[T.cur] = !T.flag[T.cur]; rerender(); return; }
@@ -3463,9 +3477,10 @@ document.addEventListener('keydown', e => {
     if (e.key.toLowerCase() === 'f') { T.flag[T.cur] = !T.flag[T.cur]; rerender(); return; }
   }
   if (/^kviz-/.test(state.view) && state.qz) {
-    if (e.key.toLowerCase() === 's' && state.qz.pick == null) { quizSkip(); return; }
-    const k = 'abcde'.indexOf(e.key.toLowerCase()); if (k >= 0 && state.qz.pick == null) { quizPick(k); return; }
-    if (e.key === 'Enter' && state.qz.pick != null) { document.querySelector('[data-qnext]')?.click(); }
+    const z = state.qz; if (z.done) return;
+    const k = 'abcde'.indexOf(e.key.toLowerCase()); if (k >= 0 && k < QB[z.set[z.i]][2].length && z.picks[z.i] == null) { quizPick(k); return; }
+    if (e.key === 'ArrowRight' || e.key.toLowerCase() === 's' || (e.key === 'Enter' && z.picks[z.i] != null)) { quizMove(1); return; }
+    if (e.key === 'ArrowLeft') { quizMove(-1); return; }
   }
   if (state.view === 'karticky') { if (e.key === ' ') { e.preventDefault(); state.flip = !state.flip; rerender(); } else if (e.key === 'ArrowRight') document.querySelector('[data-card="1"]')?.click(); else if (e.key === 'ArrowLeft') document.querySelector('[data-card="-1"]')?.click(); }
 });
