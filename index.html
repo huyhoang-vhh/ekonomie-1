@@ -1108,27 +1108,78 @@ h3 { font-size: 22px; letter-spacing: -.02em; margin-top: 8px; }
 .tbl tr:last-child td { border-bottom: 0; }
 
 /* --- grafy --- */
-figure.efig { margin: 0; background: var(--tile); box-shadow: var(--card-edge), var(--card-sh); border-radius: var(--r-card); padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 12px; }
-figure.efig figcaption { font-size: 14px; color: var(--ink-2); line-height: 1.45; }
-.fbox { display: flex; flex-direction: column; gap: 10px; align-items: center; }
-.fbox .fg { max-width: 560px; background: var(--bg-alt); border-radius: 14px; }
-.fstat { font-size: 15px; line-height: 1.5; align-self: stretch; }
-.fctl { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: flex-end; }
-.fctl label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2); flex: 1 1 200px; }
-.fctl input[type=range] { width: 100%; accent-color: var(--blue); }
-.fg .gd { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 3 4; opacity: .7; }
-.fg .reg { stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 8 4; }
-.fg .ghost { opacity: .28; }
-.fg .dt { fill: var(--ink); }
-.fg .dt.o { fill: var(--bg-alt); stroke: var(--ink); stroke-width: 2; }
-.fg .dt.x { fill: var(--dwl); }
-.fg .cv3 { fill: none; stroke: var(--ink-2); stroke-width: 1.8; stroke-dasharray: 6 4; }
-.a-cs { fill: var(--cs); fill-opacity: .2; } .a-ps { fill: var(--ps); fill-opacity: .22; }
-.a-tax { fill: var(--tx); fill-opacity: .28; } .a-dwl { fill: var(--dwl); fill-opacity: .3; }
-.a-el { fill: var(--cs); fill-opacity: .12; } .a-in { fill: var(--tx); fill-opacity: .14; } .a-rev { fill: var(--ps); fill-opacity: .18; stroke: var(--ps); stroke-width: 1; }
+:root { --cD: #0a6cff; --cS: #e0701a; --cM: #8e44ef; --cG: #1d8a3a; --cR: #d70015; --fbg: #f6f7fb; }
+:root[data-theme="dark"] { --cD: #4aa3ff; --cS: #ff9f45; --cM: #c08cff; --cG: #32d74b; --cR: #ff5a4f; --fbg: #151517; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --cD: #4aa3ff; --cS: #ff9f45; --cM: #c08cff; --cG: #32d74b; --cR: #ff5a4f; --fbg: #151517; } }
+figure.efig { margin: 4px 0; background: var(--tile); box-shadow: var(--card-edge), var(--card-sh); border-radius: var(--r-card); padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px; }
+figure.efig figcaption { font-size: 14px; color: var(--ink-2); line-height: 1.45; border-top: 1px solid var(--line); padding-top: 10px; }
+.fbox { display: flex; flex-direction: column; gap: 10px; align-items: stretch; }
+.fbox .fg { max-width: 640px; width: 100%; margin-inline: auto; background: var(--fbg); border-radius: 14px; }
+.fg text { font: 16px var(--font); fill: var(--ink-2); }
+.fg text.tk { font-size: 13px; font-variant-numeric: tabular-nums; }
+.fg text.axl { font-size: 14px; font-weight: 600; fill: var(--ink); }
+.fg text.gl { font-size: 13px; }
+.fg text.ptit { font-size: 14px; font-weight: 600; fill: var(--ink); text-transform: uppercase; letter-spacing: .04em; }
+.fg text.bigop { font-size: 30px; font-weight: 300; fill: var(--ink-2); }
+.fg text.lb { font-size: 15px; font-weight: 600; paint-order: stroke; stroke: var(--fbg); stroke-width: 5px; stroke-linejoin: round; }
+.fg .tD, .tD { fill: var(--cD); color: var(--cD); } .fg .tS, .tS { fill: var(--cS); color: var(--cS); } .fg .tM { fill: var(--cM); } .fg .tG { fill: var(--cG); } .fg .tR { fill: var(--cR); } .fg .tK { fill: var(--ink); }
+.fg .ax { stroke: var(--ink-2); stroke-width: 1.2; opacity: .8; } .fg .axh { fill: var(--ink-2); opacity: .8; }
+.fg .tick { stroke: var(--ink-2); stroke-width: 1; opacity: .7; }
+.fg .cv { fill: none; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+.fg .cv.cD { stroke: var(--cD); } .fg .cv.cS { stroke: var(--cS); } .fg .cv.cM { stroke: var(--cM); } .fg .cv.cG { stroke: var(--cG); } .fg .cv.cR { stroke: var(--cR); } .fg .cv.cK { stroke: var(--ink-2); stroke-width: 2.2; }
+.fg .cv.old { stroke-width: 2; stroke-dasharray: 7 6; opacity: .5; }
+.fg .gd { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 3 4; opacity: .8; }
+.fg .reg { stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 9 5; }
+.fg .tg { stroke: var(--cR); stroke-width: 2; } .fg .ray { stroke: var(--cG); stroke-width: 1.4; stroke-dasharray: 5 4; }
+.fg .iso { stroke: var(--cG); stroke-width: 1.5; stroke-dasharray: 6 5; opacity: .7; } .fg .iso.on { stroke-width: 2.6; stroke-dasharray: none; opacity: 1; }
+.fg .tri { stroke: var(--ink); stroke-width: 1.6; } .fg .tri2 { stroke: var(--cR); stroke-width: 3; } .fg .ghost { opacity: .22; }
+.fg .dt { fill: var(--ink); stroke: var(--fbg); stroke-width: 2; }
+.fg .dt.o { fill: var(--fbg); stroke: var(--ink); stroke-width: 2; }
+.fg .dt.x { fill: var(--cR); }
+.fg .arr line { stroke: var(--ink); stroke-width: 2.2; } .fg .arr path { fill: var(--ink); }
+.fg .arr.cD line { stroke: var(--cD); } .fg .arr.cD path { fill: var(--cD); } .fg .arr.cS line { stroke: var(--cS); } .fg .arr.cS path { fill: var(--cS); }
+.fg .arr.cG line { stroke: var(--cG); } .fg .arr.cG path { fill: var(--cG); } .fg .arr.cM line { stroke: var(--cM); } .fg .arr.cM path { fill: var(--cM); } .fg .arr.cR line { stroke: var(--cR); } .fg .arr.cR path { fill: var(--cR); }
+.fg .stg1 { fill: var(--cG); opacity: .06; } .fg .stg2 { fill: var(--cD); opacity: .08; } .fg .stg3 { fill: var(--cR); opacity: .07; } .fg text.stt { font-size: 13px; font-weight: 600; } .fg .none { fill: none; }
+.fg .bar { fill: var(--ink-2); opacity: .25; } .fg .bar.on { fill: var(--cD); opacity: .85; }
+.fg .cbox { fill: var(--tile); stroke: var(--line); stroke-width: 1.5; } .fg .cbox.hh { stroke: var(--cD); stroke-width: 2; } .fg .cbox.fi { stroke: var(--cS); stroke-width: 2; } .fg .cbox.st { stroke: var(--cM); stroke-width: 2; }
+.fg text.cbt { font-size: 17px; font-weight: 700; fill: var(--ink); } .fg text.cbs { font-size: 12px; } .fg text.cft { font-size: 13px; }
+.fg .cfl { fill: none; stroke-width: 3; stroke-linejoin: round; } .fg .cfl.real { stroke: var(--cD); opacity: .55; } .fg .cfl.money { stroke: var(--cG); opacity: .55; stroke-dasharray: 8 6; } .fg .cfl.gov { stroke: var(--cM); stroke-width: 2.2; }
+.fg .cdot.real { fill: var(--cD); } .fg .cdot.money { fill: var(--cG); }
+.fg.intro .cv:not(.old) { stroke-dasharray: 1; stroke-dashoffset: 1; animation: fdraw 1.1s var(--ease-out, ease) forwards; }
+.fg.intro .dt, .fg.intro .lb { animation: ffade .6s .7s both; }
+@keyframes fdraw { to { stroke-dashoffset: 0; } } @keyframes ffade { from { opacity: 0; } }
+.a-cs { fill: var(--cD); fill-opacity: .18; } .a-ps { fill: var(--cG); fill-opacity: .2; }
+.a-tax { fill: var(--cS); fill-opacity: .26; } .a-dwl { fill: var(--cR); fill-opacity: .3; }
+.a-el { fill: var(--cD); fill-opacity: .09; } .a-in { fill: var(--cS); fill-opacity: .1; }
+.a-rev { fill: var(--cG); fill-opacity: .2; stroke: var(--cG); stroke-width: 1.4; } .a-rev.old { fill: none; stroke: var(--ink-2); stroke-dasharray: 5 4; }
+.a-surp { fill: var(--cG); fill-opacity: .45; } .a-short { fill: var(--cR); fill-opacity: .45; }
+.flegend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-2); justify-content: center; }
+.flegend span { display: inline-flex; align-items: center; gap: 6px; }
 .flegend i { display: inline-block; width: 18px; height: 12px; border-radius: 3px; }
-.flegend i.a-cs { background: color-mix(in srgb, var(--cs) 30%, transparent); } .flegend i.a-ps { background: color-mix(in srgb, var(--ps) 32%, transparent); }
-.flegend i.a-tax { background: color-mix(in srgb, var(--tx) 38%, transparent); } .flegend i.a-dwl { background: color-mix(in srgb, var(--dwl) 40%, transparent); }
+.flegend i.a-cs { background: color-mix(in srgb, var(--cD) 30%, transparent); } .flegend i.a-ps { background: color-mix(in srgb, var(--cG) 32%, transparent); }
+.flegend i.a-tax { background: color-mix(in srgb, var(--cS) 38%, transparent); } .flegend i.a-dwl { background: color-mix(in srgb, var(--cR) 40%, transparent); }
+.flegend i.a-el { background: color-mix(in srgb, var(--cD) 16%, transparent); } .flegend i.a-rev { background: color-mix(in srgb, var(--cG) 30%, transparent); border: 1.5px solid var(--cG); }
+.flegend i.a-rev-old { border: 1.5px dashed var(--ink-2); }
+.flegend i.l-real, .flegend i.l-money, .flegend i.l-tri, .flegend i.l-G, .flegend i.l-M, .flegend i.l-tg, .flegend i.l-ray { height: 3px; border-radius: 2px; }
+.flegend i.l-real { background: var(--cD); } .flegend i.l-money { background: var(--cG); } .flegend i.l-tri { background: var(--cR); } .flegend i.l-G { background: var(--cG); } .flegend i.l-M { background: var(--cM); } .flegend i.l-tg { background: var(--cR); } .flegend i.l-ray { background: var(--cG); }
+.fstat { font-size: 16px; line-height: 1.55; margin: 0; padding: 12px 16px; background: var(--bg-alt); border-radius: 12px; }
+.fsteps { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.fstep, .fplay { all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 14px 0 6px; border-radius: 99px; font-size: 14px; font-weight: 500; background: var(--bg-alt); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); transition: background .2s, box-shadow .2s; }
+.fstep b { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--tile); font-size: 12px; box-shadow: inset 0 0 0 1px var(--line); }
+.fstep:hover, .fplay:hover { box-shadow: inset 0 0 0 1px var(--ink-2); }
+.fstep[aria-current="step"] { background: var(--blue); color: #fff; box-shadow: none; } .fstep[aria-current="step"] b { background: #fff; color: var(--blue); box-shadow: none; }
+.fplay { padding: 0 16px; background: var(--ink); color: var(--bg); box-shadow: none; margin-left: auto; }
+.fstep:focus-visible, .fplay:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.fnote { font-size: 16px; line-height: 1.5; padding: 12px 16px; border-radius: 12px; background: color-mix(in srgb, var(--blue) 10%, var(--tile)); box-shadow: inset 3px 0 0 var(--blue); animation: ffade .35s both; }
+.fctl { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-end; }
+.fctl label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--ink-2); flex: 1 1 220px; }
+.fctl label b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.fctl input[type=range] { width: 100%; accent-color: var(--blue); height: 28px; }
+.fopt { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--ink-2); flex: 1 1 100%; }
+.fopt .seg { margin-top: 0; flex-wrap: wrap; border-radius: 16px; }
+.pdm table { text-align: center; } .pdm td, .pdm th { text-align: center !important; font-size: 17px; }
+.pdm td { transition: background .25s; border-radius: 10px; } .pdm td.pd-on { background: color-mix(in srgb, var(--blue) 16%, transparent); box-shadow: inset 0 0 0 2px var(--blue); } .pdm td.pd-ne::after { content: " ★"; color: var(--new); }
+@media (max-width: 734px) { .fg text { font-size: 23px; } .fg text.lb { font-size: 23px; stroke-width: 6px; } .fg text.tk, .fg text.gl, .fg text.cft { font-size: 19px; } .fg text.axl { font-size: 20px; } .fg text.cbs { font-size: 15px; } figure.efig { padding: 14px 12px 16px; } .fsteps { flex-wrap: nowrap; overflow-x: auto; margin-inline: -12px; padding: 2px 12px 6px; scrollbar-width: none; } .fstep, .fplay { flex: none; } .fplay { margin-left: 0; order: -1; } }
 
 /* --- kvíz a testy --- */
 .q { background: var(--tile); box-shadow: var(--card-edge), var(--card-sh); border-radius: var(--r-card); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; }
@@ -1139,7 +1190,7 @@ figure.efig figcaption { font-size: 14px; color: var(--ink-2); line-height: 1.45
 .opt:hover { box-shadow: inset 0 0 0 1px var(--ink-2); }
 .opt:focus-visible { outline: 2px solid var(--blue); }
 .opt .ol { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 600; box-shadow: inset 0 0 0 1px var(--line); color: var(--ink-2); }
-.opt[aria-pressed="true"] { background: var(--sel-bg); box-shadow: var(--sel-ring); }
+.opt[aria-pressed="true"] { background: color-mix(in srgb, var(--blue) 14%, var(--tile)); box-shadow: inset 0 0 0 2px var(--blue); color: var(--ink); font-weight: 500; }
 .opt[aria-pressed="true"] .ol { background: var(--blue); color: #fff; box-shadow: none; }
 .opt.ok { background: color-mix(in srgb, var(--ok) 12%, transparent); box-shadow: inset 0 0 0 1.5px var(--ok); }
 .opt.ok .ol { background: var(--ok); color: #fff; box-shadow: none; }
@@ -1218,6 +1269,57 @@ a.qlink:hover { text-decoration: underline; }
 .why-box a.more { font-size: 15px; align-self: flex-start; }
 a.chip, a.pill { text-decoration: none; }
 a.chip:hover, a.pill:hover { text-decoration: none; }
+
+/* --- v6: stránka přednášky s obsahem, testy po jedné otázce --- */
+.lwrap { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 40px; align-items: start; }
+.lwrap .topic { display: flex; flex-direction: column; gap: 18px; min-width: 0; max-width: 760px; }
+.ltoc { position: sticky; top: 76px; display: flex; flex-direction: column; gap: 2px; max-height: calc(100vh - 96px); overflow: auto; padding-right: 4px; }
+.ltoc .lbl { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-2); margin-bottom: 6px; }
+.ltoc a { display: flex; gap: 8px; font-size: 14px; line-height: 1.35; color: var(--ink-2); text-decoration: none; padding: 7px 10px; border-radius: 10px; transition: background .2s, color .2s; }
+.ltoc a span { color: var(--new); font-variant-numeric: tabular-nums; flex: none; min-width: 2.2em; }
+.ltoc a:hover { color: var(--ink); background: var(--tile); }
+.ltoc a.on { color: var(--ink); background: var(--tile); box-shadow: var(--card-edge); font-weight: 600; }
+.ltoc-x { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; align-items: flex-start; }
+.ltoc-x .chip { font-size: 13px; }
+.lsec, .kostka, [id$="-chk"] { scroll-margin-top: 84px; }
+.lsec { display: flex; flex-direction: column; gap: 16px; }
+.lsec + .lsec { border-top: 1px solid var(--line); padding-top: 22px; }
+.topic h2.sh { margin-top: 0; }
+.lprog { display: flex; flex-direction: column; gap: 6px; align-items: center; width: min(360px, 100%); margin-inline: auto; }
+.lprog .meter { width: 100%; }
+.lgrid-t { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.lcard .lmeta { font-size: 12px; color: var(--ink-2); margin-top: 4px; }
+.lcard.done { box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--ok) 55%, transparent), var(--card-sh); }
+.lcard.done .no { color: var(--ok); }
+.done-note .chip[aria-pressed="true"] { color: var(--ok); }
+@media (max-width: 980px) { .lwrap { grid-template-columns: minmax(0, 1fr); gap: 0; } .ltoc { display: none; } }
+
+.tgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); gap: 6px; }
+.tg-i { all: unset; box-sizing: border-box; cursor: pointer; height: 38px; display: grid; place-items: center; border-radius: 10px; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; background: var(--tile); color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--line); position: relative; }
+.tg-i:hover { box-shadow: inset 0 0 0 1px var(--ink-2); }
+.tg-i:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.tg-i.ans { background: color-mix(in srgb, var(--blue) 16%, var(--tile)); color: var(--ink); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--blue) 45%, transparent); }
+.tg-i.flag::after { content: ""; position: absolute; top: 4px; right: 4px; width: 7px; height: 7px; border-radius: 50%; background: var(--new); }
+.tg-i.cur { box-shadow: inset 0 0 0 2.5px var(--blue); color: var(--ink); }
+.tlegend { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.tlegend span { display: inline-flex; align-items: center; gap: 6px; }
+.tlegend i.tg-i { width: 16px; height: 16px; border-radius: 5px; cursor: default; }
+.tlegend i.tg-i.flag::after { top: 2px; right: 2px; width: 5px; height: 5px; }
+.tnav { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.tkeys { text-align: center; }
+.pill[disabled], .chip[disabled] { opacity: .35; pointer-events: none; }
+.tfilt { justify-content: center; }
+.q.qin { animation: qin .3s both; }
+@keyframes qin { from { opacity: 0; transform: translateY(6px); } }
+.why-box { animation: ffade .3s both; }
+.opt { transition: background .15s, box-shadow .15s; }
+.opt:active { transform: scale(.995); }
+@media (max-width: 734px) { .tgrid { grid-template-columns: repeat(auto-fill, minmax(34px, 1fr)); } .tg-i { height: 34px; font-size: 13px; } .tnav .pill { flex: 1 1 40%; } .tnav .chips { order: 3; flex: 1 1 100%; justify-content: center; } }
+@media (prefers-reduced-motion: reduce) { .q.qin, .fnote, .why-box { animation: none; } }
+.box.idea { background: color-mix(in srgb, var(--blue) 7%, var(--tile)); box-shadow: inset 3px 0 0 var(--blue); }
+.box.idea .box-l { color: var(--blue); }
+.box.idea p { font-size: 17px; }
+.band:not(.alt):not(.dark) .box.idea { background: color-mix(in srgb, var(--blue) 7%, var(--tile-on-bg)); }
 
 </style>
 
@@ -1298,6 +1400,7 @@ const rule = (label, body) => box('rule', label, body);
 const ex = (title, body) => box('ex', 'Řešený příklad', `<p class="ex-t">${title}</p>${body}`);
 const pit = items => box('pit', 'Pozor u testu', `<ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>`);
 const tbl = (head, rows, cls = '') => `<div class="tbl ${cls}"><table><thead><tr>${head.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const idea = body => `<div class="box idea"><span class="box-l">Jednoduše řečeno</span><div class="box-b"><p>${body}</p></div></div>`;
 const fig = (id, cap) => `<figure class="efig" data-fig="${id}"><figcaption>${cap}</figcaption></figure>`;
 const S = (t, html) => ({ t, html });
 
@@ -1309,6 +1412,7 @@ const THEORY = [
   key: ['Ekonomie zkoumá hospodaření se <b>vzácnými</b> zdroji; ekonomika je to, co zkoumá.', 'Každá volba má <b>náklady příležitosti</b> = hodnotu nejlepší ušlé alternativy.', 'Racionální člověk se rozhoduje <b>v mezních veličinách</b> a ignoruje utopené náklady.', 'Deset tezí: jak se lidé rozhodují (1–4), jak spolu jednají (5–7), jak funguje celek (8–10).'],
   secs: [
   S('Ekonomie a ekonomika', R`
+${idea('Ekonomie řeší, co dělat, když všeho není dost. Máš omezený čas, peníze a energii, takže musíš vybírat. Ekonomie zkoumá, jak tyhle volby lidé, firmy a státy dělají.')}
 ${def('Ekonomie (economics)', 'je věda o tom, jak společnost obhospodařuje své vzácné zdroje (Mankiw); jak je užívá k výrobě užitečných statků a jak je rozděluje mezi skupiny lidí (Samuelson).')}
 ${def('Ekonomika (economy, hospodářství)', 'je skupina lidí s fungujícím směnným obchodem. Ekonomie je věda, ekonomika je její předmět.')}
 <p>Kdyby nic nebylo vzácné, nemuseli bychom volit a ekonomie by neměla co zkoumat. Proto je vzácnost výchozí bod celého předmětu.</p>`),
@@ -1328,10 +1432,12 @@ ${tbl(['Oblast', 'Teze', 'Co znamená'], [
   ['', '9. Tiskne-li vláda moc peněz, ceny rostou', 'Inflace = růst cenové hladiny.'],
   ['', '10. Krátkodobě volíme mezi inflací a nezaměstnaností', 'Phillipsova křivka.']], 'wide')}`),
   S('Racionální rozhodování', R`
+${idea('Každé „ano“ něčemu je „ne“ něčemu jinému. Racionální člověk se neptá „je to dobré?“, ale „vyplatí se <i>ještě jedna</i> jednotka?“.')}
 ${def('Náklady příležitosti (opportunity cost)', 'jsou hodnota <i>nejlepší</i> alternativy, které se volbou vzdáme. Nesčítají se všechny odmítnuté možnosti a nejde jen o peníze (čas, úsilí).')}
 ${def('Mezní výnos a mezní náklad', 'říkají, o kolik vzrostou tržby, resp. náklady, když udělám jednu jednotku navíc. Racionální subjekt pokračuje, dokud \(MR \ge MC\).')}
 ${def('Utopené náklady (sunk costs)', 'jsou už vynaložené a nevratné. Do rozhodování nepatří, protože je žádná volba nezmění.')}
-${ex('Byt, nebo zděděný domek? (seminář 1)', R`<p>Platíš nájem 5 000 Kč měsíčně. Zdědíš domek, jehož údržba a energie stojí 3 000 Kč měsíčně. Čistě finančně v domku ušetříš 2 000 Kč. Nastěhováním se ale vzdáš možnosti domek pronajmout. Kdyby šel pronajmout za víc než 3 000 Kč, náklad příležitosti bydlení v domku převýší nájem bytu.</p>`)}
+${ex('Byt, nebo zděděný domek? (seminář 1)', R`<p>Platíš nájem 5 000 Kč měsíčně. Zdědíš domek, jehož údržba a energie stojí 3 000 Kč měsíčně. Čistě finančně v domku ušetříš 2 000 Kč. Nastěhováním se ale vzdáš možnosti domek pronajmout. Kdyby šel pronajmout za víc než 3 000 Kč, náklad příležitosti bydlení v domku převýší nájem bytu.</p>
+${fig('marg', 'Mezní rozhodování: pokračuj, dokud je mezní přínos větší než mezní náklad. Přehraj si kroky.')}`)}
 ${ex('Lék, do kterého už firma investovala (seminář 1)', R`<p>Firma vložila 5 mil. $, dokončení stojí 1 mil. $, tržby budou 3 mil. $. Utopených 5 mil. se nepočítá: dodatečný náklad 1 mil. &lt; dodatečný výnos 3 mil., takže vývoj dokončit. Za dokončení by firma zaplatila až 3 mil. $.</p>`)}`),
   S('Na čem se ekonomové shodnou', R`<ul><li>Cla a dovozní kvóty snižují celkový blahobyt.</li><li>Minimální mzda zvyšuje nezaměstnanost mladých a nekvalifikovaných.</li><li>Strop na nájemné snižuje množství i kvalitu bydlení.</li><li>Daně z odpadu kontrolují znečištění lépe než pevné stropy.</li><li>Deregulace v některých oblastech (aerolinie, správa silnic) zvyšuje efektivitu.</li><li>Strop na úroky z termínovaných vkladů by měl být zrušen.</li></ul>
 ${pit(['Náklady příležitosti = jen <b>nejlepší</b> ušlá alternativa.', 'Utopené náklady se ignorují.', 'Ekonomie ≠ ekonomika.'])}`)] },
@@ -1340,26 +1446,34 @@ ${pit(['Náklady příležitosti = jen <b>nejlepší</b> ušlá alternativa.', '
   key: ['Pozitivní výrok popisuje svět, normativní říká, jaký by měl být.', 'Na PPF se vyrábí efektivně; uvnitř neefektivně, vně to nejde.', 'Sklon PPF = náklad příležitosti. Konkávní PPF = rostoucí náklady příležitosti.', 'Obchod se řídí <b>komparativní</b> výhodou (nižší náklad příležitosti), ne absolutní.', 'Směnný poměr musí ležet mezi náklady příležitosti obou stran.'],
   secs: [
   S('Mikro, makro a vědecká metoda', R`
+${idea('Model je zjednodušená mapa reality. Nemá být dokonalý, má pomoct pochopit jeden mechanismus.')}
 <p><b>Mikroekonomie</b> studuje rozhodování domácností a firem a jejich interakce na trzích. <b>Makroekonomie</b> studuje ekonomiku jako celek: inflaci, nezaměstnanost, růst. Ekonomie postupuje jako věda: teorie a pozorování, předpoklady, modely.</p>
 ${def('Pozitivní výrok', 'popisuje svět, jaký <i>je</i>; lze ho ověřit daty. <b>Normativní výrok</b> říká, jaký by svět <i>měl být</i> (poznáš ho podle „měl by“, „je spravedlivé“).')}`),
   S('Model 1: ekonomický koloběh', R`
+${idea('Peníze a věci se v ekonomice točí v kruhu: co ty utratíš, je něčí příjem, a co firma zaplatí za práci, je tvoje mzda.')}
 <p>Firmy a domácnosti se potkávají na dvou trzích. Na <b>trhu zboží a služeb</b> firmy prodávají a domácnosti kupují. Na <b>trhu výrobních faktorů</b> domácnosti prodávají práci, půdu a kapitál a dostávají mzdu, rentu a zisk. Tok statků a faktorů jde jedním směrem, tok peněz opačným. <b>Smíšená ekonomika</b> přidává stát: vybírá daně, platí transfery a poskytuje veřejné statky. Model zachycuje statickou rovnováhu; realita je složitější.</p>
-${tbl(['Autor', 'Myšlenka'], [['A. Smith (1776), <i>Bohatství národů</i>', 'Kdo sleduje vlastní prospěch, je „neviditelnou rukou“ veden k prospěchu společnosti.'], ['J. M. Keynes (1936)', 'Vládní výdaje zvýší agregátní poptávku a zabrání propadu a nezaměstnanosti.'], ['J. Schumpeter (1942)', 'Motorem kapitalismu je dočasný monopol inovátora; kopírování a <i>kreativní destrukce</i>.']])}`),
+${tbl(['Autor', 'Myšlenka'], [['A. Smith (1776), <i>Bohatství národů</i>', 'Kdo sleduje vlastní prospěch, je „neviditelnou rukou“ veden k prospěchu společnosti.'], ['J. M. Keynes (1936)', 'Vládní výdaje zvýší agregátní poptávku a zabrání propadu a nezaměstnanosti.'], ['J. Schumpeter (1942)', 'Motorem kapitalismu je dočasný monopol inovátora; kopírování a <i>kreativní destrukce</i>.']])}
+${fig('circ', 'Ekonomický koloběh. Modré tečky jsou statky a výrobní faktory, zelené peníze. Přepni na smíšenou ekonomiku se státem.')}`),
   S('Model 2: hranice produkčních možností (PPF)', R`
+${idea('PPF je čára „víc už se s tím, co máme, vyrobit nedá“. Chceš víc jednoho? Musíš ubrat z druhého.')}
 ${def('Hranice produkčních možností', 'jsou všechny kombinace výroby dvou statků, kdy víc jednoho lze získat jen za cenu méně druhého (při daných zdrojích a technologii).')}
 ${fig('ppf', 'Body na křivce jsou efektivní, uvnitř neefektivní, vně nedosažitelné. Posuvníky mění zdroje a technologii.')}
 <p>Model PPF umožňuje: definovat efektivní výrobu, rozlišit pohyb po křivce a pohyb křivky, pochopit náklady příležitosti, popsat rostoucí a klesající výnosy a vyhnout se zjednodušenému porovnávání ekonomik.</p>
 ${tbl(['Co se děje', 'Na PPF', 'Příklad'], [['realokace zdrojů', '<b>pohyb po křivce</b> (E₁ → E₂)', 'změna preferencí, víc investic a méně spotřeby'], ['ekonomická expanze', '<b>posun křivky ven</b> (E₁ → E₃)', 'víc zdrojů, lepší technologie'], ['pokrok jen ve výrobě X', 'pootočení kolem průsečíku s osou Y', 'nový stroj na auta'], ['nevyužité zdroje', 'bod uvnitř', 'nezaměstnanost']])}`),
   S('PPF a náklady příležitosti', R`
-${rule('Pravidlo', R`<p>Náklad příležitosti jednotky statku na vodorovné ose = o kolik klesne statek na svislé ose: \(\text{OC}_X = \dfrac{\Delta Y}{\Delta X}\). Graficky je to <b>sklon</b> PPF.</p>`)}
+${idea('Náklad příležitosti je to, čeho se vzdáš. Na PPF ho vidíš jako sklon: o kolik spadne jeden statek, když přidáš druhý.')}
+${rule('Pravidlo', R`<p>Náklad příležitosti jednotky statku na vodorovné ose = o kolik klesne statek na svislé ose: \(\text{OC}_X = \dfrac{\Delta Y}{\Delta X}\). Graficky je to <b>sklon</b> PPF.</p>
+${fig('ppfshape', 'Králíci a bobule ze slidů: tři tvary PPF a tři typy nákladů příležitosti. Posuvník přidává králíky po jednom.')}`)}
 ${tbl(['Tvar PPF', 'Náklady příležitosti', 'Proč'], [['konkávní (vypouklá ven)', '<b>rostoucí</b>', 'zdroje nejsou stejně vhodné pro oba statky; zákon klesajících výnosů (nejdřív nejúrodnější půda, pak podhůří, nakonec hory)'], ['přímka', '<b>konstantní</b>', 'zdroje jsou pro oba statky stejně dobré'], ['konvexní (prohnutá k počátku)', '<b>klesající</b>', 'rostoucí výnosy ve výrobě (úspory z rozsahu)']])}
 ${ex('Králíci a bobule (slidy)', R`${tbl(['Bod', 'Králíci', 'Bobule', 'OC dalšího králíka'], [['A', '0', '300', '—'], ['B', '1', '280', '20'], ['C', '2', '240', '40'], ['D', '3', '180', '60'], ['E', '4', '100', '80'], ['F', '5', '0', '100']])}<p>Náklady příležitosti rostou (20, 40, 60, …) ⇒ PPF je konkávní. Kdyby bobule klesaly o 60 v každém kroku, šlo by o přímku (konstantní OC); kdyby klesaly o 100, 80, 60, 40, 20, PPF by byla konvexní (klesající OC).</p>`)}`),
   S('Porovnání ekonomik a investice', R`
 <ul><li>Země A s výkonnější PPF může mít nižší spotřebu než země B: rozhoduje, kterou kombinaci zvolí.</li><li>Z růstu soukromé spotřeby v čase neplyne, že ekonomika expanduje: mohla se jen přesunout po PPF (méně veřejných statků).</li><li>Země, která dnes investuje (vyrábí kapitálové statky na úkor spotřeby), bude mít zítra PPF dál od počátku.</li></ul>`),
   S('Komparativní výhoda a směna', R`
+${idea('Obchod se vyplatí, i když jeden umí všechno lépe. Rozhoduje, komu daná věc „stojí“ méně ušlých příležitostí.')}
 ${def('Absolutní výhoda', 'má ten, kdo statek vyrobí s menším množstvím vstupů (vyšší produktivita, nižší náklady).')}
 ${def('Komparativní výhoda', 'má ten, kdo statek vyrobí s <i>nižšími náklady příležitosti</i>. Lze mít absolutní výhodu ve všem, ale komparativní výhodu vždy jen v něčem (D. Ricardo, 1817).')}
-${rule('Postup', R`<ol><li>Spočítej každému náklad příležitosti obou statků (z maximálních výstupů, lineární PPF).</li><li>Komparativní výhodu má ten s nižším OC; každý se specializuje na „svůj“ statek.</li><li>Směnný poměr musí ležet <b>mezi</b> náklady příležitosti obou stran, jinak se jednomu směna nevyplatí.</li></ol>`)}
+${rule('Postup', R`<ol><li>Spočítej každému náklad příležitosti obou statků (z maximálních výstupů, lineární PPF).</li><li>Komparativní výhodu má ten s nižším OC; každý se specializuje na „svůj“ statek.</li><li>Směnný poměr musí ležet <b>mezi</b> náklady příležitosti obou stran, jinak se jednomu směna nevyplatí.</li></ol>
+${fig('trade', 'Červený a Modrý: bez obchodu, pak se specializací. Měň cenu stolu a sleduj, kdy se směna vyplatí oběma.')}`)}
 ${ex('Červený a Modrý: židle a stoly', R`<p>Červený vyrobí za den 30 židlí, nebo 10 stolů. Modrý 10 židlí, nebo 30 stolů.</p>${tbl(['', 'OC 1 židle', 'OC 1 stolu'], [['Červený', '1/3 stolu', '3 židle'], ['Modrý', '3 stoly', '1/3 židle']])}<p>Červený má komparativní (i absolutní) výhodu v židlích, Modrý ve stolech. Cena 1 stolu musí být mezi \(\tfrac13\) a 3 židlemi: Modrý stůl prodá, když dostane víc než \(\tfrac13\) židle (jeho OC), Červený ho koupí, když zaplatí méně než 3 židle (jeho OC). Např. 1 stůl = 1 židle a směna 15 za 15 posune obě strany za jejich PPF.</p>`)}
 ${ex('Země A a B: kalhoty a trička', R`<p>A vyrobí 20 kalhot, nebo 10 triček; B 30 kalhot, nebo 45 triček. OC kalhot: A 0,5 trička, B 1,5 trička ⇒ A má komparativní výhodu v kalhotách (přestože B má absolutní výhodu v obojím). OC trička: A 2 kalhoty, B 0,67 kalhot ⇒ B vyrábí trička. Cena kalhot musí být v intervalu ⟨0,5 T; 1,5 T⟩.</p>`)}`),
   S('Léčky ekonomického uvažování', R`
@@ -1375,20 +1489,27 @@ ${def('Trh', 'je skupina kupujících a prodávajících určitého statku. Na <
 ${def('Vlastnické právo', 'je výlučné, vynutitelné a převoditelné panství nad věcí; bez něj trh nefunguje.')}
 <p>Vývoj: 19. století <i>laissez-faire</i>; začátek 20. století korupce a chudoba, roste role vlády; během 20. století stát blahobytu; konec 20. století odklon od státu blahobytu a privatizace, plánované ekonomiky přecházejí k decentralizaci.</p>`),
   S('Poptávka', R`
+${idea('Čím je něco dražší, tím méně toho lidé chtějí koupit. Poptávka je celá křivka (pro každou cenu množství), ne jedno číslo.')}
 ${def('Poptávka D(p)', 'je závislost poptávaného množství Q na ceně p, <i>ceteris paribus</i>. <b>Poptávané množství</b> je jeden bod této funkce.')}
-${rule('Zákon poptávky', R`<p>S růstem ceny poptávané množství klesá. Důvody: <b>substituční efekt</b> (lidé přejdou k substitutům) a <b>důchodový efekt</b> (klesne reálný důchod). Výjimky: <b>Giffenův statek</b>, <b>Veblenův statek</b> (okázalá spotřeba).</p><p>Poptávka je obvykle klesající a <b>konvexní</b>: změna ceny o jednotku má větší vliv při nízké ceně, protože osloví víc spotřebitelů.</p>`)}
+${rule('Zákon poptávky', R`<p>S růstem ceny poptávané množství klesá. Důvody: <b>substituční efekt</b> (lidé přejdou k substitutům) a <b>důchodový efekt</b> (klesne reálný důchod). Výjimky: <b>Giffenův statek</b>, <b>Veblenův statek</b> (okázalá spotřeba).</p><p>Poptávka je obvykle klesající a <b>konvexní</b>: změna ceny o jednotku má větší vliv při nízké ceně, protože osloví víc spotřebitelů.</p>
+${fig('mktsum', 'Tržní poptávka vznikne sečtením množství všech kupujících při každé ceně (vodorovný součet).')}`)}
 ${tbl(['Co se změní', 'Co se stane s poptávkou'], [['cena statku', '<b>pohyb po křivce</b> (změna poptávaného množství)'], ['důchod ↑', '<b>normální</b> statek: posun doprava; <b>podřadný</b>: posun doleva'], ['cena substitutu ↑', 'posun doprava'], ['cena komplementu ↑', 'posun doleva'], ['počet kupujících, chutě, očekávání', 'posun křivky']])}
 ${ex('Tržní poptávka jako součet (slidy)', R`<p>Tržní poptávka je <b>vodorovný součet</b> individuálních: při každé ceně sečteme množství. Při p = 1 chce spotřebitel 1 koupit 2 kusy a spotřebitel 2 osm kusů, trh tedy 10. Při p = 3: 1 + 5 = 6; při p = 5: 0 + 2 = 2; při p = 7 nikdo nic.</p>`)}`),
   S('Nabídka', R`
+${idea('Čím vyšší cena, tím víc se vyplatí vyrábět, a tím víc výrobců se „vejde do ceny“.')}
 ${def('Nabídka S(p)', 'je závislost nabízeného množství na ceně, <i>ceteris paribus</i>. Tržní nabídka je součet individuálních.')}
 ${rule('Zákon nabídky', R`<p>S růstem ceny nabízené množství roste: do ceny se „vejde“ víc výrobců a výrobci přesouvají výrobu k výnosnějším komoditám. Pod \(p_{min}\) se nevyplatí vyrábět; nad technologickým maximem \(q_{max}\) to nejde. Výjimka: <b>nabídka práce</b> (od určité mzdy lidé chtějí víc volna).</p>`)}
 <p>Posun nabídky způsobí: <b>ceny vstupů</b>, technologie, počet výrobců, vládní zásahy (daně, dotace), očekávané zisky.</p>`),
   S('Rovnováha', R`
+${idea('Cena se hýbe, dokud kupující nechtějí přesně tolik, kolik prodávající nabízejí. Tak trh „najde“ cenu sám.')}
 ${fig('sd', 'Posuň poptávku nebo nabídku a sleduj, co se stane s rovnovážnou cenou a množstvím.')}
-${rule('Zákon nabídky a poptávky', R`<p>Při \(p > p^*\) je \(S > D\): <b>převis nabídky</b>, výrobci se podbízejí, cena klesá. Při \(p \lt p^*\) je \(D > S\): <b>převis poptávky</b>, cena roste. V rovnováze \(D(p^*) = S(p^*)\).</p><p>Lineárně: \(Q_D = a - bp\), \(Q_S = c + dp\) ⇒ \(p^* = \dfrac{a-c}{b+d}\), \(q^* = a - b p^*\).</p>`)}
+${rule('Zákon nabídky a poptávky', R`<p>Při \(p > p^*\) je \(S > D\): <b>převis nabídky</b>, výrobci se podbízejí, cena klesá. Při \(p \lt p^*\) je \(D > S\): <b>převis poptávky</b>, cena roste. V rovnováze \(D(p^*) = S(p^*)\).</p><p>Lineárně: \(Q_D = a - bp\), \(Q_S = c + dp\) ⇒ \(p^* = \dfrac{a-c}{b+d}\), \(q^* = a - b p^*\).</p>
+${fig('excess', 'Mimo rovnováhu: při vysoké ceně zbývá zboží, při nízké chybí. Obojí tlačí cenu k p*.')}`)}
 ${tbl(['Změna', 'Cena', 'Množství'], [['poptávka ↑', '↑', '↑'], ['poptávka ↓', '↓', '↓'], ['nabídka ↑', '↓', '↑'], ['nabídka ↓', '↑', '↓'], ['poptávka ↑ a nabídka ↑', '?', '↑'], ['poptávka ↑ a nabídka ↓', '↑', '?']])}`),
   S('Cenová elasticita poptávky', R`
-${rule('Vzorec', R`\[\varepsilon_D = \frac{\%\Delta Q}{\%\Delta p} = \frac{\Delta Q / Q}{\Delta p / p} = \frac{\Delta Q}{\Delta p}\cdot\frac{p}{Q}\]<p>Na přednášce se počítá procentní změna <b>z výchozího bodu</b> (z A do B). Na semináři se používá i <b>středová metoda</b> (průměr obou bodů ve jmenovateli), která dá stejný výsledek oběma směry. Čím menší \(\Delta p\), tím přesnější; přesně derivací.</p>`)}
+${idea('Elasticita měří citlivost: když cena vzroste o 1 %, o kolik % klesne prodané množství? Na tom závisí, jestli zdražení firmě tržby zvýší, nebo sníží.')}
+${rule('Vzorec', R`\[\varepsilon_D = \frac{\%\Delta Q}{\%\Delta p} = \frac{\Delta Q / Q}{\Delta p / p} = \frac{\Delta Q}{\Delta p}\cdot\frac{p}{Q}\]<p>Na přednášce se počítá procentní změna <b>z výchozího bodu</b> (z A do B). Na semináři se používá i <b>středová metoda</b> (průměr obou bodů ve jmenovateli), která dá stejný výsledek oběma směry. Čím menší \(\Delta p\), tím přesnější; přesně derivací.</p>
+${fig('etypes', 'Pět typů poptávky. Změň cenu z 2 na jinou a sleduj, co se stane s tržbami.')}`)}
 ${tbl(['|ε|', 'Poptávka', 'Cena ↑ ⇒ tržby'], [['0', 'dokonale neelastická (svislá)', '↑'], ['(0, 1)', 'neelastická', '↑'], ['1', 'jednotková, např. \\(Q = k/p\\)', 'beze změny'], ['(1, ∞)', 'elastická', '↓'], ['∞', 'dokonale elastická (vodorovná)', 'nic neprodá']])}
 ${fig('elast', 'Na lineární poptávce se elasticita mění: nahoře elastická, uprostřed jednotková, dole neelastická. Tržby (obdélník) jsou největší při |ε| = 1.')}
 ${ex('Elasticita a tržby z tabulky (slidy)', R`${tbl(['Bod', 'Cena', 'Q', 'Tržby p·Q'], [['A', '9', '2', '18'], ['B', '8', '4', '32'], ['C', '5,5', '9', '49,5'], ['D', '4,5', '11', '49,5'], ['E', '2', '16', '32'], ['F', '1', '18', '18']])}<p>Z A do B: \(\varepsilon = \dfrac{(4-2)/2}{(8-9)/9} = -9\) ⇒ elastická, zlevnění zvýší tržby. Z E do F: \(\varepsilon = \dfrac{(18-16)/16}{(1-2)/2} = -0{,}25\) ⇒ neelastická, zlevnění tržby sníží. Maximum tržeb je mezi C a D.</p>`)}
@@ -1396,6 +1517,7 @@ ${rule('Na čem PED závisí', R`<p>Vyšší elasticita: blízké <b>substituty<
   S('Další elasticity', R`
 ${tbl(['Elasticita', 'Vzorec', 'Výklad'], [['důchodová (YED)', '\\(\\%\\Delta Q / \\%\\Delta Y\\)', '> 1 luxusní; (0, 1) nezbytný; obojí normální; < 0 podřadný (inferiorní)'], ['křížová (XED)', '\\(\\%\\Delta Q_A / \\%\\Delta p_B\\)', '> 0 substituty; < 0 komplementy; 0 nesouvisející'], ['cenová elasticita nabídky (PES)', '\\(\\%\\Delta Q_S / \\%\\Delta p\\)', 'roste s delším horizontem a dostupností vstupů; PES = 0 je velmi krátkodobá, pevná nabídka']])}`),
   S('Efektivita trhu a přebytky', R`
+${idea('Přebytek je „zisk z obchodu“. Kupující platí míň, než by byl ochoten, prodávající dostane víc, než by mu stačilo.')}
 ${def('Přebytek spotřebitele', 'je rozdíl mezi tím, kolik by spotřebitel byl ochoten zaplatit (výška poptávky = jeho mezní užitek), a tím, kolik skutečně zaplatí. Graficky plocha pod D a nad cenou.')}
 ${def('Přebytek výrobce', 'je rozdíl mezi tržní cenou a mezními náklady výrobce (výška nabídky). Plocha nad S a pod cenou.')}
 <p>Konkurenční rovnováha je <b>efektivní</b>: vyrovnává mezní užitek s mezními náklady (\(MU = p = MC\)) a součet přebytků je maximální.</p>
@@ -1405,58 +1527,79 @@ ${pit(['„Vzrostla poptávka“ (posun) ≠ „vzrostlo poptávané množství�
   key: ['Daň vrazí klín mezi cenu kupujícího a prodávajícího; je jedno, komu je uložena.', 'Daň nese víc ta strana, která je <b>méně elastická</b>.', 'Ztráta mrtvé váhy = přebytek, který nezíská nikdo; nejmenší u neelastických trhů (Ramsey).', 'Strop váže jen pod rovnováhou (nedostatek), minimální cena jen nad ní (přebytek).', 'Lafferova křivka: od určité sazby vyšší daň snižuje výnos.'],
   secs: [
   S('Přebytky jako měřítko efektivity', R`
+${idea('Celkový přebytek měří, kolik hodnoty trh vytvořil. Volný trh ho maximalizuje; zásahy ho většinou zmenší.')}
 <p>Poptávka ukazuje mezní užitek, nabídka mezní náklady. V rovnováze je součet přebytků (A + B) maximální. Každá distorze (daň, regulace) ho zmenší.</p>
-${ex('Přebytky z tabulky (slidy)', R`<p>Čtyři kupující jsou ochotni zaplatit za auto 700, 600, 500 a 400 tis. Při ceně 400 tis. se prodají 4 auta a <b>přebytek spotřebitelů</b> = (700 − 400) + (600 − 400) + (500 − 400) + 0 = 600 tis. Výrobci by čtyři auta prodali za 100, 200, 300 a 400 tis., <b>přebytek výrobců</b> = 300 + 200 + 100 + 0 = 600 tis. <b>Přebytek trhu</b> = 1 200 tis.</p>`)}`),
+${ex('Přebytky z tabulky (slidy)', R`<p>Čtyři kupující jsou ochotni zaplatit za auto 700, 600, 500 a 400 tis. Při ceně 400 tis. se prodají 4 auta a <b>přebytek spotřebitelů</b> = (700 − 400) + (600 − 400) + (500 − 400) + 0 = 600 tis. Výrobci by čtyři auta prodali za 100, 200, 300 a 400 tis., <b>přebytek výrobců</b> = 300 + 200 + 100 + 0 = 600 tis. <b>Přebytek trhu</b> = 1 200 tis.</p>
+${fig('surplus', 'Přebytky a ztráta mrtvé váhy. Posuň prodané množství mimo rovnováhu a sleduj červený trojúhelník.')}`)}`),
   S('Daň', R`
+${idea('Daň zdraží věc kupujícím a zlevní ji prodávajícím. Rozdíl si vezme stát a část obchodů se vůbec neuskuteční.')}
 ${fig('tax', 'Nastav výši daně a elasticitu nabídky. Plochy: přebytek spotřebitele, přebytek výrobce, výnos daně a ztráta mrtvé váhy.')}
 ${rule('Jak daň funguje', R`<ul><li>Daň \(t\) na jednotku: kupující platí \(p_D\), prodávající dostane \(p_S\), \(p_D - p_S = t\); prodané množství klesne z \(q^*\) na \(q_t\).</li><li><b>Daň na kupující</b> posune D dolů o t, <b>daň na prodávající</b> posune S nahoru o t. Výsledek je stejný.</li><li>Přebytek spotřebitele klesne o C + E, výrobce o D + F; stát vybere C + D; <b>E + F je ztráta mrtvé váhy</b> (umrtvená ztráta).</li></ul>`)}
 ${rule('Výpočet (lineární D a S)', R`<p>\(Q_D = a - bp\), \(Q_S = c + dp\). Po zdanění prodávajících: \(Q_S = c + d(p - t)\). Pak \(p_D = \dfrac{a - c + dt}{b + d}\), \(p_S = p_D - t\), \(q_t = q^* - \dfrac{bd}{b+d}\,t\). Kupující nesou podíl \(\dfrac{d}{b+d}\) daně, prodávající \(\dfrac{b}{b+d}\). \(DWL = \tfrac12\,t\,(q^* - q_t)\), výnos \(= t\,q_t\).</p>`)}`),
   S('Kdo daň zaplatí', R`
 <p>„Plátce pyká za svou cenovou nepružnost.“ Kdo nemůže uhnout (nemá substituty), nese větší část daně, bez ohledu na to, komu ji zákon ukládá.</p>
 ${tbl(['Situace', 'Kdo nese většinu', 'Příklad'], [['poptávka nepružná (PED < PES)', 'kupující: cena vzroste skoro o celou daň', 'léky na rakovinu'], ['nabídka nepružná (PED > PES)', 'prodávající: dostanou o skoro celou daň méně', 'poplatek z ubytování, rybí trh'], ['sociální pojištění', 'zaměstnanci i zaměstnavatelé podle elasticit trhu práce', '—']])}
+<p><b>Dotace</b> funguje jako záporná daň: klín jde opačným směrem, kupující platí méně, prodávající dostane víc a vyrobí se <i>víc</i> než v rovnováze. I dotace vytváří ztrátu mrtvé váhy (vyrábí se kusy, jejichž MC převyšuje MU) a stát ji zaplatí z daní.</p>
 ${def('Ramseyovy daně', 'zdaňují statky s nejnižší elasticitou nabídky i poptávky: množství se skoro nezmění, takže ztráta efektivity je nejmenší. Jsou to ale často sociálně citlivé nezbytnosti, proto jde o politicky sporné daně.')}`),
   S('Lafferova křivka', R`
+${idea('Když stát zdaní všechno na 100 %, nikdo nic nedělá a stát nevybere nic. Někde mezi 0 a 100 % je výnos nejvyšší.')}
 ${def('Lafferova křivka', 'ukazuje teoretický vztah mezi daňovou sazbou a daňovými příjmy státu. Při 0 % i při 100 % je výnos nulový; od určité sazby (vrchol L) příjmy s vyšší sazbou <b>klesají</b>.')}
-<p>Stejný výnos lze proto vybrat dvěma různými sazbami: nízkou a vysokou. Vyšší sazba přitom způsobí větší ztrátu mrtvé váhy.</p>`),
+<p>Stejný výnos lze proto vybrat dvěma různými sazbami: nízkou a vysokou. Vyšší sazba přitom způsobí větší ztrátu mrtvé váhy.</p>
+${fig('laffer', 'Lafferova křivka (schematicky). Každý výnos kromě maxima lze vybrat dvěma sazbami.')}`),
   S('Cenová regulace', R`
+${idea('Regulace ceny nezmění, kolik lidé chtějí a kolik se vyrobí. Jen zabrání ceně, aby trh vyrovnala.')}
 ${fig('ceil', 'Cenový strop pod rovnováhou vytvoří nedostatek, minimální cena nad rovnováhou přebytek.')}
 ${tbl(['Nástroj', 'Kdy trh váže', 'Důsledek', 'Příklad'], [['cenový strop (nejvyšší povolená cena)', '\\(p_{max} \\lt p^*\\)', 'nedostatek \\(q_D - q_S\\)', 'benzín, nájemné'], ['minimální cena (nejnižší povolená)', '\\(p_{min} > p^*\\)', 'přebytek \\(q_S - q_D\\)', 'minimální mzda ⇒ nezaměstnanost'], ['strop nad / minimum pod \\(p^*\\)', 'neváže', 'nic se nemění', '']])}
-<ul><li><b>Benzín:</b> strop zprvu neváže. Zdraží-li ropa (S doleva), nová rovnovážná cena \(p^{**}\) je nad stropem; cena zůstane na \(p_{max}\) a vznikne nedostatek.</li><li><b>Nájemné:</b> krátkodobě jsou nabídka i poptávka bytů nepružné, nedostatek je malý; dlouhodobě elastičtější, nedostatek je mnohem větší.</li><li><b>Minimální mzda:</b> \(w_{min} > w^*\) ⇒ nabízené množství práce > poptávané ⇒ nezaměstnanost.</li></ul>`),
+<ul><li><b>Benzín:</b> strop zprvu neváže. Zdraží-li ropa (S doleva), nová rovnovážná cena \(p^{**}\) je nad stropem; cena zůstane na \(p_{max}\) a vznikne nedostatek.</li><li><b>Nájemné:</b> krátkodobě jsou nabídka i poptávka bytů nepružné, nedostatek je malý; dlouhodobě elastičtější, nedostatek je mnohem větší.</li><li><b>Minimální mzda:</b> \(w_{min} > w^*\) ⇒ nabízené množství práce > poptávané ⇒ nezaměstnanost.</li></ul>
+${fig('minwage', 'Minimální mzda jako minimální cena na trhu práce: když je nad rovnovážnou mzdou, vzniká nezaměstnanost.')}
+${fig('rent', 'Regulace nájemného krátkodobě a dlouhodobě: stejný strop, ale v dlouhém období mnohem větší nedostatek.')}`),
   S('Zemědělství a dotace', R`
+${idea('Paradox zemědělců: dobrá úroda je pro ně špatná zpráva, protože lidé nesnědí o moc víc a cena spadne.')}
 <p>Poptávka po potravinách je nepružná a nabídka ještě nepružnější. Když zemědělci zvýší efektivitu (S doprava), cena prudce klesne a <b>tržby klesnou</b>: \(p_1 q_1 \lt p_0 q_0\).</p>
 ${tbl(['', 'Dotace k ceně', 'Dotace za půdu ladem'], [['tržby zemědělců', '↑', '↑'], ['cena pro spotřebitele', 'beze změny (bez inflace)', '↑ (inflační impuls)'], ['užitek spotřebitelů', 'nezmění se', '↓ (za méně zaplatí víc)'], ['dvojí ceny', 'ano (spotřebitel p₀, výrobce p₁)', 'ne, alokační efektivita nenarušena'], ['hektarové výnosy', '—', '↑']])}
+${fig('agri', 'Rekordní úroda při nepružné poptávce: víc úrody, ale menší tržby.')}
 ${pit(['Daň zaplatí obě strany, i když je „uložena“ jen jedné.', 'Strop nad rovnovážnou cenou nic nedělá.', 'Výnos daně ≠ ztráta mrtvé váhy.', 'Dlouhodobě jsou následky regulace větší (elastičtější křivky).'])}`)] },
 
 { n: 5, title: 'Teorie chování spotřebitele', short: 'Spotřebitel',
   key: ['Mezní užitek klesá; optimum: \\(MU_1/p_1 = MU_2/p_2\\).', 'Indiferenční křivky klesají, jsou konvexní a neprotínají se; sklon = MRS.', 'Rozpočtová přímka: \\(Y = p_1x_1 + p_2x_2\\), sklon \\(-p_1/p_2\\).', 'Optimum v dotyku: \\(MRS = p_1/p_2\\).', 'Cenový efekt = substituční + důchodový. Giffenův statek: důchodový efekt převáží.'],
   secs: [
   S('Užitek', R`
+${idea('První kousek pizzy je skvělý, pátý už tolik ne. Tomu se říká klesající mezní užitek.')}
 ${def('Užitek', 'je relativní uspokojení ze spotřeby. <b>Kardinální</b> užitek lze vyjádřit čísly, <b>ordinální</b> jen seřadí preference.')}
 ${def('Mezní užitek MU', 'je přírůstek uspokojení z jednotky navíc.')}
-${rule('Zákon klesajícího mezního užitku', R`<p>S rostoucí spotřebou mezní užitek z poslední jednotky klesá. Celkový užitek roste, dokud \(MU > 0\).</p>${tbl(['Q', '0', '1', '2', '3', '4', '5', '6+'], [['TU', '0', '40', '70', '85', '95', '100', '100'], ['MU', '—', '40', '30', '15', '10', '5', '0']])}`)}
+${rule('Zákon klesajícího mezního užitku', R`<p>S rostoucí spotřebou mezní užitek z poslední jednotky klesá. Celkový užitek roste, dokud \(MU > 0\).</p>${tbl(['Q', '0', '1', '2', '3', '4', '5', '6+'], [['TU', '0', '40', '70', '85', '95', '100', '100'], ['MU', '—', '40', '30', '15', '10', '5', '0']])}
+${fig('mu', 'Celkový a mezní užitek z tabulky. Každý další kus přidá méně.')}`)}
 ${rule('Princip rovnosti mezních užitků', R`\[\frac{MU_1}{p_1} = \frac{MU_2}{p_2} = \dots = \frac{MU_n}{p_n}\]<p>Poslední koruna musí přinést stejný užitek u každého statku. Kdyby \(MU_1/p_1 > MU_2/p_2\), vyplatí se přesunout korunu ke statku 1.</p>`)}`),
   S('Indiferenční křivky', R`
+${idea('Indiferenční křivka spojuje všechny nákupy, které by tě těšily stejně. Je ti jedno, který z nich dostaneš.')}
 ${def('Indiferenční křivka (izokvanta užitku)', 'spojuje spotřební koše, které dávají stejný užitek; je to řez užitkovou funkcí dvou statků.')}
 <p>Vlastnosti: výše položené jsou preferovány; jsou <b>klesající</b>; <b>neprotínají se</b>; jsou <b>konvexní</b> vůči počátku.</p>
-${rule('Mezní míra substituce', R`<p>Při výměně části \(x_2\) za \(x_1\) beze změny užitku: \(MU_1\,\Delta x_1 + MU_2\,\Delta x_2 = 0\), tedy</p>\[MRS_{12} = -\frac{\Delta x_2}{\Delta x_1} = \frac{MU_1}{MU_2}\]<p>= sklon indiferenční křivky; podél ní klesá (proto konvexita).</p>`)}
+${rule('Mezní míra substituce', R`<p>Při výměně části \(x_2\) za \(x_1\) beze změny užitku: \(MU_1\,\Delta x_1 + MU_2\,\Delta x_2 = 0\), tedy</p>\[MRS_{12} = -\frac{\Delta x_2}{\Delta x_1} = \frac{MU_1}{MU_2}\]<p>= sklon indiferenční křivky; podél ní klesá (proto konvexita).</p>
+${fig('ic', 'Mapa indiferenčních křivek. Posouvej bod po křivce a sleduj, jak se mění MRS (sklon).')}`)}
 ${tbl(['Preference', 'Tvar křivek', 'Příklad'], [['dokonalé substituty', 'přímky', 'stokoruny a tisícikoruny'], ['dokonalé komplementy', 'pravé úhly (L)', 'levá a pravá bota'], ['jeden statek nežádoucí', 'svislé / vodorovné', 'spotřebitel ho nekupuje'], ['nasycení', 'kruhy kolem bodu nasycení', 'statek žádoucí jen do určitého množství']])}`),
   S('Rozpočtové omezení', R`
+${idea('Rozpočtová přímka je všechno, co si můžeš dovolit, když utratíš celý důchod.')}
 \[Y = p_1 x_1 + p_2 x_2 \quad\Rightarrow\quad x_2 = \frac{Y}{p_2} - \frac{p_1}{p_2}\,x_1\]
 <p>Průsečíky s osami \(Y/p_1\) a \(Y/p_2\), sklon \(-p_1/p_2\). <b>Růst důchodu</b> posune přímku rovnoběžně ven. <b>Pokles \(p_1\)</b> ji pootočí kolem průsečíku na ose \(x_2\).</p>
 ${fig('budget', 'Měň důchod a cenu statku 1: optimum se posouvá po důchodové (ICC) a cenové (PCC) spotřební křivce.')}`),
   S('Optimum spotřebitele', R`
+${idea('Nejlepší nákup je tam, kde se rozpočtová přímka jen <i>dotkne</i> nejvyšší indiferenční křivky, kterou si můžeš dovolit.')}
 ${rule('Podmínka optima', R`<p>Spotřebitel maximalizuje užitek na rozpočtové přímce. V optimu je přímka tečnou nejvyšší dosažitelné indiferenční křivky:</p>\[MRS_{12} = \frac{MU_1}{MU_2} = \frac{p_1}{p_2}\]`)}
 ${ex('Cobb-Douglasův užitek', R`<p>Pro \(U = x_1^{a} x_2^{b}\) spotřebitel utratí za statek 1 vždy podíl \(\tfrac{a}{a+b}\) důchodu: \(x_1^* = \dfrac{a}{a+b}\cdot\dfrac{Y}{p_1}\). Při \(U = x_1x_2\), \(Y = 100\), \(p_1 = 5\), \(p_2 = 10\): \(x_1 = 10\), \(x_2 = 5\).</p>`)}
 <p>Rohová řešení: nežádoucí statek se nekupuje; u dokonalých substitutů se kupuje jen relativně levnější; u komplementů pevný poměr.</p>`),
   S('Změna důchodu a ceny', R`
+${idea('Když zbohatneš, některé věci kupuješ víc (normální), jiné méně (podřadné). Engelova křivka to ukazuje.')}
 ${def('Důchodová spotřební křivka (ICC)', 'spojuje optima při různých důchodech. Z ní plyne <b>Engelova křivka</b> (poptávka po statku podle důchodu).')}
 ${def('Cenová spotřební křivka (PCC)', 'spojuje optima při různých cenách jednoho statku; z ní plyne poptávková křivka. U běžného statku klesající, u Giffenova rostoucí.')}
-${tbl(['Statek', 'YED', 'Engelova křivka'], [['luxusní', '> 1', 'roste rychleji než důchod'], ['nezbytný', '(0, 1)', 'roste pomaleji'], ['podřadný', '< 0', 'klesá']])}`),
+${tbl(['Statek', 'YED', 'Engelova křivka'], [['luxusní', '> 1', 'roste rychleji než důchod'], ['nezbytný', '(0, 1)', 'roste pomaleji'], ['podřadný', '< 0', 'klesá']])}
+${fig('engel', 'Engelova křivka pro tři typy statků. Ukazuje i důchodovou elasticitu v bodě.')}`),
   S('Substituční a důchodový efekt', R`
+${idea('Když něco zlevní, stane se dvojí: je to relativně levnější než ostatní věci (substituční efekt) a zároveň jsi o trochu bohatší (důchodový efekt).')}
 ${def('Substituční efekt (SE)', 'je změna spotřeby, protože se změnily relativní ceny, při <i>stejném</i> užitku (pohyb po indiferenční křivce, E₁ → E₂). Vždy zvyšuje spotřebu zlevněného statku.')}
 ${def('Důchodový efekt (IE)', 'je změna spotřeby, protože se změnil reálný důchod (přesun na jinou indiferenční křivku, E₂ → E₃).')}
 ${tbl(['Statek', 'SE (cena ↓)', 'IE (cena ↓)', 'Celkem TE'], [['normální', '↑', '↑', '↑'], ['podřadný', '↑', '↓ (slabší)', '↑'], ['Giffenův', '↑', '↓ (silnější)', '↓']])}
 <p>U druhého statku je SE opačný (nahrazuje se zlevněným) a IE zvyšuje jeho spotřebu.</p>
+${fig('sie', 'Rozklad cenového efektu krok za krokem. Přepni typ statku a přehraj znovu.')}
 ${pit(['Každý Giffenův statek je podřadný, ne naopak.', 'MRS = sklon indiferenční křivky; \\(p_1/p_2\\) = sklon rozpočtové přímky.', 'Rovnost MU (bez dělení cenou) platí jen při stejných cenách.'])}`)] },
 
 { n: 6, title: 'Teorie firmy I: produkční funkce', short: 'Produkce',
@@ -1468,21 +1611,27 @@ ${def('Firma', 'je základní výrobní jednotka: najímá práci, kapitál a p�
 ${tbl(['Forma podnikání v ČR', 'Druh'], [['živnost', 'fyzická osoba'], ['v.o.s., k.s.', 'osobní obchodní společnosti'], ['s.r.o., a.s.', 'kapitálové obchodní společnosti'], ['družstvo, evropská společnost', 'další']])}
 <p>Trend: státních podniků od roku 2000 ubývá, akciových a obchodních společností přibývá.</p>`),
   S('Produkční funkce jednoho vstupu', R`
+${idea('Produkční funkce říká, kolik se dá vyrobit z daných vstupů. Typicky: první pracovníci výrobu hodně zvednou, další už méně.')}
 ${def('Produkční funkce', '\\(q = f(x)\\) je maximální technologicky realizovatelný výstup při daném množství vstupu. Krátké období: \\(Q = f(\\bar K, L)\\); dlouhé období: \\(Q = F(K, L)\\).')}
 <p>Typy: <b>konvexně-konkávní</b> (nejdřív rostoucí, pak klesající mezní produkt; typický případ), <b>ryze konkávní</b> (MP klesá od začátku) a <b>lineární</b> (konstantní MP do kapacity).</p>
 ${rule('Celkový, průměrný a mezní produkt', R`\[AP = \frac{TP}{x},\qquad MP = \frac{\Delta TP}{\Delta x} \approx \frac{dTP}{dx}\]<p>MP = sklon tečny k TP; AP = sklon spojnice počátku s bodem na TP. <b>Zákon klesajícího mezního produktu:</b> při fixních ostatních vstupech přidává každá další jednotka vstupu méně.</p>`)}`),
   S('Vztahy TP, AP a MP', R`
+${idea('Mezní produkt je přínos posledního pracovníka, průměrný produkt přínos „průměrného“. Když je poslední lepší než průměr, průměr roste.')}
 ${fig('prod', 'TP, AP a MP pro \\(TP = 6L^2 - L^3/2\\): maximum MP (inflexe TP) při L = 4, maximum AP (MP = AP) při L = 6, maximum TP (MP = 0) při L = 8.')}
 <ul><li>Do bodu A roste TP rostoucím tempem (MP roste); od A do C klesajícím tempem (platí zákon klesajícího MP); za C TP klesá a MP je záporný.</li><li>AP roste, když MP > AP; klesá, když MP &lt; AP; <b>v maximu AP je MP = AP</b>.</li><li><b>MP = 0</b>, když je TP maximální; AP = 0, když TP = 0.</li></ul>
 ${tbl(['Stádium', 'Co platí', 'Smysl'], [['I.', 'AP roste (MP > AP)', 'každý další vstup se vyplatí, přidávat'], ['II.', 'AP klesá, MP > 0', 'racionální oblast výroby'], ['III.', 'MP < 0, TP klesá', 'nerentabilní']])}
 ${ex('Kubická funkce (seminář 6)', R`<p>\(Q = 144L + 30L^2 - 2L^3\): \(MP_L = 144 + 60L - 6L^2\), \(AP_L = 144 + 30L - 2L^2\). Maximum MP: \(60 - 12L = 0 \Rightarrow L = 5\); od 5 pracovníků působí klesající výnosy z variabilního vstupu. Maximum AP: \(30 - 4L = 0 \Rightarrow L = 7{,}5\).</p>`)}
 <p><b>Technologická změna</b> posune produkční funkci nahoru (víc kapacity za vyšší fixní náklady). <b>Dlouhodobá</b> produkční funkce je horní obálka krátkodobých.</p>`),
   S('Dva vstupy: izokvanty', R`
+${idea('Izokvanta je jako indiferenční křivka, jen pro firmu: všechny kombinace práce a kapitálu, které dají stejný výstup.')}
 ${def('Izokvanta', 'jsou kombinace vstupů \\((x_1, x_2)\\), které dají stejný výstup; dál od počátku leží vyšší výstup.')}
-${rule('MRTS a elasticita substituce', R`\[MRTS_{12} = -\frac{\Delta x_2}{\Delta x_1} = \frac{MP_1}{MP_2},\qquad \sigma = \frac{\%\Delta(x_2/x_1)}{\%\Delta(MP_1/MP_2)}\]<p>MRTS = sklon izokvanty; σ říká, jak snadno lze vstupy zaměňovat.</p>`)}
+${rule('MRTS a elasticita substituce', R`\[MRTS_{12} = -\frac{\Delta x_2}{\Delta x_1} = \frac{MP_1}{MP_2},\qquad \sigma = \frac{\%\Delta(x_2/x_1)}{\%\Delta(MP_1/MP_2)}\]<p>MRTS = sklon izokvanty; σ říká, jak snadno lze vstupy zaměňovat.</p>
+${fig('isoq', 'Izokvanty tří typů produkčních funkcí. U Cobb-Douglasovy posouvej bod a sleduj MRTS.')}`)}
 ${tbl(['Funkce', 'Tvar', 'Izokvanty', 'σ'], [['lineární', '\\(a x_1 + b x_2\\)', 'přímky (dokonalé substituty)', '∞'], ['Leontiefova', '\\(\\min(a x_1, b x_2)\\)', 'tvar L (pevný poměr)', '0'], ['Cobb-Douglasova', '\\(A x_1^{\\alpha} x_2^{\\beta}\\)', 'hladké, konvexní', '1']])}`),
   S('Výnosy z rozsahu', R`
-${rule('Definice (dlouhé období)', R`<p>Všechny vstupy zvětšíme \(a\)-krát. <b>Rostoucí</b> výnosy: \(F(aK, aL) > aF(K, L)\); <b>konstantní</b>: \(=\); <b>klesající</b>: \(\lt\).</p>`)}
+${idea('Zdvojnásobíš celou továrnu (lidi i stroje). Vyrobíš víc než dvakrát, přesně dvakrát, nebo míň?')}
+${rule('Definice (dlouhé období)', R`<p>Všechny vstupy zvětšíme \(a\)-krát. <b>Rostoucí</b> výnosy: \(F(aK, aL) > aF(K, L)\); <b>konstantní</b>: \(=\); <b>klesající</b>: \(\lt\).</p>
+${fig('rts', 'Výnosy z rozsahu na izokvantách: jak daleko od sebe jsou izokvanty pro 5, 10 a 15 jednotek.')}`)}
 ${tbl(['Příklad ze slidů', 'Výsledek'], [['F(K, L) = 10, F(2K, 2L) = 30', '30 > 20: rostoucí'], ['F(K, L) = 10, F(3K, 3L) = 20', '20 < 30: klesající'], ['F(K, L) = 10, F(2K, 2L) = 20', '20 = 20: konstantní']])}
 <p>U Cobb-Douglasovy funkce rozhoduje \(\alpha + \beta\): > 1 rostoucí, = 1 konstantní, &lt; 1 klesající.</p>
 ${pit(['Klesající <b>mezní produkt</b> (jeden vstup, krátké období) ≠ klesající <b>výnosy z rozsahu</b> (všechny vstupy, dlouhé období).', 'Vstupy +100 %, výstup +80 % ⇒ klesající výnosy z rozsahu.', 'Krátké období se pozná podle fixního vstupu, ne podle kalendáře.'])}`)] },
@@ -1493,17 +1642,22 @@ ${pit(['Klesající <b>mezní produkt</b> (jeden vstup, krátké období) ≠ kl
   S('Výkazy firmy', R`
 ${tbl(['Výkaz', 'Co ukazuje'], [['rozvaha (balance sheet)', 'stav <b>aktiv</b> (co firma vlastní) a <b>pasiv</b> (z čeho to financovala: vlastní jmění, dluh) k určitému datu'], ['výsledovka (income statement)', 'výnosy a náklady za období'], ['cash-flow', 'zda budou v budoucnu stačit peněžní prostředky']])}`),
   S('Účetní a ekonomický zisk', R`
+${idea('Účetní vidí jen to, co odešlo z účtu. Ekonom přičte i to, co sis nechal ujít (třeba plat, který bys jinde dostal).')}
 ${def('Účetní zisk', 'jsou výnosy minus explicitní (skutečně zaplacené) náklady.')}
 ${def('Ekonomický zisk', 'jsou výnosy minus <i>všechny</i> náklady, včetně implicitních nákladů příležitosti (ušlá mzda majitele, ušlý úrok z vlastního kapitálu). Nulový ekonomický zisk = firma vydělá tolik jako v nejlepší alternativě.')}
 ${ex('Kavárna', R`<p>Tržby 1 mil. Kč, explicitní náklady 700 tis. Kč ⇒ účetní zisk 300 tis. Majitel by jinde vydělal 400 tis. ⇒ ekonomický zisk −100 tis. Kč.</p>`)}`),
   S('Maximalizace zisku s jedním vstupem', R`
+${idea('Najímej dalšího pracovníka, dokud ti vydělá víc (cena × jeho mezní produkt), než stojí jeho mzda.')}
 <p>Model: dokonalá konkurence, firma neovlivní ceny vstupu ani výstupu. \(\pi = p\,q - w\,x\).</p>
 ${def('Izozisková přímka', 'spojuje kombinace vstupu a výstupu se stejným ziskem: \\(q = \\dfrac{\\pi}{p} + \\dfrac{w}{p}\\,x\\). Má kladný sklon \\(w/p\\); vyšší přímka = vyšší zisk.')}
-${rule('Podmínka optima', R`<p>Nejvyšší izozisková přímka se dotkne produkční funkce:</p>\[\frac{d\pi}{dx} = p\cdot MP - w = 0 \quad\Rightarrow\quad p\cdot MP = w\]<p>Hodnota mezního produktu = cena vstupu, neboli \(MR = MC\). V krátkém období s fixním kapitálem: \(\pi = pq - r\bar k - wl\) a \(p\cdot MP_L = w\).</p>`)}
+${rule('Podmínka optima', R`<p>Nejvyšší izozisková přímka se dotkne produkční funkce:</p>\[\frac{d\pi}{dx} = p\cdot MP - w = 0 \quad\Rightarrow\quad p\cdot MP = w\]<p>Hodnota mezního produktu = cena vstupu, neboli \(MR = MC\). V krátkém období s fixním kapitálem: \(\pi = pq - r\bar k - wl\) a \(p\cdot MP_L = w\).</p>
+${fig('isoprofit', 'Produkční funkce a izoziskové přímky. Změň reálnou mzdu w/p a sleduj, kde se nejvyšší izozisk dotkne funkce.')}`)}
 ${tbl(['Případ', 'Optimum'], [['technologie neumožňuje zisk (při daných cenách)', 'nevyrábět (E = 0)'], ['lineární \\(q = \\min(ax, b)\\), \\(w/p > a\\)', 'nevyrábět (E₁)'], ['lineární, \\(w/p \\lt a\\)', 'vyrábět na maximu kapacity (E₂)'], ['lineární, \\(w/p = a\\)', 'všechny body úsečky E₁E₂ stejně dobré'], ['výběr z technologií f₁, f₂, f₃', 'ta s nejvyšším ziskem; při vyšší ceně výstupu se vyplatí inovace']])}`),
   S('Minimalizace nákladů se dvěma vstupy', R`
+${idea('Chceš vyrobit dané množství co nejlevněji: kombinuj práci a stroje tak, aby poslední koruna dala v obou stejný přínos.')}
 ${def('Izokosta', 'jsou kombinace vstupů se stejnými náklady: \\(C = w_1x_1 + w_2x_2\\), sklon \\(-w_1/w_2\\).')}
-${rule('Podmínka optima', R`<p>Firma chce vyrobit \(q^*\) co nejlevněji: izokvanta se dotkne nejnižší izokosty.</p>\[MRTS = \frac{MP_1}{MP_2} = \frac{w_1}{w_2} \iff \frac{MP_1}{w_1} = \frac{MP_2}{w_2}\]<p>Poslední koruna dá v každém vstupu stejný mezní produkt. Zdraží-li práce, firma ji nahradí kapitálem.</p>`)}
+${rule('Podmínka optima', R`<p>Firma chce vyrobit \(q^*\) co nejlevněji: izokvanta se dotkne nejnižší izokosty.</p>\[MRTS = \frac{MP_1}{MP_2} = \frac{w_1}{w_2} \iff \frac{MP_1}{w_1} = \frac{MP_2}{w_2}\]<p>Poslední koruna dá v každém vstupu stejný mezní produkt. Zdraží-li práce, firma ji nahradí kapitálem.</p>
+${fig('isocost', 'Izokvanta a izokosty. Zdraž práci a firma ji nahradí kapitálem.')}`)}
 <ul><li><b>Lineární</b> produkční funkce: není-li sklon izokvanty stejný jako izokosty, používá se jen efektivnější vstup (rohové řešení).</li><li><b>Leontiefova</b> funkce \(\min(ax_1, bx_2)\): v optimu platí předepsaný poměr, \(ax_1 = bx_2\).</li></ul>`),
   S('Reciprocita', R`
 <p>Maximalizace zisku a minimalizace nákladů nejsou totéž (nejde o dualitu). Platí ale <b>věta o reciprocitě</b>: předepíšeme-li firmě minimalizující náklady výstup, který by zvolila při maximalizaci zisku, obě úlohy mají stejné řešení.</p>
@@ -1513,15 +1667,25 @@ ${pit(['Implicitní náklady patří do ekonomického zisku, utopené ne.', 'Skl
   key: ['TC = FC + VC; FC = TC(0).', 'MC protíná AVC i AC v jejich minimu.', 'Bod ukončení činnosti: p = min AVC. Bod vyrovnání: p = min AC.', 'Krátkodobá nabídka firmy = MC nad min AVC; dlouhodobá = MC nad min AC.', 'Rozhoduje se podle nákladů příležitosti, utopené náklady se ignorují.'],
   secs: [
   S('Fixní a variabilní náklady', R`
+${idea('Fixní náklady platíš, i když nic nevyrobíš (nájem). Variabilní rostou s každým kusem (materiál).')}
 ${def('Fixní náklady FC', 'se platí nezávisle na výstupu, i při nulové výrobě: vytápění haly, plat vrátného a účetní, nájem, licence, software, úroky z půjček, daň z nemovitosti.')}
 ${def('Variabilní náklady VC(q)', 'se mění s výstupem a při q = 0 jsou nulové: materiál, mzdy provozních zaměstnanců.')}
-<p>\(TC(q) = FC + VC(q) = r\bar k + wl\). Tvar TC určuje produkční funkce: konvexně-konkávní produkce ⇒ konkávně-konvexní TC, která začíná na úrovni FC; lineární produkce ⇒ lineární TC.</p>`),
+<p>\(TC(q) = FC + VC(q) = r\bar k + wl\). Tvar TC určuje produkční funkce: konvexně-konkávní produkce ⇒ konkávně-konvexní TC, která začíná na úrovni FC; lineární produkce ⇒ lineární TC.</p>
+${fig('tc', 'Celkové, variabilní a fixní náklady. Tečna ukazuje mezní náklad, paprsek z počátku průměrný náklad.')}`),
   S('Průměrné a mezní náklady', R`
+${idea('Mezní náklad je cena posledního kusu, průměrný náklad cena jednoho kusu v průměru. Když je poslední kus levnější než průměr, průměr klesá.')}
 \[AFC = \frac{FC}{q},\quad AVC = \frac{VC}{q} = \frac{w}{AP_L},\quad AC = \frac{TC}{q} = AFC + AVC,\quad MC = \frac{dTC}{dq} = \frac{w}{MP_L}\]
 <p>MC je sklon TC; AC je sklon spojnice počátku s bodem na TC.</p>
 ${fig('cost', 'Nákladové křivky. Nastav tržní cenu: firma vyrábí tam, kde p = MC, a uvidíš zisk nebo ztrátu.')}
 <ul><li>MC klesá, dokud je každá další jednotka levnější než předchozí; pak roste.</li><li>AC klesá, dokud MC &lt; AC; <b>v minimu AC je MC = AC</b> (bod C); v minimu AVC je MC = AVC (bod B).</li><li>AC = AVC + AFC (svislý součet). AFC s výstupem klesá, AC se k AVC blíží, ale nedotkne se; AVC má minimum dřív než AC.</li><li>Dlouhodobá LAC je <b>dolní obálka</b> krátkodobých SAC.</li></ul>`),
+  S('Dlouhé období: úspory z rozsahu', R`
+${idea('V dlouhém období si firma vybere i velikost továrny. Pro malý výstup se hodí malá dílna, pro velký výstup velký závod.')}
+${def('Dlouhodobé průměrné náklady LAC', 'jsou <b>dolní obálka</b> krátkodobých křivek SAC: pro každý výstup ukazují nejnižší průměrné náklady, když lze měnit všechny vstupy včetně velikosti závodu.')}
+${tbl(['Část LAC', 'Co platí', 'Proč'], [['klesající', '<b>úspory z rozsahu</b> (rostoucí výnosy z rozsahu)', 'specializace, velké stroje, hromadný nákup'], ['minimum', 'minimální efektivní velikost', 'konstantní výnosy z rozsahu'], ['rostoucí', '<b>nehospodárnost z rozsahu</b> (klesající výnosy)', 'koordinace, byrokracie']])}
+${fig('lac', 'Dlouhodobá LAC jako obálka pěti krátkodobých SAC. Posuň plánovaný výstup a uvidíš, která velikost závodu je nejlevnější.')}
+<p>Když LAC klesá v celém rozsahu poptávky (síťová odvětví: voda, železnice), vyrobí trh nejlevněji jedna firma: <b>přirozený monopol</b>.</p>`),
   S('Ziskovost firmy', R`
+${idea('Firma vyrábí tolik, aby poslední kus stál právě tolik, za kolik ho prodá (p = MC). Zavře, jen když nepokryje ani variabilní náklady.')}
 <p>Firma maximalizuje \(\pi(q) = pq - TC(q)\): \(d\pi/dq = p - MC = 0\), tedy <b>\(p = MC\)</b> na rostoucí části MC.</p>
 ${tbl(['Cena', 'Zisk', 'Rozhodnutí'], [['\\(p > p_C\\)', '\\(\\pi > 0\\)', 'vyrábí se ziskem'], ['\\(p = p_C\\) (bod vyrovnání C: AC = p)', '\\(\\pi = 0\\), nulový nadstandardní zisk', 'vyrábí'], ['\\(p_B \\lt p \\lt p_C\\)', '\\(-FC \\lt \\pi \\lt 0\\), FC částečně pokryty', 'krátkodobě vyrábí'], ['\\(p \\lt p_B\\) (bod ukončení činnosti B: AVC = p)', '\\(\\pi \\lt -FC\\)', 'nevyrábí, ztráta = FC']])}
 ${rule('Nabídka firmy', R`<p>Krátkodobě kopíruje MC od bodu ukončení činnosti B; dlouhodobě od bodu vyrovnání C. Zisk: \(\pi = [p - AC(q^*)]\cdot q^*\).</p>`)}
@@ -1534,33 +1698,46 @@ ${pit(['FC neovlivní MC ani optimální q, jen zisk a rozhodnutí o odchodu.', 
   key: ['Každá firma maximalizuje zisk při <b>MR = MC</b>.', 'DK: \\(p = MR\\), dlouhodobě \\(p = \\min AC\\) a nulový zisk.', 'Monopol: MR pod poptávkou, \\(q\\) z MR = MC, cena z poptávky; zisk trvá.', 'Monopol je alokačně i výrobně neefektivní (ztráta mrtvé váhy).', 'Vězňovo dilema: dominantní strategie vede k horšímu výsledku pro obě firmy.'],
   secs: [
   S('Tržní struktury', R`
+${idea('Čím méně konkurentů, tím víc si firma může dovolit určovat cenu.')}
 <p>Podle počtu firem a jejich tržní síly (kontrola nad cenou a výstupem): <b>dokonalá konkurence</b>, <b>monopolistická konkurence</b>, <b>oligopol</b>, <b>monopol</b>. Nedokonalá konkurence je i na straně poptávky: <b>monopson</b> (jeden kupující, stát jako zaměstnavatel policistů), <b>oligopson</b> (kakaové boby vykupují tři odběratelé).</p>`),
   S('Dokonalá konkurence', R`
+${idea('Tisíce stejných farmářů prodávají stejné obilí. Nikdo z nich cenu neovlivní, jen se rozhodne, kolik vyrobí.')}
 <p>Předpoklady: mnoho prodávajících i kupujících s dokonalou informovaností (jednotné ceny); <b>homogenní</b> produkt; firma je <b>příjemce ceny</b>; volný vstup a výstup; při tržní ceně neexistuje odbytové omezení, nad ní se neprodá nic.</p>
-${rule('Příjmy a optimum', R`<p>\(AR = TR/q = p\), \(MR = dTR/dq = p\), tedy \(MR = D = AR = p\). Poptávka po produkci jedné firmy je vodorovná (nekonečně elastická). Optimum: \(MC(q^*) = p\).</p>`)}
+${rule('Příjmy a optimum', R`<p>\(AR = TR/q = p\), \(MR = dTR/dq = p\), tedy \(MR = D = AR = p\). Poptávka po produkci jedné firmy je vodorovná (nekonečně elastická). Optimum: \(MC(q^*) = p\).</p>
+${fig('pc', 'Trh a jedna firma vedle sebe. Přehraj, jak kladný zisk přiláká nové firmy a cena se vrátí na min AC.')}`)}
 <p><b>Krátké období:</b> firma vyrábí na MC nad bodem B; při \(p \lt p_C\) má ztrátu, ale výroba ji zmenšuje. <b>Dlouhé období:</b> vstup a odchod firem stlačí cenu na \(p^* = \min AC\); zisk je nulový, výroba maximálně efektivní a \(MC = p = MU\).</p>`),
   S('Nedokonalá konkurence', R`<p>Stačí porušit jednu podmínku DK: méně výrobců, nedokonalá informovanost (různé ceny), heterogenní produkt, firma je <b>tvůrce ceny</b>, bariéry vstupu, náklady zákazníka na změnu dodavatele.</p>`),
   S('Monopol', R`
+${idea('Monopol je jediný prodávající. Zjistí, že když vyrobí méně, může prodávat dráž, a vydělá víc.')}
 <p>Jediný prodávající s úplnou kontrolou odvětví, <b>nepřekonatelné bariéry</b>, žádné blízké substituty; individuální poptávka = tržní poptávka. Vzniká kvůli úsporám z rozsahu (<b>přirozený monopol</b>: síťová odvětví), jedinečnému zdroji (jediné naleziště), státní regulaci (Česká pošta) nebo inovaci (patent).</p>
 ${rule('Postup: zisk monopolu', R`<ol><li>Optimální výstup: \(MR(q^*) = MC(q^*)\).</li><li>Prodejní cena z poptávky: \(p^* = D(q^*)\).</li><li>Průměrné náklady: \(AC(q^*)\).</li><li>Zisk: \(\pi = [p^* - AC(q^*)]\cdot q^*\).</li></ol><p>Pro lineární poptávku \(p = a - bq\): \(TR = aq - bq^2\), <b>\(MR = a - 2bq\)</b> (dvakrát strmější). Monopol nemá nabídkovou křivku.</p>`)}
 ${fig('mono', 'Monopol vyrábí méně a dráž než dokonalá konkurence; vzniká ztráta mrtvé váhy.')}
 ${rule('Proč je monopol neefektivní', R`<p><b>Alokačně:</b> \(p^* > MC\); existují kupující, kteří by zaplatili víc, než stojí výroba, ale nekoupí, protože nelze prodávat stejné zboží za různé ceny ⇒ ztráta mrtvé váhy. Nedokonalá konkurence je i <b>Pareto-neefektivní</b> (Pareto-efektivní je situace, kdy si nikdo nemůže polepšit, aniž by si jiný pohoršil, např. DK v dlouhém období). <b>Výrobně:</b> nevyrábí v minimu AC. Bariéry vstupu drží zisk kladný krátkodobě i dlouhodobě.</p>`)}
-<p><b>Cenová diskriminace</b> (prodávat různým zákazníkům za různé ceny) umožňuje monopolu zachytit část přebytku spotřebitele.</p>`),
-  S('Monopolistická konkurence', R`<p>Mnoho firem, <b>diferencovaný</b> produkt (tvůrci ceny, ale blízké substituty), nízké náklady vstupu, nenulové náklady zákazníka na změnu dodavatele. Krátkodobě kladný zisk jako monopol; dlouhodobě vstupují konkurenti, dokud \(AR = AC\) (nulový zisk), ale <b>ne v minimu AC</b> (nadbytečná kapacita).</p>`),
+${def('Cenová diskriminace', 'je prodej stejného zboží různým zákazníkům za různé ceny podle jejich ochoty platit. Monopol tak zachytí část přebytku spotřebitele a prodá i těm, kteří by za jednotnou cenu nekoupili, takže ztráta mrtvé váhy se zmenší.')}
+${tbl(['Stupeň', 'Jak funguje', 'Příklad'], [['1. (dokonalá)', 'každý platí svou maximální ochotu; přebytek spotřebitele = 0, ztráta mrtvé váhy = 0', 'aukce, smlouvání na trhu'], ['2.', 'cena závisí na množství', 'množstevní slevy, tarify'], ['3.', 'různé ceny pro skupiny zákazníků', 'studentské a seniorské slevy, ceny letenek']])}
+<p>Podmínky: firma má tržní sílu, umí zákazníky rozlišit a zabrání přeprodeji.</p>`),
+  S('Monopolistická konkurence', R`
+${idea('Kavárny ve městě: každá je trochu jiná (tvoří cenu), ale snadno vznikne další (zisky dlouhodobě zmizí).')}<p>Mnoho firem, <b>diferencovaný</b> produkt (tvůrci ceny, ale blízké substituty), nízké náklady vstupu, nenulové náklady zákazníka na změnu dodavatele. Krátkodobě kladný zisk jako monopol; dlouhodobě vstupují konkurenti, dokud \(AR = AC\) (nulový zisk), ale <b>ne v minimu AC</b> (nadbytečná kapacita).</p>
+${fig('monocomp', 'Monopolistická konkurence krátkodobě a dlouhodobě: poptávka po produktu firmy klesá, dokud zisk nezmizí.')}`),
   S('Oligopol', R`
+${idea('Pár velkých firem (operátoři, Coca-Cola a Pepsi), které se navzájem sledují. Co udělá jedna, ovlivní ostatní.')}
 <p>Poptávka je rozdělena mezi několik soupeřících firem; produkt homogenní i diferencovaný; překonatelné, ale vysoké bariéry vstupu.</p>
 ${tbl(['Model', 'Chování'], [['dominantní firma a lem', 'Vůdce se chová jako monopol (\\(MR_L = MC_L\\)) a určí cenu \\(p_L\\); lem ji převezme a vyrábí, kde \\(p_L = MC_F\\). Celkem \\(q_M = q_L + q_F\\). Nad cenou \\(p_A\\) vyrábí jen lem, pod \\(p_B\\) jen vůdce.'], ['kartel (koluzní oligopol)', 'Nekalá dohoda o cenách nebo omezení výstupu; maximalizuje zisk jako monopol. Je nestabilní, každý má motiv podvádět.']])}
+${fig('domfirm', 'Dominantní firma a konkurenční lem. Měň mezní náklady vůdce.')}
 ${rule('Vězňovo dilema (Coca-Cola a Pepsi)', R`${tbl(['tržby (mil. $), Cola / Pepsi', 'Pepsi $7', 'Pepsi $5'], [['Cola $7', '15 / 15', '5 / 30'], ['Cola $5', '30 / 5', '<b>10 / 10</b>']])}<p>Zlevnit se vyplatí bez ohledu na soupeře (<b>dominantní strategie</b>), takže obě skončí na 10 místo 15. Sledování vlastního zájmu vede k horšímu výsledku pro obě.</p>`)}
+${fig('pd', 'Vězňovo dilema: vyber ceny obou firem. Hvězdička označuje Nashovu rovnováhu.')}
 ${pit(['V DK je MR = p, v monopolu MR < p.', 'Monopol nevyrábí na neelastické části poptávky (tam MR < 0).', 'Nulový ekonomický zisk ≠ nulový účetní zisk.'])}`)] },
 
 { n: 10, title: 'Antimonopolní politika a nerovnost', short: 'Tržní síla, nerovnost',
   key: ['CR = součet podílů největších firem; HHI = součet čtverců podílů všech (0–10 000).', 'Lernerův index \\((p - MC)/p\\): 0 v DK, k 1 u monopolu.', 'ÚOHS: zakázané dohody, zneužití dominance (~40 %), kontrola fúzí.', 'Lorenzova křivka a Gini \\(= A/(A+B)\\): 0 rovnost, 1 nerovnost.', 'Příjem je tok, bohatství stav; nejdůležitější je spotřeba (životní úroveň).'],
   secs: [
   S('Měření tržní síly', R`
+${idea('Jak poznat, že je trh ovládaný pár firmami? Sečti jejich podíly (CR), nebo jejich čtverce (HHI), aby velké firmy vážily víc.')}
 <p>Strukturu trhu určuje počet firem, bariéry vstupu a tržní síla (jak firma ovlivní cenu a množství).</p>
 \[CR_n = \sum_{i=1}^{n} S_i,\qquad HHI = \sum_{i=1}^{N} S_i^2,\qquad L = \frac{p - MC}{p}\]
 ${tbl(['Ukazatel', 'Rozsah', 'Pozn.'], [['koncentrační poměr \\(CR_n\\)', '0–100 %', 'jen n největších firem'], ['Herfindahlův index', '≈0 (DK) až 10 000 (monopol)', 'všechny firmy, podíly v %; citlivý na velké firmy'], ['Lernerův index', '0 (DK) až 1', 'teoreticky nejlepší, ale MC se v praxi těžko zjišťuje; monopol \\(L = 1/|\\varepsilon|\\)']])}
-${ex('Čtyři firmy', R`<p>Podíly 40, 30, 20, 10 %: \(CR_2 = 70\,\%\), \(HHI = 1600 + 900 + 400 + 100 = 3000\).</p>`)}`),
+${ex('Čtyři firmy', R`<p>Podíly 40, 30, 20, 10 %: \(CR_2 = 70\,\%\), \(HHI = 1600 + 900 + 400 + 100 = 3000\).</p>
+${fig('hhi', 'Koncentrační poměr a Herfindahlův index. Nastav podíly čtyř největších firem.')}`)}`),
   S('Porovnání tržních struktur', R`
 ${tbl(['Struktura', 'Cena vs. DK', 'Množství', 'Dlouhodobý zisk'], [['dokonalá konkurence', '\\(p^* = \\min AC\\)', 'nejvyšší', '0'], ['monopolistická konkurence', 'vyšší', 'nižší', '0'], ['oligopol', 'vyšší', 'nižší', '> 0'], ['monopol, kartel', 'nejvyšší', 'nejnižší', '> 0']])}
 <p>Při přechodu z DK na nedokonalou konkurenci se přebytek spotřebitele A + B + C zmenší na A; B získá výrobce jako tržby, C je ztráta mrtvé váhy. <b>Čím méně elastická poptávka, tím větší újma spotřebitele.</b></p>`),
@@ -1569,6 +1746,7 @@ ${tbl(['Struktura', 'Cena vs. DK', 'Množství', 'Dlouhodobý zisk'], [['dokonal
 ${tbl(['Nástroj', 'Obsah'], [['regulace', 'cenová regulace, patenty'], ['zakázané dohody', 'určování cen, kontrola výroby, odbytu a investic, rozdělení trhu, znevýhodňující podmínky'], ['zneužití dominantního postavení', 'podíl kolem 40 %: nepřiměřené podmínky, omezení výroby na úkor spotřebitelů, prodej za nepřiměřeně nízké ceny'], ['spojování soutěžitelů', 'ÚOHS posuzuje, zda fúze zvýší efektivitu, nebo ohrozí konkurenci']])}
 <p><b>Liberální kritika:</b> státní zásahy monopoly spíš vytvářejí; náklady politiky často převyšují přínos; stát pozná monopol jen podle velikosti; výzkum a vývoj je často možný jen ve velkých firmách nebo ve státě.</p>`),
   S('Ekonomická nerovnost', R`
+${idea('Lorenzova křivka ukazuje, kolik příjmu má nejchudších x % lidí. Čím víc se prohne, tím větší nerovnost.')}
 <p>Ekonomické postavení měří <b>bohatství</b> (stavová veličina), <b>příjem</b> (toková) a <b>spotřeba</b> (toková). Ekonomicky nejdůležitější je spotřeba (životní úroveň), přestože se nejčastěji ignoruje. Normativní pohled z přednášky: důležitá není nerovnost, ale skutečná životní úroveň, tedy chudoba.</p>
 ${fig('lorenz', 'Lorenzova křivka: čím víc se prohýbá od diagonály, tím vyšší nerovnost a Giniho koeficient.')}
 ${def('Lorenzova křivka', 'ukazuje kumulativní podíl příjmu (bohatství), který má nejchudších x % populace; přímka 45° je dokonalá rovnost.')}
@@ -1708,150 +1886,533 @@ const GLOSS = [
   [10, 'příjem × bohatství', 'income vs. wealth', 'Tok za období × stav k datu.']
 ];
 
-/* ---------- interaktivní grafy (SVG + posuvníky) ----------
-   Každý obrázek: <figure data-fig="id">. initFigs(root) ho najde a vloží graf a ovládání. */
-const FW = 520, FH = 340, M = { l: 46, r: 18, t: 16, b: 38 };
-function plane(xmax, ymax) {
-  const sx = x => M.l + (x / xmax) * (FW - M.l - M.r), sy = y => FH - M.b - (y / ymax) * (FH - M.t - M.b);
-  const P = pts => pts.map(([x, y], i) => (i ? 'L' : 'M') + sx(x).toFixed(1) + ' ' + sy(y).toFixed(1)).join(' ');
-  const fn = (f, a, b, n = 80) => { const pts = []; for (let i = 0; i <= n; i++) { const x = a + (b - a) * i / n, y = f(x); if (isFinite(y)) pts.push([x, Math.max(-ymax, Math.min(ymax * 2, y))]); } return P(pts); };
+/* ---------- interaktivní grafy (SVG + posuvníky + animované kroky) ----------
+   <figure data-fig="id"><figcaption>…</figcaption></figure> → initFigs(root) vloží graf.
+   FIGDEF[id] = { ctl: [[klíč, popis, min, max, krok, výchozí]], opt: [[klíč, popis, [[hodnota, text]…], výchozí]],
+                  hid: {skryté hodnoty}, steps: [[název, {hodnoty}, vysvětlení]], draw(v) → HTML } */
+const FW = 600, FH = 400;
+let CLIPN = 0;
+function plane(xmax, ymax, o = {}) {
+  const W = o.w || FW, H = o.h || FH, ox = o.ox || 0, oy = o.oy || 0, m = Object.assign({ l: 58, r: 28, t: 24, b: 50 }, o.m || {});
+  const sx = x => ox + m.l + (x / xmax) * (W - m.l - m.r), sy = y => oy + H - m.b - (y / ymax) * (H - m.t - m.b);
+  const f1 = v => (+v).toFixed(1);
+  const P = pts => pts.map(([x, y], i) => (i ? 'L' : 'M') + f1(sx(x)) + ' ' + f1(sy(y))).join(' ');
+  const fn = (f, a, b, n = 90) => { const pts = []; for (let i = 0; i <= n; i++) { const x = a + (b - a) * i / n, y = f(x); if (isFinite(y)) pts.push([x, Math.max(-ymax * .2, Math.min(ymax * 1.3, y))]); } return P(pts); };
+  const id = 'fc' + (++CLIPN);
+  const clip = inner => `<defs><clipPath id="${id}"><rect x="${sx(0)}" y="${sy(ymax)}" width="${sx(xmax) - sx(0)}" height="${sy(0) - sy(ymax)}"/></clipPath></defs><g clip-path="url(#${id})">${inner}</g>`;
   const poly = (pts, cls) => `<path class="${cls}" d="${P(pts)} Z"/>`;
-  const line = (x1, y1, x2, y2, cls = 'gd') => `<line class="${cls}" x1="${sx(x1)}" y1="${sy(y1)}" x2="${sx(x2)}" y2="${sy(y2)}"/>`;
-  const txt = (x, y, s, cls = '', anchor = 'start', dx = 0, dy = 0) => `<text class="${cls}" x="${sx(x) + dx}" y="${sy(y) + dy}" text-anchor="${anchor}">${String(s).replace(/_(\w+)/, '<tspan baseline-shift="sub" font-size="9">$1</tspan>')}</text>`;
-  const dot = (x, y, cls = 'dt') => `<circle class="${cls}" cx="${sx(x)}" cy="${sy(y)}" r="4.5"/>`;
-  const axes = (xl, yl) => `<line class="ax" x1="${M.l}" y1="${FH - M.b}" x2="${FW - M.r + 4}" y2="${FH - M.b}"/><line class="ax" x1="${M.l}" y1="${FH - M.b}" x2="${M.l}" y2="${M.t - 4}"/>`
-    + `<text x="${FW - M.r}" y="${FH - M.b + 26}" text-anchor="end">${xl}</text><text x="${M.l - 8}" y="${M.t + 6}" text-anchor="end">${yl}</text>`;
-  const guide = (x, y, lx, ly) => line(x, 0, x, y) + line(0, y, x, y) + (lx ? txt(x, 0, lx, '', 'middle', 0, 16) : '') + (ly ? txt(0, y, ly, '', 'end', -6, 4) : '');
-  return { sx, sy, P, fn, poly, line, txt, dot, axes, guide };
+  const line = (x1, y1, x2, y2, cls = 'gd') => `<line class="${cls}" x1="${f1(sx(x1))}" y1="${f1(sy(y1))}" x2="${f1(sx(x2))}" y2="${f1(sy(y2))}"/>`;
+  const sub = s => String(s).replace(/_\{([^}]+)\}|_(\w+)/g, (_, a, b) => `<tspan baseline-shift="sub" font-size="72%">${a || b}</tspan>`);
+  const txt = (x, y, s, cls = '', anchor = 'start', dx = 0, dy = 0) => `<text class="${cls}" x="${f1(sx(x) + dx)}" y="${f1(sy(y) + dy)}" text-anchor="${anchor}">${sub(s)}</text>`;
+  const lab = (x, y, s, c = 'K', anchor = 'start', dx = 0, dy = 0) => txt(x, y, s, 'lb t' + c, anchor, dx, dy);
+  const dot = (x, y, cls = 'dt', r = 5) => `<circle class="${cls}" cx="${f1(sx(x))}" cy="${f1(sy(y))}" r="${r}"/>`;
+  const cur = (d, c = 'D', dashed = false) => `<path class="cv c${c}${dashed ? ' old' : ''}"${dashed ? '' : ' pathLength="1"'} d="${d}"/>`;
+  const ticks = (xt = [], yt = []) => xt.map(t => `<line class="tick" x1="${f1(sx(t))}" x2="${f1(sx(t))}" y1="${f1(sy(0))}" y2="${f1(sy(0) + 5)}"/><text class="tk" x="${f1(sx(t))}" y="${f1(sy(0) + 20)}" text-anchor="middle">${num(t, 2)}</text>`).join('')
+    + yt.map(t => `<line class="tick" x1="${f1(sx(0) - 5)}" x2="${f1(sx(0))}" y1="${f1(sy(t))}" y2="${f1(sy(t))}"/><text class="tk" x="${f1(sx(0) - 9)}" y="${f1(sy(t) + 5)}" text-anchor="end">${num(t, 2)}</text>`).join('');
+  const axes = (xl, yl, xt, yt) => `<line class="ax" x1="${sx(0)}" y1="${sy(0)}" x2="${sx(xmax) + 10}" y2="${sy(0)}"/><line class="ax" x1="${sx(0)}" y1="${sy(0)}" x2="${sx(0)}" y2="${sy(ymax) - 10}"/>`
+    + `<path class="axh" d="M${sx(xmax) + 14} ${sy(0)} l-8 -4 v8 z M${sx(0)} ${sy(ymax) - 14} l-4 8 h8 z"/>`
+    + `<text class="axl" x="${sx(xmax) + 12}" y="${sy(0) + 38}" text-anchor="end">${sub(xl)}</text><text class="axl" x="${sx(0) + 12}" y="${sy(ymax) - 2}" text-anchor="start">${sub(yl)}</text>` + ticks(xt, yt);
+  const guide = (x, y, lx, ly, cls = 'gd') => line(x, 0, x, y, cls) + line(0, y, x, y, cls) + (lx ? txt(x, 0, lx, 'gl', 'middle', 0, 22) : '') + (ly ? txt(0, y, ly, 'gl', 'end', -9, 5) : '');
+  const arrow = (x1, y1, x2, y2, cls = 'arr') => { const X1 = sx(x1), Y1 = sy(y1), X2 = sx(x2), Y2 = sy(y2), a = Math.atan2(Y2 - Y1, X2 - X1), L = Math.hypot(X2 - X1, Y2 - Y1); if (L < 6) return ''; const h = 10, w = 5.5, bx = X2 - h * Math.cos(a), by = Y2 - h * Math.sin(a);
+    return `<g class="${cls}"><line x1="${f1(X1)}" y1="${f1(Y1)}" x2="${f1(bx)}" y2="${f1(by)}"/><path d="M${f1(X2)} ${f1(Y2)} L${f1(bx - w * Math.sin(a))} ${f1(by + w * Math.cos(a))} L${f1(bx + w * Math.sin(a))} ${f1(by - w * Math.cos(a))} Z"/></g>`; };
+  const shade = (x1, x2, cls) => `<rect class="${cls}" x="${f1(sx(x1))}" y="${f1(sy(ymax))}" width="${f1(sx(x2) - sx(x1))}" height="${f1(sy(0) - sy(ymax))}"/>`;
+  return { sx, sy, P, fn, poly, line, txt, lab, dot, cur, axes, guide, arrow, clip, shade, xmax, ymax };
 }
-const svgWrap = inner => `<svg class="fg eg" viewBox="0 0 ${FW} ${FH}" role="img">${inner}</svg>`;
+const svgWrap = (inner, w = FW, h = FH, label = '') => `<svg class="fg eg" viewBox="0 0 ${w} ${h}" role="img"${label ? ` aria-label="${label}"` : ''}>${inner}</svg>`;
 const leg = items => `<div class="flegend">${items.map(([c, t]) => `<span><i class="${c}"></i>${t}</span>`).join('')}</div>`;
-const n1 = x => num(x, 1), n0 = x => num(x, 0);
+const stat = s => `<p class="fstat">${s}</p>`;
+const n1 = x => num(x, 1), n0 = x => num(x, 0), n2 = x => num(x, 2);
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 
-const FIGDEF = {
-  ppf: { ctl: [['res', 'Množství zdrojů', 0.7, 1.3, 0.05, 1], ['tech', 'Technologie ve výrobě X', 1, 1.5, 0.05, 1]],
-    draw(v) {
-      const g = plane(16, 16), X = 10 * v.res * v.tech, Y = 10 * v.res, f = x => Y * Math.sqrt(Math.max(0, 1 - (x / X) ** 2));
-      const base = plane(16, 16).fn(x => 10 * Math.sqrt(Math.max(0, 1 - (x / 10) ** 2)), 0, 10);
-      const ax = 6 * v.res * v.tech, ay = f(ax);
-      return svgWrap(g.axes('statek X', 'statek Y') + (v.res !== 1 || v.tech !== 1 ? `<path class="cv ghost" d="${base}"/>` : '')
-        + `<path class="cv" d="${g.fn(f, 0, X, 120)}"/>` + g.dot(ax, ay) + g.txt(ax, ay, 'A efektivní', 'strong', 'start', 8, -8)
-        + g.dot(4, 4, 'dt o') + g.txt(4, 4, 'B neefektivní', '', 'start', 8, 4) + g.dot(11, 11, 'dt x') + g.txt(11, 11, 'C nedosažitelný', '', 'start', 8, 4))
-        + `<p class="fstat">${v.res > 1 ? 'Víc zdrojů posouvá PPF ven.' : v.res < 1 ? 'Méně zdrojů posouvá PPF k počátku.' : 'Výchozí zdroje.'} ${v.tech > 1 ? 'Lepší technologie jen u X PPF <b>pootočí</b> kolem průsečíku s osou Y.' : ''} Sklon v bodě A (náklad příležitosti jednotky X): <b>${num(Y * (ax / X) / X / Math.sqrt(1 - (ax / X) ** 2), 2)}</b> jednotky Y.</p>`;
-    } },
-  sd: { ctl: [['dd', 'Posun poptávky', -30, 30, 2, 0], ['ds', 'Posun nabídky', -30, 30, 2, 0]],
-    draw(v) {
-      const g = plane(130, 60), D = (p, d) => 100 + d - 2 * p, S = (p, s) => 10 + s + 2 * p;
-      const p0 = 22.5, q0 = 55, p1 = (90 + v.dd - v.ds) / 4, q1 = D(p1, v.dd);
-      const dPath = d => g.P([[D(0, d), 0], [D(Math.min(55, (100 + d) / 2), d), Math.min(55, (100 + d) / 2)]]);
-      const sPath = s => g.P([[Math.max(0, 10 + s), Math.max(0, -(10 + s) / 2)], [S(55, s), 55]]);
-      const moved = v.dd || v.ds;
-      return svgWrap(g.axes('Q', 'p') + (moved ? `<path class="cv ghost" d="${dPath(0)}"/><path class="cv2 ghost" d="${sPath(0)}"/>` + g.dot(q0, p0, 'dt o') : '')
-        + `<path class="cv" d="${dPath(v.dd)}"/><path class="cv2" d="${sPath(v.ds)}"/>` + g.guide(q1, p1, 'q*', 'p*') + g.dot(q1, p1)
-        + g.txt(D(4, v.dd), 4, 'D', 'strong', 'start', 6, -4) + g.txt(S(50, v.ds), 50, 'S', 'strong', 'start', 6, 0))
-        + `<p class="fstat">Rovnováha: p* = <b>${n1(p1)}</b>, q* = <b>${n1(q1)}</b>${moved ? ` (předtím ${n1(p0)} a ${n1(q0)}: cena ${p1 > p0 ? '↑' : p1 < p0 ? '↓' : 'beze změny'}, množství ${q1 > q0 ? '↑' : q1 < q0 ? '↓' : 'beze změny'})` : ''}.</p>`;
-    } },
-  elast: { ctl: [['p', 'Cena', 1, 9, 0.5, 7]],
-    draw(v) {
-      const g = plane(10, 10), q = 10 - v.p, e = v.p / q, rev = v.p * q;
-      return svgWrap(g.axes('Q', 'p') + g.poly([[0, 10], [0, 5], [5, 5]], 'a-el') + g.poly([[5, 5], [10, 0], [5, 0]], 'a-in')
-        + `<path class="cv" d="${g.P([[0, 10], [10, 0]])}"/>` + g.txt(1.2, 7.2, '|ε| > 1 elastická', 'strong') + g.txt(5, 5, '|ε| = 1', 'strong', 'start', 10, -6) + g.txt(6.2, 1.6, '|ε| < 1 neelastická', 'strong')
-        + `<path class="a-rev" d="${g.P([[0, 0], [0, v.p], [q, v.p], [q, 0]])} Z"/>` + g.guide(q, v.p) + g.dot(q, v.p))
-        + `<p class="fstat">Poptávka Q = 10 − p. Při p = ${n1(v.p)}: |ε| = p/Q = <b>${num(e, 2)}</b>, tržby p·Q = <b>${n1(rev)}</b> (obdélník). Tržby jsou největší v bodě |ε| = 1.</p>`;
-    } },
-  tax: { ctl: [['t', 'Daň na jednotku t', 0, 60, 2, 20], ['k', 'Sklon nabídky (vyšší = méně elastická)', 0.25, 4, 0.25, 1]],
-    draw(v) {
-      const g = plane(100, 110), k = v.k, qe = 80 / (1 + k), pe = 100 - qe, qt = Math.max(0, (80 - v.t) / (1 + k)), pD = 100 - qt, pS = 20 + k * qt;
-      const cs = 0.5 * qt * (100 - pD), ps = 0.5 * qt * (pS - 20), rev = v.t * qt, dwl = 0.5 * (qe - qt) * (pD - pS);
-      const body = g.axes('Q', 'p') + g.poly([[0, 100], [0, pD], [qt, pD]], 'a-cs') + g.poly([[0, 20], [0, pS], [qt, pS]], 'a-ps')
-        + g.poly([[0, pS], [0, pD], [qt, pD], [qt, pS]], 'a-tax') + g.poly([[qt, pD], [qe, pe], [qt, pS]], 'a-dwl')
-        + `<path class="cv" d="${g.P([[0, 100], [100, 0]])}"/><path class="cv2" d="${g.P([[0, 20], [Math.min(100, 90 / k), 20 + k * Math.min(100, 90 / k)]])}"/>`
-        + g.dot(qe, pe, 'dt o') + (v.t ? g.guide(qt, pD, 'q_t', 'p_D') + g.line(0, pS, qt, pS) + g.txt(0, pS, 'p_S', '', 'end', -6, 4) : '')
-        + g.txt(96, 4, 'D', 'strong', 'end', 0, -6) + g.txt(Math.min(95, 85 / k), 20 + k * Math.min(95, 85 / k), 'S', 'strong', 'start', 6, 0);
-      const shareB = v.t ? (pD - pe) / v.t : k / (1 + k);
-      return svgWrap(body) + leg([['a-cs', 'přebytek spotřebitele'], ['a-ps', 'přebytek výrobce'], ['a-tax', 'výnos daně'], ['a-dwl', 'ztráta mrtvé váhy']])
-        + `<p class="fstat">Bez daně p* = ${n1(pe)}, q* = ${n1(qe)}. S daní kupující platí <b>${n1(pD)}</b>, prodávající dostane <b>${n1(pS)}</b>, prodá se <b>${n1(qt)}</b>. Kupující nesou <b>${pct(100 * shareB, 0)}</b> daně. Výnos daně ${n0(rev)}, ztráta mrtvé váhy <b>${n0(dwl)}</b> (CS ${n0(cs)}, PS ${n0(ps)}).</p>`;
-    } },
-  ceil: { ctl: [['p', 'Regulovaná cena', 25, 95, 1, 45]],
-    draw(v) {
-      const g = plane(100, 110), qD = 100 - v.p, qS = v.p - 20, pe = 60, qe = 40, q = Math.min(qD, qS), binds = v.p !== pe;
-      const pd = 100 - q, ps = 20 + q;
-      return svgWrap(g.axes('Q', 'p') + (binds ? g.poly([[q, pd], [qe, pe], [q, ps]], 'a-dwl') : '')
-        + `<path class="cv" d="${g.P([[0, 100], [100, 0]])}"/><path class="cv2" d="${g.P([[0, 20], [85, 105]])}"/>`
-        + `<line class="reg" x1="${g.sx(0)}" x2="${g.sx(100)}" y1="${g.sy(v.p)}" y2="${g.sy(v.p)}"/>` + g.txt(100, v.p, v.p < pe ? 'strop' : 'minimum', 'strong', 'end', 0, -6)
-        + g.dot(qe, pe, 'dt o') + g.dot(qD, v.p) + g.dot(qS, v.p) + g.txt(qD, v.p, 'q_D', '', 'middle', 0, v.p < pe ? 18 : -10) + g.txt(qS, v.p, 'q_S', '', 'middle', 0, v.p < pe ? -10 : 18))
-        + leg([['a-dwl', 'ztráta mrtvé váhy']])
-        + `<p class="fstat">${v.p < pe ? `Cenový strop ${v.p} &lt; p* = 60 trh <b>váže</b>: poptává se ${n0(qD)}, nabízí ${n0(qS)}, <b>nedostatek ${n0(qD - qS)}</b>.` : v.p > pe ? `Minimální cena ${v.p} &gt; p* = 60 trh <b>váže</b>: nabízí se ${n0(qS)}, poptává ${n0(qD)}, <b>přebytek ${n0(qS - qD)}</b>.` : 'Regulovaná cena = rovnovážná, nic se nemění.'} Strop nad 60 nebo minimum pod 60 by trh nevázaly.</p>`;
-    } },
-  budget: { ctl: [['Y', 'Důchod Y', 40, 160, 4, 100], ['p1', 'Cena statku 1 (p₂ = 4)', 1, 8, 0.5, 4]],
-    draw(v) {
-      const g = plane(52, 32), p2 = 4, x1 = v.Y / (2 * v.p1), x2 = v.Y / (2 * p2), U = x1 * x2;
-      const base = g.P([[25, 0], [0, 25]]), moved = v.Y !== 100 || v.p1 !== 4;
-      return svgWrap(g.axes('x₁', 'x₂') + (moved ? `<path class="cv ghost" d="${base}"/>` + g.dot(12.5, 12.5, 'dt o') : '')
-        + `<path class="cv" d="${g.P([[Math.min(52, v.Y / v.p1), Math.max(0, v.Y / p2 - v.p1 / p2 * Math.min(52, v.Y / v.p1))], [0, v.Y / p2]])}"/>`
-        + `<path class="cv2" d="${g.fn(x => U / x, U / 32, 52, 120)}"/>` + g.guide(x1, x2, 'x₁*', 'x₂*') + g.dot(x1, x2)
-        + g.txt(50, U / 50, 'IC', 'strong', 'end', 0, -8))
-        + `<p class="fstat">Užitek U = √(x₁x₂). Optimum: x₁* = Y/(2p₁) = <b>${n1(x1)}</b>, x₂* = Y/(2p₂) = <b>${n1(x2)}</b>. V dotyku MRS = x₂/x₁ = ${num(x2 / x1, 2)} = p₁/p₂ = ${num(v.p1 / p2, 2)}. Polovina důchodu jde vždy na každý statek.</p>`;
-    } },
-  prod: { ctl: [['L', 'Počet pracovníků L', 0.5, 9, 0.5, 3]],
-    draw(v) {
-      const TP = L => 6 * L * L - L ** 3 / 2, MP = L => 12 * L - 1.5 * L * L, AP = L => 6 * L - L * L / 2;
-      const g = plane(10, 140), h = plane(10, 26);
-      const top = svgWrap(g.axes('L', 'TP') + `<path class="cv" d="${g.fn(TP, 0, 9.6, 120)}"/>` + g.dot(4, TP(4), 'dt o') + g.txt(4, TP(4), 'inflexe', '', 'end', -8, -4)
-        + g.dot(8, TP(8), 'dt o') + g.txt(8, TP(8), 'max TP', '', 'middle', 0, -10) + g.dot(v.L, TP(v.L)) + g.guide(v.L, TP(v.L)));
-      const bot = svgWrap(h.axes('L', 'AP, MP') + `<path class="cv" d="${h.fn(AP, 0, 10, 100)}"/><path class="cv2" d="${h.fn(MP, 0, 8.9, 100)}"/>`
-        + h.dot(6, AP(6), 'dt o') + h.txt(6, AP(6), 'MP = AP', 'strong', 'start', 8, -8) + h.dot(4, MP(4), 'dt o') + h.txt(4, MP(4), 'max MP', '', 'middle', 0, -10)
-        + h.txt(9.5, AP(9.5), 'AP', 'strong', 'start', 0, -6) + h.txt(8.6, MP(8.6), 'MP', 'strong', 'end', -6, 0) + `<line class="gd" x1="${h.sx(v.L)}" x2="${h.sx(v.L)}" y1="${h.sy(0)}" y2="${h.sy(24)}"/>`);
-      const st = v.L < 6 ? 'I. stádium (AP roste)' : v.L <= 8 ? 'II. stádium (AP klesá, MP > 0)' : 'III. stádium (MP < 0)';
-      return top + bot + `<p class="fstat">TP = 6L² − L³/2. Při L = ${n1(v.L)}: TP = <b>${n1(TP(v.L))}</b>, AP = <b>${n1(AP(v.L))}</b>, MP = <b>${n1(MP(v.L))}</b> → ${st}.</p>`;
-    } },
-  cost: { ctl: [['p', 'Tržní cena p', 6, 40, 0.5, 22]],
-    draw(v) {
-      const AVC = q => 20 - 4 * q + 0.5 * q * q, AC = q => AVC(q) + 50 / q, MC = q => 20 - 8 * q + 1.5 * q * q;
-      let qmin = 4, acmin = 1e9, qac = 0; for (let q = 1; q < 12; q += 0.001) if (AC(q) < acmin) { acmin = AC(q); qac = q; }
-      const g = plane(11, 45), shut = v.p < 12 - 1e-9, q = shut ? 0 : (8 + Math.sqrt(64 - 6 * (20 - v.p))) / 3, ac = q ? AC(q) : 0, pi = shut ? -50 : (v.p - ac) * q;
-      const rect = q ? g.poly([[0, ac], [q, ac], [q, v.p], [0, v.p]], pi >= 0 ? 'a-ps' : 'a-dwl') : '';
-      return svgWrap(g.axes('q', 'Kč') + rect + `<path class="cv" d="${g.fn(AC, 1.3, 10.5, 100)}"/><path class="cv3" d="${g.fn(AVC, 0.2, 10.5, 100)}"/><path class="cv2" d="${g.fn(MC, 1.2, 8.4, 100)}"/>`
-        + `<line class="reg" x1="${g.sx(0)}" x2="${g.sx(11)}" y1="${g.sy(v.p)}" y2="${g.sy(v.p)}"/>` + g.txt(11, v.p, 'p = MR', 'strong', 'end', 0, -6)
-        + g.dot(qmin, 12, 'dt o') + g.txt(qmin, 12, 'bod uzavření', '', 'middle', 0, 18) + g.dot(qac, acmin, 'dt o') + g.txt(qac, acmin, 'bod zvratu', '', 'start', 8, 14)
-        + g.txt(10.4, AC(10.4), 'AC', 'strong', 'end', -4, -8) + g.txt(10.4, AVC(10.4), 'AVC', 'strong', 'end', -4, 14) + g.txt(8.3, MC(8.3), 'MC', 'strong', 'end', -6, 0) + (q ? g.dot(q, v.p) : ''))
-        + leg([['a-ps', 'zisk'], ['a-dwl', 'ztráta']])
-        + `<p class="fstat">TC = 50 + 20q − 4q² + 0,5q³. Min AVC = 12 (q = 4), min AC ≈ ${num(acmin, 2)} (q ≈ ${num(qac, 2)}). ${shut ? `Cena ${n1(v.p)} je pod minimem AVC: firma <b>nevyrábí</b>, ztráta = FC = 50.` : `Firma vyrábí q = <b>${num(q, 2)}</b> (p = MC), zisk π = <b>${n1(pi)}</b>. ${pi >= 0 ? 'Vyrábí se ziskem.' : 'Ztráta je menší než FC = 50, krátkodobě se vyplatí vyrábět.'}`}</p>`;
-    } },
-  mono: { ctl: [['mc', 'Mezní náklady MC (konstantní)', 10, 60, 2, 20]],
-    draw(v) {
-      const g = plane(100, 110), qm = (100 - v.mc) / 2, pm = 100 - qm, qc = 100 - v.mc;
-      return svgWrap(g.axes('Q', 'p') + g.poly([[0, 100], [0, pm], [qm, pm]], 'a-cs') + g.poly([[0, v.mc], [0, pm], [qm, pm], [qm, v.mc]], 'a-tax') + g.poly([[qm, pm], [qc, v.mc], [qm, v.mc]], 'a-dwl')
-        + `<path class="cv" d="${g.P([[0, 100], [100, 0]])}"/><path class="cv3" d="${g.P([[0, 100], [50, 0]])}"/><path class="cv2" d="${g.P([[0, v.mc], [100, v.mc]])}"/>`
-        + g.guide(qm, pm, 'q_M', 'p_M') + g.dot(qm, pm) + g.dot(qc, v.mc, 'dt o') + g.txt(qc, v.mc, 'DK', '', 'middle', 0, 18)
-        + g.txt(96, 4, 'D = AR', 'strong', 'end', 0, -6) + g.txt(48, 4, 'MR', 'strong', 'end', -4, -6) + g.txt(100, v.mc, 'MC', 'strong', 'end', 0, -6))
-        + leg([['a-cs', 'přebytek spotřebitele'], ['a-tax', 'zisk monopolu'], ['a-dwl', 'ztráta mrtvé váhy']])
-        + `<p class="fstat">p = 100 − Q, MR = 100 − 2Q. Monopol: MR = MC ⇒ q = <b>${n1(qm)}</b>, p = <b>${n1(pm)}</b>, zisk ${n0((pm - v.mc) * qm)}. Dokonalá konkurence by vyráběla ${n1(qc)} za ${n1(v.mc)}. Ztráta mrtvé váhy <b>${n0(0.5 * (qc - qm) * (pm - v.mc))}</b>, Lernerův index ${num((pm - v.mc) / pm, 2)}.</p>`;
-    } },
-  lorenz: { ctl: [['k', 'Nerovnost', 1, 6, 0.25, 2.5]],
-    draw(v) {
-      const g = plane(100, 100), L = x => 100 * (x / 100) ** v.k, G = (v.k - 1) / (v.k + 1);
-      const pts = []; for (let i = 0; i <= 60; i++) pts.push([i * 100 / 60, L(i * 100 / 60)]);
-      return svgWrap(g.axes('% populace', '% příjmu') + `<path class="a-tax" d="${g.P([[0, 0], [100, 100], ...pts.slice().reverse()])} Z"/>`
-        + `<path class="cv ghost" d="${g.P([[0, 0], [100, 100]])}"/><path class="cv" d="${g.P(pts)}"/>` + g.txt(42, 50, 'A', 'strong', 'middle') + g.txt(70, 22, 'B', 'strong', 'middle')
-        + g.guide(50, L(50), '50 %', num(L(50), 0) + ' %'))
-        + `<p class="fstat">Nejchudší polovina má <b>${num(L(50), 1)} %</b> příjmu. Giniho koeficient G = A/(A+B) = <b>${num(G, 2)}</b> (0 = rovnost, 1 = jeden má vše).</p>`;
-    } }
-};
+const FIGDEF = {};
 
+/* ===== 1. přednáška ===== */
+FIGDEF.marg = { ctl: [['q', 'Kolik jednotek uděláš (q)', 0, 10, 0.5, 2]],
+  steps: [['Málo', { q: 2 }, 'Při q = 2 je mezní přínos další jednotky (8) vyšší než mezní náklad (2,6). Přidat se vyplatí.'], ['Optimum', { q: 5 }, 'Při q = 5 se mezní přínos rovná meznímu nákladu. Celkový čistý přínos (zelená plocha) je největší.'], ['Moc', { q: 8 }, 'Za q = 5 stojí každá další jednotka víc, než přinese. Červená plocha čistý přínos zmenšuje.']],
+  draw(v) {
+    const g = plane(10, 12), MB = q => 10 - q, MC = q => 1 + 0.8 * q, q = v.q, opt = 5;
+    const ptsG = [], ptsR = [];
+    for (let i = 0; i <= 40; i++) { const x = Math.min(q, opt) * i / 40; ptsG.push([x, MB(x)]); }
+    for (let i = 40; i >= 0; i--) { const x = Math.min(q, opt) * i / 40; ptsG.push([x, MC(x)]); }
+    if (q > opt) { for (let i = 0; i <= 30; i++) { const x = opt + (q - opt) * i / 30; ptsR.push([x, MC(x)]); } for (let i = 30; i >= 0; i--) { const x = opt + (q - opt) * i / 30; ptsR.push([x, MB(x)]); } }
+    const NB = x => 9 * x - 0.9 * x * x, nb = q <= opt ? NB(q) : NB(opt) - 0.9 * (q - opt) ** 2;
+    return svgWrap(g.axes('množství q', 'Kč', [2, 4, 5, 6, 8, 10], [2, 4, 6, 8, 10]) + (q > 0 ? g.poly(ptsG, 'a-ps') : '') + (ptsR.length ? g.poly(ptsR, 'a-dwl') : '')
+      + g.cur(g.P([[0, 10], [10, 0]]), 'D') + g.cur(g.P([[0, 1], [10, 9]]), 'S') + g.lab(9.6, MB(9.6), 'mezní přínos MB', 'D', 'end', 0, -12) + g.lab(9.6, MC(9.6), 'mezní náklad MC', 'S', 'end', 0, -12)
+      + g.dot(opt, 5, 'dt o') + g.lab(opt, 5, 'MB = MC', 'K', 'start', 10, 22) + (q > 0 ? g.line(q, 0, q, 11.5, 'reg') + g.lab(q, 11.5, 'q = ' + n1(q), 'K', 'middle', 0, -4) : ''))
+      + leg([['a-ps', 'čistý přínos (MB > MC)'], ['a-dwl', 'ztráta z přehnání (MC > MB)']])
+      + stat(`Při q = <b>${n1(q)}</b>: další jednotka přinese ${n1(MB(q))} a stojí ${n1(MC(q))} → ${q < opt ? '<b>ještě přidat</b>' : q > opt ? '<b>ubrat</b>' : '<b>tady přestat</b>'}. Celkový čistý přínos = <b>${n1(nb)}</b> (maximum 22,5 při q = 5).`);
+  } };
+
+/* ===== 2. přednáška ===== */
+FIGDEF.circ = { opt: [['st', 'Model', [[0, 'Čistě tržní ekonomika'], [1, 'Smíšená ekonomika (se státem)']], 0]],
+  draw(v) {
+    const box = (x, y, w, h, t, s, cls = '') => `<rect class="cbox ${cls}" x="${x}" y="${y}" width="${w}" height="${h}" rx="14"/><text class="cbt" x="${x + w / 2}" y="${y + h / 2 - (s ? 4 : -5)}" text-anchor="middle">${t}</text>${s ? `<text class="cbs" x="${x + w / 2}" y="${y + h / 2 + 16}" text-anchor="middle">${s}</text>` : ''}`;
+    const flow = (d, cls, dur) => `<path class="cfl ${cls}" d="${d}"/>${reduceMotion() ? '' : [0, 1, 2].map(i => `<circle class="cdot ${cls}" r="4.5"><animateMotion dur="${dur}s" begin="${-i * dur / 3}s" repeatCount="indefinite" path="${d}"/></circle>`).join('')}`;
+    const R = ['M510 160 V52 H402', 'M198 52 H90 V160', 'M90 240 V348 H198', 'M402 348 H510 V240'], Mn = ['M130 160 V72 H198', 'M402 72 H470 V160', 'M470 240 V328 H402', 'M198 328 H130 V240'];
+    const t = (x, y, s, a = 'middle') => `<text class="cft" x="${x}" y="${y}" text-anchor="${a}">${s}</text>`;
+    let s = box(200, 22, 200, 60, 'Trh zboží a služeb', 'firmy prodávají, domácnosti kupují') + box(200, 318, 200, 60, 'Trh výrobních faktorů', 'domácnosti prodávají, firmy kupují')
+      + box(14, 160, 152, 80, 'Domácnosti', 'kupují statky, vlastní faktory', 'hh') + box(434, 160, 152, 80, 'Firmy', 'vyrábějí, najímají faktory', 'fi')
+      + R.map(d => flow(d, 'real', 7)).join('') + Mn.map(d => flow(d, 'money', 7)).join('')
+      + t(300, 16, 'zboží a služby →  (tok statků)') + t(300, 104, '← výdaje = příjem firem (tok peněz)') + t(300, 300, 'mzda, renta, zisk → důchod domácností') + t(300, 396, '← práce, půda, kapitál');
+    if (+v.st) s += box(236, 172, 128, 56, 'Stát', 'daně · transfery', 'st')
+      + `<path class="cfl gov" d="M166 186 H234"/><path class="cfl gov" d="M234 214 H166"/><path class="cfl gov" d="M434 186 H366"/><path class="cfl gov" d="M366 214 H434"/>`
+      + `<text class="cft" x="200" y="180" text-anchor="middle">daně</text><text class="cft" x="200" y="232" text-anchor="middle">transfery</text><text class="cft" x="400" y="180" text-anchor="middle">daně</text><text class="cft" x="400" y="232" text-anchor="middle">veřejné statky</text>`;
+    return svgWrap(s, 600, 404, 'Ekonomický koloběh') + leg([['l-real', 'tok statků a výrobních faktorů'], ['l-money', 'tok peněz (opačným směrem)']])
+      + stat(+v.st ? 'Stát vybírá od domácností i firem <b>daně</b> a vrací <b>transfery</b> (důchody, dávky) a <b>veřejné statky</b> (silnice, obrana). Model je statický: nezachycuje toky do zahraničí ani boj o monopol (Schumpeter).' : 'Dva trhy, dva toky. <b>Statky a faktory</b> tečou jedním směrem, <b>peníze</b> opačným. Co domácnost utratí, je příjem firmy; co firma zaplatí za faktory, je důchod domácnosti.');
+  } };
+
+FIGDEF.ppf = { ctl: [['pos', 'Kde na PPF vyrábíš (podíl statku X)', 0.05, 0.9, 0.01, 0.35], ['res', 'Množství zdrojů', 0.75, 1.3, 0.05, 1], ['tech', 'Technologie jen ve výrobě X', 1, 1.5, 0.05, 1]],
+  steps: [['Tři typy bodů', { pos: 0.35, res: 1, tech: 1 }, 'A leží na hranici: vyrábí se efektivně. B je uvnitř: část zdrojů se nevyužívá (nezaměstnanost). C je mimo: s danými zdroji ho nedosáhneš.'],
+    ['Pohyb po křivce', { pos: 0.75 }, 'Realokace zdrojů: víc X, ale méně Y. Všimni si, že každá další jednotka X teď stojí víc Y (trojúhelník je vyšší): rostoucí náklady příležitosti.'],
+    ['Posun ven', { pos: 0.5, res: 1.25 }, 'Víc zdrojů (práce, kapitál) nebo lepší technologie v obou odvětvích: celá PPF se posune ven. To je ekonomický růst (expanze).'],
+    ['Pootočení', { res: 1, tech: 1.45 }, 'Lepší technologie jen ve výrobě X: průsečík s osou X se posune ven, průsečík s osou Y zůstane. PPF se pootočí.']],
+  draw(v) {
+    const g = plane(16, 15), X = 10 * v.res * v.tech, Y = 10 * v.res, f = x => Y * Math.sqrt(Math.max(0, 1 - (x / X) ** 2));
+    const x = v.pos * X, y = f(x), x2 = Math.min(X, x + 1), y2 = f(x2), oc = y - y2;
+    const moved = Math.abs(v.res - 1) > 1e-3 || Math.abs(v.tech - 1) > 1e-3;
+    return svgWrap(g.axes('statek X', 'statek Y', [5, 10, 15], [5, 10, 15]) + (moved ? g.cur(g.fn(x => 10 * Math.sqrt(Math.max(0, 1 - (x / 10) ** 2)), 0, 10), 'K', true) : '')
+      + `<path class="a-cs" d="${g.fn(f, 0, X, 120)} L${g.sx(X)} ${g.sy(0)} L${g.sx(0)} ${g.sy(0)} Z"/>` + g.cur(g.fn(f, 0, X, 140), 'D') + g.lab(X * 0.86, f(X * 0.86), 'PPF', 'D', 'start', 8, -6)
+      + g.line(x, y, x2, y, 'tri') + g.line(x2, y, x2, y2, 'tri2') + g.lab(x2, (y + y2) / 2, 'OC = ' + n2(oc), 'R', 'start', 6, 4) + g.lab((x + x2) / 2, y, '+1 X', 'K', 'middle', 0, -8)
+      + g.dot(x, y) + g.lab(x, y, 'A', 'K', 'end', -8, -6) + g.dot(4, 4, 'dt o') + g.lab(4, 4, 'B uvnitř', 'K', 'start', 9, 5) + g.dot(13, 12.5, 'dt x') + g.lab(13, 12.5, 'C mimo', 'R', 'start', 9, 5))
+      + leg([['a-cs', 'množina produkčních možností'], ['l-tri', 'náklad příležitosti další jednotky X']])
+      + stat(`V bodě A se vyrábí <b>${n1(x)}</b> X a <b>${n1(y)}</b> Y. Další jednotka X stojí <b>${n2(oc)}</b> jednotek Y. ${v.res > 1.001 ? 'Zdrojů je víc: PPF je dál od počátku.' : v.res < 0.999 ? 'Zdrojů je méně: PPF se posunula k počátku.' : ''} ${v.tech > 1.001 ? 'Technologie ve výrobě X PPF pootočila.' : ''}`);
+  } };
+
+FIGDEF.ppfshape = { opt: [['s', 'Tvar PPF', [['c', 'Konkávní (rostoucí OC)'], ['l', 'Přímka (konstantní OC)'], ['v', 'Konvexní (klesající OC)']], 'c']], ctl: [['k', 'Kolik králíků uloví', 0, 5, 1, 1]],
+  steps: [['Rostoucí OC', { s: 'c', k: 4 }, 'Bobule klesají o 20, 40, 60, 80, 100: každý další králík stojí víc bobulí. Křivka je vypouklá ven (konkávní).'], ['Konstantní OC', { s: 'l', k: 4 }, 'Každý králík stojí vždy 60 bobulí: PPF je přímka.'], ['Klesající OC', { s: 'v', k: 4 }, 'Úbytek bobulí se zmenšuje (100, 80, 60, …): rostoucí výnosy, křivka je prohnutá k počátku (konvexní).']],
+  draw(v) {
+    const T = { c: [300, 280, 240, 180, 100, 0], l: [300, 240, 180, 120, 60, 0], v: [300, 200, 120, 60, 20, 0] }[v.s], k = Math.round(v.k), g = plane(5.5, 330);
+    let s = g.axes('králíci', 'bobule', [1, 2, 3, 4, 5], [100, 200, 300]) + g.cur(g.P(T.map((y, i) => [i, y])), 'D');
+    for (let i = 0; i < 5; i++) s += g.line(i, T[i], i + 1, T[i], i < k ? 'tri' : 'tri ghost') + g.line(i + 1, T[i], i + 1, T[i + 1], i < k ? 'tri2' : 'tri2 ghost') + g.lab(i + 1, (T[i] + T[i + 1]) / 2, '−' + (T[i] - T[i + 1]), 'R', 'start', 6, 4);
+    s += T.map((y, i) => g.dot(i, y, i === k ? 'dt' : 'dt o', i === k ? 6 : 4)).join('') + g.lab(k, T[k], 'ABCDEF'[k], 'K', 'start', 10, -8);
+    return svgWrap(s) + stat(`Bod ${'ABCDEF'[k]}: ${k} králíků a ${T[k]} bobulí. ${k ? `Králík č. ${k} stál <b>${T[k - 1] - T[k]}</b> bobulí.` : 'Zatím se loví jen bobule.'} Náklady příležitosti jsou ${v.s === 'c' ? '<b>rostoucí</b> (zdroje nejsou pro obě činnosti stejně vhodné)' : v.s === 'l' ? '<b>konstantní</b>' : '<b>klesající</b>'}.`);
+  } };
+
+FIGDEF.trade = { opt: [['t', 'Situace', [[0, 'Bez obchodu'], [1, 'Specializace a směna']], 0]], ctl: [['p', 'Cena 1 stolu v židlích', 0.25, 4, 0.05, 1]],
+  steps: [['Bez obchodu', { t: 0 }, 'Každý vyrábí obojí a spotřebovává jen na své PPF: Červený (15 Ž, 5 S), Modrý (5 Ž, 15 S).'], ['Specializace', { t: 1, p: 1 }, 'Červený vyrábí jen židle (komparativní výhoda), Modrý jen stoly. Vymění 15 židlí za 15 stolů. Oba se dostanou <b>za svou PPF</b>.'], ['Příliš drahý stůl', { t: 1, p: 3.5 }, 'Za cenu nad 3 židle za stůl by Červený platil víc, než kolik stůl stojí jeho vlastní výrobou. Obchod se mu nevyplatí.']],
+  draw(v) {
+    const g = plane(32, 46), t = +v.t, p = v.p, cS = 15 / p, cC = [15, cS], cM = [15, 30 - cS];
+    let s = g.axes('židle Ž', 'stoly S', [10, 15, 20, 30], [10, 20, 30, 40]) + g.cur(g.P([[0, 10], [30, 0]]), 'S') + g.cur(g.P([[0, 30], [10, 0]]), 'D')
+      + g.lab(21, 3.2, 'PPF Červený', 'S', 'start', 4, -6) + g.lab(5, 15, 'PPF Modrý', 'D', 'start', 8, 0);
+    s += g.dot(15, 5, t ? 'dt o' : 'dt') + g.lab(15, 5, 'Č', 'S', 'start', 8, 16) + g.dot(5, 15, t ? 'dt o' : 'dt') + g.lab(5, 15, 'M', 'D', 'end', -8, -4);
+    if (t) { const yC = Math.min(45, cC[1]), yM = Math.max(-2, cM[1]);
+      s += g.dot(30, 0, 'dt x') + g.dot(0, 30, 'dt x') + g.arrow(15, 5, 15, yC, 'arr cS') + g.arrow(5, 15, 15, yM, 'arr cD')
+        + g.dot(15, yC, 'dt') + g.lab(15, yC, `Č′ (15; ${n1(cC[1])})`, 'S', 'start', 10, 0) + g.dot(15, yM, 'dt') + g.lab(15, yM, `M′ (15; ${n1(cM[1])})`, 'D', 'start', 10, 16); }
+    const okC = p < 3, okM = p > 1 / 3;
+    return svgWrap(s) + stat(t ? `Červený dá 15 židlí a dostane ${n1(cS)} stolů; Modrý dá ${n1(cS)} stolů a dostane 15 židlí. ${okC && okM ? '<b>Oba si polepší</b>: cena leží mezi náklady příležitosti ⅓ a 3 židle za stůl.' : !okC ? '<b>Červenému se to nevyplatí</b>: stůl ho stojí víc než 3 židle, které by obětoval vlastní výrobou.' : '<b>Modrému se to nevyplatí</b>: dostane za stůl méně než ⅓ židle.'}` : 'Červený: 30 Ž, nebo 10 S (OC stolu = 3 Ž). Modrý: 10 Ž, nebo 30 S (OC stolu = ⅓ Ž). Komparativní výhodu ve stolech má Modrý, v židlích Červený.');
+  } };
+
+/* ===== 3. přednáška ===== */
+FIGDEF.sd = { ctl: [['dd', 'Posun poptávky', -30, 30, 2, 0], ['ds', 'Posun nabídky', -30, 30, 2, 0]],
+  steps: [['Rovnováha', { dd: 0, ds: 0 }, 'Poptávka a nabídka se protínají v bodě E₀: p* = 22,5, q* = 55. Tam se poptávané a nabízené množství rovná.'], ['Poptávka ↑', { dd: 20, ds: 0 }, 'Vzroste důchod (normální statek) nebo zdraží substitut: poptávka se posune doprava. Cena i množství vzrostou.'], ['Nabídka ↑', { dd: 0, ds: 20 }, 'Lepší technologie nebo levnější vstupy: nabídka se posune doprava. Cena klesne, množství vzroste.'], ['Nabídka ↓', { dd: 0, ds: -20 }, 'Zdraží vstupy (ropa): nabídka doleva. Cena vzroste, množství klesne.'], ['Obojí ↑', { dd: 20, ds: 20 }, 'Rostou obě křivky: množství určitě vzroste, cena záleží na tom, která se posune víc (tady stejně, takže se nezmění).']],
+  draw(v) {
+    const g = plane(140, 60), D = (p, d) => 100 + d - 2 * p, S = (p, s) => 10 + s + 2 * p, p1 = (90 + v.dd - v.ds) / 4, q1 = D(p1, v.dd);
+    const dP = d => g.P([[D(0, d), 0], [0, (100 + d) / 2]]), sP = s => g.P([[Math.max(0, 10 + s), Math.max(0, -(10 + s) / 2)], [S(58, s), 58]]);
+    const moved = Math.abs(v.dd) > .5 || Math.abs(v.ds) > .5;
+    let s = g.axes('množství Q', 'cena p', [20, 55, 100], [10, 22.5, 40]);
+    if (moved) s += g.cur(dP(0), 'D', true) + g.cur(sP(0), 'S', true) + g.dot(55, 22.5, 'dt o') + g.lab(55, 22.5, 'E₀', 'K', 'end', -8, -8);
+    if (Math.abs(v.dd) > .5) s += g.arrow(D(40, 0), 40, D(40, v.dd), 40, 'arr cD');
+    if (Math.abs(v.ds) > .5) s += g.arrow(S(10, 0), 10, S(10, v.ds), 10, 'arr cS');
+    s += g.cur(dP(v.dd), 'D') + g.cur(sP(v.ds), 'S') + g.guide(q1, p1) + g.dot(q1, p1) + g.lab(q1, p1, moved ? 'E₁' : 'E₀', 'K', 'start', 10, 18)
+      + g.lab(D(6, v.dd), 6, 'D', 'D', 'start', 8, -2) + g.lab(S(52, v.ds), 52, 'S', 'S', 'start', 8, 4);
+    const ar = (a, b) => a > b + .05 ? '↑' : a < b - .05 ? '↓' : 'beze změny';
+    return svgWrap(s) + stat(`Rovnováha: cena p* = <b>${n1(p1)}</b>, množství q* = <b>${n1(q1)}</b>.${moved ? ` Oproti E₀ (22,5; 55): cena <b>${ar(p1, 22.5)}</b>, množství <b>${ar(q1, 55)}</b>.` : ''}`);
+  } };
+
+FIGDEF.excess = { ctl: [['p', 'Cena na trhu', 4, 42, 0.5, 34]],
+  steps: [['Cena moc vysoko', { p: 34 }, 'Při ceně 34 chtějí výrobci prodat 78, ale kupující koupí jen 32. Převis nabídky: výrobci se podbízejí a cena klesá.'], ['Cena moc nízko', { p: 10 }, 'Při ceně 10 chtějí kupující 80, ale nabízí se jen 30. Převis poptávky: kupující přeplácejí a cena roste.'], ['Rovnováha', { p: 22.5 }, 'Při p* = 22,5 se poptávané a nabízené množství rovná (55). Nikdo nemá důvod cenu měnit.']],
+  draw(v) {
+    const g = plane(130, 50), p = v.p, qD = 100 - 2 * p, qS = 10 + 2 * p, eq = Math.abs(p - 22.5) < .3;
+    let s = g.axes('množství Q', 'cena p', [qD, qS].filter((x, i, a) => !eq || i === 0).map(x => +x.toFixed(1)), [p]) + g.cur(g.P([[100, 0], [0, 50]]), 'D') + g.cur(g.P([[10, 0], [110, 50]]), 'S')
+      + g.lab(8, 46, 'D', 'D', 'start', 6, 0) + g.lab(104, 47, 'S', 'S', 'end', -8, 0) + g.dot(55, 22.5, 'dt o');
+    if (!eq) s += `<path class="${p > 22.5 ? 'a-surp' : 'a-short'}" d="${g.P([[Math.min(qD, qS), p - .9], [Math.max(qD, qS), p - .9], [Math.max(qD, qS), p + .9], [Math.min(qD, qS), p + .9]])} Z"/>`
+      + g.lab((qD + qS) / 2, p, p > 22.5 ? `převis nabídky ${n1(qS - qD)}` : `převis poptávky ${n1(qD - qS)}`, p > 22.5 ? 'G' : 'R', 'middle', 0, -12) + g.arrow(4, p, 4, p + (p > 22.5 ? -7 : 7), 'arr cK');
+    s += g.line(0, p, 130, p, 'reg') + g.dot(qD, p, 'dt') + g.dot(qS, p, 'dt') + g.lab(qD, p, 'q_D', 'D', 'middle', 0, 24) + g.lab(qS, p, 'q_S', 'S', 'middle', 0, 24);
+    return svgWrap(s) + stat(eq ? 'Rovnováha: q_D = q_S = 55. Trh se vyčistil.'.replace(/_D|_S/g, m => m === '_D' ? '<sub>D</sub>' : '<sub>S</sub>') : `Při ceně ${n1(p)} se poptává ${n1(qD)} a nabízí ${n1(qS)}. ${p > 22.5 ? '<b>Přebytek zboží</b> → cena klesá.' : '<b>Nedostatek zboží</b> → cena roste.'}`);
+  } };
+
+FIGDEF.mktsum = { ctl: [['p', 'Cena', 0.5, 7, 0.5, 3]],
+  steps: [['p = 1', { p: 1 }, 'Spotřebitel 1 chce 2 kusy, spotřebitel 2 osm. Trh: 2 + 8 = 10.'], ['p = 3', { p: 3 }, 'Spotřebitel 1 chce 1, spotřebitel 2 pět. Trh: 6.'], ['p = 5', { p: 5 }, 'Spotřebitel 1 už nekoupí nic, spotřebitel 2 dva kusy. Trh: 2. Proto má tržní poptávka zlom.']],
+  draw(v) {
+    const Q1 = p => Math.max(0, (5 - p) / 2), Q2 = p => Math.max(0, 9.5 - 1.5 * p), p = v.p, W = 200, o = { w: W, h: 320, m: { l: 40, r: 14, t: 20, b: 46 } };
+    const pan = (k, xm, f, t, c) => { const g = plane(xm, 9, { ...o, ox: k * W }); const pts = []; for (let i = 0; i <= 60; i++) { const pp = 9 * i / 60; pts.push([f(pp), pp]); }
+      const q = f(p); return g.axes('Q', 'p', [xm / 2, xm], k ? [] : [1, 3, 5, 7]) + g.cur(g.P(pts), c) + g.line(0, p, xm, p, 'reg') + g.dot(q, p) + g.lab(q, p, n1(q), 'K', 'start', 7, -8) + `<text class="ptit" x="${k * W + W / 2 + 12}" y="14" text-anchor="middle">${t}</text>`; };
+    return svgWrap(pan(0, 4, Q1, 'spotřebitel 1', 'D') + pan(1, 10, Q2, 'spotřebitel 2', 'D') + pan(2, 12, x => Q1(x) + Q2(x), 'trh = součet', 'M') + `<text class="bigop" x="200" y="170" text-anchor="middle">+</text><text class="bigop" x="400" y="170" text-anchor="middle">=</text>`, 600, 320)
+      + stat(`Při ceně ${n1(p)}: ${n1(Q1(p))} + ${n1(Q2(p))} = <b>${n1(Q1(p) + Q2(p))}</b>. Tržní poptávka je <b>vodorovný součet</b>: při každé ceně se sečtou množství.`);
+  } };
+
+FIGDEF.elast = { ctl: [['p', 'Cena', 1, 9, 0.25, 7]],
+  steps: [['Elastická část', { p: 8 }, 'Nahoře je |ε| > 1: zlevnění o 1 % zvýší množství o víc než 1 %, takže tržby vzrostou.'], ['Jednotková', { p: 5 }, 'Uprostřed je |ε| = 1 a tržby jsou největší (25).'], ['Neelastická část', { p: 2 }, 'Dole je |ε| < 1: další zlevnění tržby sníží. Firma by tu raději zdražila.']],
+  draw(v) {
+    const g = plane(10.5, 10.5, { h: 330 }), q = 10 - v.p, e = v.p / q, rev = v.p * q, h = plane(10.5, 27, { h: 220, m: { l: 58, r: 28, t: 16, b: 44 } });
+    const top = svgWrap(g.axes('Q', 'p', [5, 10], [5, 10]) + g.poly([[0, 10], [0, 5], [5, 5]], 'a-el') + g.poly([[5, 5], [10, 0], [5, 0]], 'a-in')
+      + `<path class="a-rev" d="${g.P([[0, 0], [0, v.p], [q, v.p], [q, 0]])} Z"/>` + g.cur(g.P([[0, 10], [10, 0]]), 'D') + g.lab(1.3, 7.4, '|ε| > 1 elastická', 'D') + g.lab(5, 5, '|ε| = 1', 'K', 'start', 12, -6) + g.lab(6.6, 1.4, '|ε| < 1 neelastická', 'S')
+      + g.guide(q, v.p) + g.dot(q, v.p) + g.lab(q / 2, v.p / 2, 'tržby ' + n1(rev), 'G', 'middle', 0, 5), FW, 330);
+    const bot = svgWrap(h.axes('Q', 'tržby TR', [5, 10], [25]) + h.cur(h.fn(x => x * (10 - x), 0, 10), 'G') + h.lab(8.8, 8.8 * 1.2, 'TR = p·Q', 'G', 'start', 6, 0) + h.line(q, 0, q, rev) + h.dot(q, rev), FW, 220);
+    return top + bot + stat(`Poptávka Q = 10 − p. Při p = ${num(v.p, 2)}: |ε| = p/Q = <b>${n2(e)}</b> → ${e > 1.02 ? '<b>elastická</b>: zlevnění tržby zvýší' : e < 0.98 ? '<b>neelastická</b>: zlevnění tržby sníží' : '<b>jednotková</b>: tržby jsou maximální'}. Tržby p·Q = <b>${n1(rev)}</b>.`);
+  } };
+
+FIGDEF.etypes = { opt: [['m', 'Typ poptávky', [[0, 'dokonale neelastická'], [0.5, 'neelastická'], [1, 'jednotková'], [2, 'elastická'], [9, 'dokonale elastická']], 1]], ctl: [['p', 'Nová cena (původně 2)', 1, 3.5, 0.05, 3]],
+  draw(v) {
+    const m = +v.m, g = plane(9, 4.2), k = 4 * 2 ** m, Q = p => m === 9 ? NaN : k / p ** m, p = m === 9 ? 2 : v.p, q0 = 4, q1 = m === 9 ? 4 : Q(p), r0 = 8, r1 = p * q1;
+    let s = g.axes('Q', 'p', [4], [2]);
+    s += m === 9 ? g.cur(g.P([[0, 2], [9, 2]]), 'D') : m === 0 ? g.cur(g.P([[4, 0], [4, 4.2]]), 'D') : g.cur(g.P(Array.from({ length: 80 }, (_, i) => { const pp = 0.4 + 3.8 * i / 79; return [Math.min(9.5, Q(pp)), pp]; })), 'D');
+    s += `<path class="a-rev old" d="${g.P([[0, 0], [0, 2], [4, 2], [4, 0]])} Z"/>` + (m === 9 ? '' : `<path class="a-rev" d="${g.P([[0, 0], [0, p], [Math.min(9, q1), p], [Math.min(9, q1), 0]])} Z"/>` + g.dot(Math.min(9, q1), p)) + g.dot(4, 2, 'dt o');
+    const ch = r1 - r0, txt = { 0: 'Množství se vůbec nezmění (inzulin, sůl). Zdražení zvýší tržby o celou změnu ceny.', 0.5: 'Množství reaguje méně než cena. Při zdražení tržby <b>rostou</b>.', 1: 'Procentní změna množství se rovná procentní změně ceny: Q = k/p. Tržby se <b>nemění</b>.', 2: 'Množství reaguje víc než cena. Při zdražení tržby <b>klesají</b>.', 9: 'Za cenu 2 se prodá libovolné množství, za vyšší nic. Tak vidí poptávku firma v dokonalé konkurenci.' }[m];
+    return svgWrap(s) + leg([['a-rev', 'tržby po změně ceny'], ['a-rev-old', 'tržby předtím (2 · 4 = 8)']]) + stat(`${txt}${m !== 9 ? ` Cena ${n2(p)} → množství ${n2(q1)}, tržby ${n2(r1)} (${ch >= 0 ? '+' : ''}${n2(ch)}).` : ''}`);
+  } };
+
+/* ===== 4. přednáška ===== */
+FIGDEF.surplus = { ctl: [['q', 'Prodané množství', 5, 70, 1, 40]],
+  steps: [['Rovnováha', { q: 40 }, 'Při q* = 40 je součet přebytků (modrá + zelená) největší možný. Tržní rovnováha je efektivní: MU = p = MC.'], ['Málo', { q: 25 }, 'Prodá se jen 25 (například kvůli kvótě): obchody mezi 25 a 40, na kterých by obě strany vydělaly, se neuskuteční. Červený trojúhelník je ztráta mrtvé váhy.'], ['Moc', { q: 55 }, 'Vyrábí se 55: posledních 15 kusů stojí víc (MC), než kolik mají pro kupující hodnotu (MU). Také ztráta.']],
+  draw(v) {
+    const g = plane(100, 110), q = v.q, qe = 40, pe = 60, Dp = x => 100 - x, Sp = x => 20 + x;
+    let s = g.axes('Q', 'p, MU, MC', [q, qe].filter((x, i) => i === 0 || Math.abs(q - qe) > 3), [20, 60, 100]);
+    const qq = Math.min(q, qe);
+    s += g.poly([[0, 100], [0, pe], [qq, pe], [qq, Dp(qq)]], 'a-cs') + g.poly([[0, 20], [0, pe], [qq, pe], [qq, Sp(qq)]], 'a-ps');
+    if (q < qe) s += g.poly([[q, Dp(q)], [qe, pe], [q, Sp(q)]], 'a-dwl'); else if (q > qe) s += g.poly([[qe, pe], [q, Sp(q)], [q, Dp(q)]], 'a-dwl');
+    s += g.cur(g.P([[0, 100], [100, 0]]), 'D') + g.cur(g.P([[0, 20], [85, 105]]), 'S') + g.lab(90, 10, 'D = MU', 'D', 'end', 0, -10) + g.lab(80, 100, 'S = MC', 'S', 'end', -8, 0)
+      + g.dot(qe, pe, 'dt o') + g.line(q, 0, q, 108, 'reg') + g.lab(20, 72, 'přebytek spotřebitele', 'D', 'middle') + g.lab(20, 46, 'přebytek výrobce', 'G', 'middle');
+    const cs = q <= qe ? 0.5 * qq * (100 - pe) + 0 : 0, tot = q <= qe ? 0.5 * q * (80 + (Dp(q) - Sp(q))) : 1600 - 0.5 * (q - qe) * (Sp(q) - Dp(q)), dwl = 1600 - tot;
+    return svgWrap(s) + leg([['a-cs', 'přebytek spotřebitele'], ['a-ps', 'přebytek výrobce'], ['a-dwl', 'ztráta mrtvé váhy']])
+      + stat(`Celkový přebytek = <b>${n0(tot)}</b> z maximálních 1 600${dwl > 0.5 ? `, ztráta mrtvé váhy <b>${n0(dwl)}</b>` : ' (maximum)'}. ${q === qe ? 'Každý kupující, jehož ochota platit převyšuje náklady výroby, nakoupil.' : ''}`);
+  } };
+
+FIGDEF.tax = { opt: [['who', 'Komu je daň uložena', [['s', 'prodávajícím'], ['d', 'kupujícím']], 's']], ctl: [['t', 'Daň na jednotku t', 0, 60, 1, 20], ['a', 'Sklon poptávky (vyšší = méně elastická)', 0.3, 4, 0.1, 1], ['k', 'Sklon nabídky (vyšší = méně elastická)', 0.3, 4, 0.1, 1]],
+  steps: [['Bez daně', { t: 0, a: 1, k: 1 }, 'Rovnováha při p* = 60 a q* = 40.'], ['Daň 20', { t: 20 }, 'Daň vrazí mezi cenu kupujícího a prodávajícího klín 20. Kupující platí 70, prodávající dostane 50, prodá se jen 30.'], ['Nepružná poptávka', { a: 3.5, k: 1 }, 'Kupující nemají kam uhnout (léky): skoro celou daň zaplatí oni, cena pro ně stoupne skoro o 20.'], ['Nepružná nabídka', { a: 1, k: 3.5 }, 'Teď nemohou uhnout prodávající (rybí trh): většinu daně nesou oni.'], ['Uložena kupujícím', { who: 'd', a: 1, k: 1 }, 'Když daň platí kupující, posune se dolů poptávka místo nahoru nabídky. Výsledné ceny a množství jsou <b>stejné</b>.']],
+  draw(v) {
+    const a = v.a, k = v.k, t = v.t, qe = 80 / (a + k), pe = 100 - a * qe, qt = Math.max(0, (80 - t) / (a + k)), pD = 100 - a * qt, pS = 20 + k * qt;
+    const X = Math.min(120, Math.max(60, 1.5 * qe)), g = plane(X, 110), Dp = q => 100 - a * q, Sp = q => 20 + k * q;
+    const cs = 0.5 * qt * (100 - pD), ps = 0.5 * qt * (pS - 20), rev = t * qt, dwl = 0.5 * (qe - qt) * (pD - pS);
+    let s = g.axes('Q', 'p', [+qt.toFixed(1), +qe.toFixed(1)].filter((x, i) => i || t > 0), t ? [+pS.toFixed(1), +pD.toFixed(1)] : [+pe.toFixed(1)]);
+    s += g.clip(g.poly([[0, 100], [0, pD], [qt, pD]], 'a-cs') + g.poly([[0, 20], [0, pS], [qt, pS]], 'a-ps') + g.poly([[0, pS], [0, pD], [qt, pD], [qt, pS]], 'a-tax') + g.poly([[qt, pD], [qe, pe], [qt, pS]], 'a-dwl')
+      + g.cur(g.fn(Dp, 0, X), 'D') + g.cur(g.fn(Sp, 0, X), 'S')
+      + (t ? (v.who === 's' ? g.cur(g.fn(q => Sp(q) + t, 0, X), 'S', true) : g.cur(g.fn(q => Dp(q) - t, 0, X), 'D', true)) : ''));
+    const xs = Math.min(X * .9, 85 / k), xd = Math.min(X * .92, 92 / a);
+    s += g.lab(xd, Dp(xd), 'D', 'D', 'start', 8, -6) + g.lab(xs, Sp(xs), 'S', 'S', 'end', -8, 0) + g.dot(qe, pe, 'dt o') + g.lab(qe, pe, 'E₀', 'K', 'start', 8, 4)
+      + (t ? g.lab(xs * .82, Sp(xs * .82) + (v.who === 's' ? t : 0), v.who === 's' ? 'S + t' : '', 'S', 'end', -8, -4) + g.lab(xd * .9, Dp(xd * .9) - (v.who === 'd' ? t : 0), v.who === 'd' ? 'D − t' : '', 'D', 'start', 6, 16)
+        + g.guide(qt, pD) + g.line(0, pS, qt, pS) + g.arrow(qt + X * .02, pS, qt + X * .02, pD, 'arr cK') + g.lab(qt + X * .03, (pS + pD) / 2, 't', 'K', 'start', 6, 5) : '');
+    const shB = t ? (pD - pe) / t : k / (a + k);
+    return svgWrap(s) + leg([['a-cs', 'přebytek spotřebitele'], ['a-ps', 'přebytek výrobce'], ['a-tax', 'výnos daně'], ['a-dwl', 'ztráta mrtvé váhy']])
+      + stat(t ? `Kupující platí <b>${n1(pD)}</b>, prodávající dostane <b>${n1(pS)}</b>, prodá se <b>${n1(qt)}</b> místo ${n1(qe)}. Kupující nesou <b>${pct(100 * shB, 0)}</b> daně, prodávající ${pct(100 - 100 * shB, 0)}. Výnos daně ${n0(rev)}, ztráta mrtvé váhy <b>${n0(dwl)}</b>.` : `Bez daně: p* = ${n1(pe)}, q* = ${n1(qe)}. Přebytek spotřebitele ${n0(cs)}, výrobce ${n0(ps)}.`);
+  } };
+
+FIGDEF.ceil = { ctl: [['p', 'Regulovaná cena', 25, 95, 1, 45]],
+  steps: [['Strop, který váže', { p: 45 }, 'Cenový strop 45 pod rovnovážnou cenou 60: kupující chtějí 55, výrobci nabídnou jen 25. Nedostatek 30 (fronty, černý trh).'], ['Strop, který neváže', { p: 75 }, 'Kdyby šlo o strop 75 nad rovnováhou, trh by dál fungoval při 60. Tady to ale čti jako minimální cenu 75: výrobci nabízejí 55, kupující chtějí 25 → přebytek 30.'], ['Rovnovážná cena', { p: 60 }, 'Regulace na úrovni rovnovážné ceny nic nemění.']],
+  draw(v) {
+    const g = plane(100, 110), qD = 100 - v.p, qS = v.p - 20, pe = 60, qe = 40, q = Math.min(qD, qS), binds = Math.abs(v.p - pe) > .5, pd = 100 - q, ps = 20 + q;
+    let s = g.axes('Q', 'p', [+qS.toFixed(0), +qD.toFixed(0)], [pe]) + (binds ? g.poly([[q, pd], [qe, pe], [q, ps]], 'a-dwl') : '');
+    s += g.cur(g.P([[0, 100], [100, 0]]), 'D') + g.cur(g.P([[0, 20], [85, 105]]), 'S') + g.lab(94, 6, 'D', 'D', 'end', 0, -8) + g.lab(80, 100, 'S', 'S', 'end', -8, 0)
+      + g.line(0, v.p, 100, v.p, 'reg') + g.lab(100, v.p, v.p < pe ? 'cenový strop' : v.p > pe ? 'minimální cena' : 'regulace = p*', 'K', 'end', 0, -8) + g.dot(qe, pe, 'dt o');
+    if (binds) s += g.dot(qD, v.p) + g.dot(qS, v.p) + `<path class="${v.p < pe ? 'a-short' : 'a-surp'}" d="${g.P([[Math.min(qD, qS), v.p - 1.2], [Math.max(qD, qS), v.p - 1.2], [Math.max(qD, qS), v.p + 1.2], [Math.min(qD, qS), v.p + 1.2]])} Z"/>`
+      + g.lab((qD + qS) / 2, v.p, v.p < pe ? 'nedostatek ' + n0(qD - qS) : 'přebytek ' + n0(qS - qD), v.p < pe ? 'R' : 'G', 'middle', 0, v.p < pe ? 22 : -12);
+    return svgWrap(s) + leg([['a-dwl', 'ztráta mrtvé váhy']]) + stat(v.p < pe ? `Strop ${v.p} &lt; p* = 60 <b>trh váže</b>: poptává se ${n0(qD)}, nabízí ${n0(qS)}, <b>nedostatek ${n0(qD - qS)}</b>. Prodá se jen ${n0(q)}.` : v.p > pe ? `Minimální cena ${v.p} &gt; p* = 60 <b>trh váže</b>: nabízí se ${n0(qS)}, poptává ${n0(qD)}, <b>přebytek ${n0(qS - qD)}</b>.` : 'Regulace na rovnovážné ceně nic nemění.');
+  } };
+
+FIGDEF.minwage = { ctl: [['w', 'Minimální mzda', 80, 200, 2, 160]],
+  draw(v) {
+    const g = plane(100, 220), wD = L => 200 - 1.6 * L, wS = L => 40 + 1.6 * L, we = 120, Le = 50, Ld = (200 - v.w) / 1.6, Ls = (v.w - 40) / 1.6, binds = v.w > we + .5;
+    let s = g.axes('práce L', 'mzda w', binds ? [+Ld.toFixed(0), +Ls.toFixed(0)] : [Le], [we]) + g.cur(g.P([[0, 200], [100, 40]]), 'D') + g.cur(g.P([[0, 40], [100, 200]]), 'S')
+      + g.lab(96, wD(96), 'poptávka po práci (firmy)', 'D', 'end', 0, -12) + g.lab(96, wS(96), 'nabídka práce (lidé)', 'S', 'end', 0, 20) + g.dot(Le, we, 'dt o');
+    if (binds) s += g.line(0, v.w, 100, v.w, 'reg') + g.dot(Ld, v.w) + g.dot(Ls, v.w) + `<path class="a-surp" d="${g.P([[Ld, v.w - 2.5], [Ls, v.w - 2.5], [Ls, v.w + 2.5], [Ld, v.w + 2.5]])} Z"/>` + g.lab((Ld + Ls) / 2, v.w, 'nezaměstnaní ' + n0(Ls - Ld), 'R', 'middle', 0, -12);
+    return svgWrap(s) + stat(binds ? `Při minimální mzdě ${v.w} chce pracovat ${n0(Ls)} lidí, firmy ale zaměstnají jen ${n0(Ld)}: <b>nezaměstnanost ${n0(Ls - Ld)}</b>. Kdo práci má, vydělá víc.` : `Minimální mzda ${v.w} je pod rovnovážnou mzdou 120: trh neváže, zaměstnáno je 50.`);
+  } };
+
+FIGDEF.laffer = { ctl: [['t', 'Daňová sazba (%)', 0, 100, 1, 25]],
+  draw(v) {
+    const g = plane(100, 110), R = t => 4 * t * (100 - t) / 100, t = v.t, r = R(t), tw = 100 - t;
+    let s = g.axes('daňová sazba %', 'daňový příjem', [0, 50, 100], [100]) + g.cur(g.fn(R, 0, 100, 100), 'M') + g.dot(50, 100, 'dt o') + g.lab(50, 100, 'L (maximum)', 'K', 'middle', 0, -12)
+      + g.guide(t, r) + g.dot(t, r) + (Math.abs(t - 50) > 2 ? g.dot(tw, r, 'dt x') + g.line(t, r, tw, r, 'gd') : '');
+    return svgWrap(s) + stat(`Sazba ${t} % vynese <b>${n0(r)}</b>. ${Math.abs(t - 50) > 2 ? `Stejný příjem by vynesla i sazba <b>${tw} %</b> (červený bod), jen s větší ztrátou mrtvé váhy.` : 'Tady je vrchol: další zvýšení sazby příjmy sníží.'} ${t > 50 ? 'Jsi na pravé straně: <b>snížení</b> sazby by příjmy zvýšilo.' : ''}`);
+  } };
+
+FIGDEF.agri = { ctl: [['s', 'Úroda (nabízené množství)', 24, 40, 0.5, 28]],
+  steps: [['Běžná úroda', { s: 28 }, 'Nabídka zemědělců je skoro pevná (svislá), poptávka po potravinách nepružná.'], ['Rekordní úroda', { s: 38 }, 'Lepší technologie zvýší úrodu, ale cena spadne tak moc, že <b>tržby zemědělců klesnou</b>.']],
+  draw(v) {
+    const g = plane(50, 110), D = q => 120 - 2.5 * q, p = D(v.s), r = p * v.s, p0 = D(28), r0 = p0 * 28;
+    let s = g.axes('Q (úroda)', 'cena p', [28, v.s].filter((x, i) => i === 0 || Math.abs(v.s - 28) > 1.5), [+p.toFixed(0)]) + `<path class="a-rev old" d="${g.P([[0, 0], [0, p0], [28, p0], [28, 0]])} Z"/>` + `<path class="a-rev" d="${g.P([[0, 0], [0, p], [v.s, p], [v.s, 0]])} Z"/>`
+      + g.cur(g.fn(D, 0, 48), 'D') + g.lab(46, D(46), 'D (nepružná)', 'D', 'end', 0, -12) + (Math.abs(v.s - 28) > .3 ? g.cur(g.P([[28, 0], [28, 105]]), 'S', true) : '') + g.cur(g.P([[v.s, 0], [v.s, 105]]), 'S') + g.lab(v.s, 105, 'S', 'S', 'start', 8, 10) + g.dot(v.s, p);
+    return svgWrap(s) + leg([['a-rev', 'tržby zemědělců'], ['a-rev-old', 'tržby při běžné úrodě']]) + stat(`Úroda ${n1(v.s)} → cena ${n1(p)}, tržby <b>${n0(r)}</b> (při běžné úrodě ${n0(r0)}). ${r < r0 - 1 ? 'Víc úrody, <b>méně peněz</b>.' : ''}`);
+  } };
+
+FIGDEF.rent = { ctl: [['b', 'Strmost křivek (vyšší = méně pružné)', 0.4, 3, 0.1, 2]],
+  steps: [['Krátké období', { b: 2 }, 'Krátkodobě nájemníci ani majitelé nemají kam uhnout (strmé křivky). Strop 40 vytvoří nedostatek 20 bytů.'], ['Dlouhé období', { b: 0.5 }, 'Dlouhodobě se nestaví nové byty, staré se neopravují a lidé se stěhují za prací. Křivky jsou pružnější a nedostatek naroste na 80.']],
+  draw(v) {
+    const B = v.b, g = plane(100, 100), D = q => 60 - B * (q - 50), S = q => 60 + B * (q - 50), pm = 40, qD = Math.min(100, 50 + 20 / B), qS = Math.max(0, 50 - 20 / B);
+    let s = g.axes('počet bytů', 'nájemné', [+qS.toFixed(0), +qD.toFixed(0)], [40, 60]) + g.clip(g.cur(g.fn(D, 0, 100), 'D') + g.cur(g.fn(S, 0, 100), 'S'))
+      + g.line(0, pm, 100, pm, 'reg') + g.lab(100, pm, 'strop', 'K', 'end', 0, -8) + g.dot(50, 60, 'dt o') + `<path class="a-short" d="${g.P([[qS, pm - 1.2], [qD, pm - 1.2], [qD, pm + 1.2], [qS, pm + 1.2]])} Z"/>`
+      + g.lab(50, pm, 'nedostatek ' + n0(qD - qS), 'R', 'middle', 0, 24);
+    return svgWrap(s) + stat(`Nedostatek bytů: <b>${n0(qD - qS)}</b>. ${B > 1.2 ? 'Krátké období: křivky jsou strmé, nedostatek je zatím malý.' : 'Dlouhé období: křivky jsou pružnější, nedostatek je velký.'}`);
+  } };
+
+/* ===== 5. přednáška ===== */
+FIGDEF.mu = { ctl: [['q', 'Kolik kusů sníš', 1, 6, 1, 3]],
+  draw(v) {
+    const TU = [0, 40, 70, 85, 95, 100, 100], q = v.q, g = plane(6.6, 110, { h: 260, m: { l: 58, r: 28, t: 16, b: 44 } }), h = plane(6.6, 45, { h: 230, m: { l: 58, r: 28, t: 16, b: 44 } });
+    let a = g.axes('množství', 'celkový užitek TU', [1, 2, 3, 4, 5, 6], [50, 100]) + g.cur(g.P(TU.map((u, i) => [i, u])), 'D') + TU.map((u, i) => g.dot(i, u, i === q ? 'dt' : 'dt o', i === q ? 6 : 4)).join('');
+    let b = h.axes('množství', 'mezní užitek MU', [1, 2, 3, 4, 5, 6], [20, 40]);
+    for (let i = 1; i <= 6; i++) { const mu = TU[i] - TU[i - 1]; b += `<rect class="bar${i <= q ? ' on' : ''}" x="${h.sx(i - .35)}" y="${h.sy(mu)}" width="${h.sx(.7) - h.sx(0)}" height="${h.sy(0) - h.sy(mu)}" rx="4"/>` + h.txt(i, mu, String(mu), 'tk', 'middle', 0, -6); }
+    return svgWrap(a, FW, 260) + svgWrap(b, FW, 230) + stat(`${q}. kus přidá <b>${TU[q] - TU[q - 1]}</b> jednotek užitku, celkem máš <b>${TU[q]}</b>. Každý další kus těší méně: <b>zákon klesajícího mezního užitku</b>. Celkový užitek roste, dokud je MU kladný.`);
+  } };
+
+FIGDEF.ic = { opt: [['typ', 'Preference', [['cd', 'běžné (konvexní)'], ['s', 'dokonalé substituty'], ['c', 'dokonalé komplementy']], 'cd']], ctl: [['x', 'Bod na křivce (x₁)', 2, 18, 0.2, 5]],
+  draw(v) {
+    const g = plane(20, 20), lv = [36, 64, 100];
+    let s = g.axes('x₁', 'x₂', [5, 10, 15], [5, 10, 15]), st;
+    if (v.typ === 'cd') {
+      lv.forEach((U, i) => { s += g.cur(g.fn(x => U / x, U / 20, 20, 120), i === 1 ? 'D' : 'K', i !== 1) + g.lab(19.5, U / 19.5, 'U = ' + Math.sqrt(U), i === 1 ? 'D' : 'K', 'end', 0, -8); });
+      const x = clamp(v.x, 3.3, 19), y = 64 / x, m = y / x;
+      s += g.clip(g.line(x - 4, y + 4 * m, x + 4, y - 4 * m, 'tg')) + g.dot(x, y) + g.lab(x, y, `MRS = ${n2(m)}`, 'R', 'start', 10, -10);
+      st = `Na křivce U = 8 (x₁x₂ = 64) je v bodě (${n1(x)}; ${n1(y)}) MRS = x₂/x₁ = <b>${n2(m)}</b>. Posuň bod doprava: MRS klesá, protože čím víc x₁ máš, tím méně x₂ jsi za další jednotku ochoten dát. Proto je křivka <b>konvexní</b>.`;
+    } else if (v.typ === 's') { [6, 10, 14].forEach((c, i) => { s += g.cur(g.P([[0, c], [c, 0]]), i === 1 ? 'D' : 'K', i !== 1); }); st = 'Dokonalé substituty (stokoruny a tisícikoruny): indiferenční křivky jsou <b>přímky</b>, MRS je konstantní.'; }
+    else { [4, 7, 10].forEach((c, i) => { s += g.cur(g.P([[c, 19], [c, c], [19, c]]), i === 1 ? 'D' : 'K', i !== 1) + g.dot(c, c, 'dt o', 3.5); }); st = 'Dokonalé komplementy (levá a pravá bota): křivky ve tvaru <b>L</b>. Bota navíc bez páru užitek nezvýší.'; }
+    return svgWrap(s) + stat(st + ' Vyšší křivka = vyšší užitek; křivky se nikdy neprotínají.');
+  } };
+
+FIGDEF.budget = { opt: [['tr', 'Stopa', [['n', 'nic'], ['icc', 'důchodová ICC'], ['pcc', 'cenová PCC']], 'n']], ctl: [['Y', 'Důchod Y', 40, 160, 4, 100], ['p1', 'Cena statku 1 (p₂ = 4)', 1, 8, 0.25, 4]],
+  steps: [['Optimum', { Y: 100, p1: 4, tr: 'n' }, 'Rozpočtová přímka se dotýká nejvyšší dosažitelné indiferenční křivky. V bodě dotyku MRS = p₁/p₂.'], ['Důchod ↑', { Y: 148, tr: 'icc' }, 'Vyšší důchod posune přímku rovnoběžně ven. Optima leží na důchodové spotřební křivce ICC.'], ['Cena p₁ ↓', { Y: 100, p1: 2, tr: 'pcc' }, 'Zlevnění statku 1 přímku pootočí kolem průsečíku s osou x₂. Optima leží na cenové spotřební křivce PCC; z ní plyne poptávka po statku 1.']],
+  draw(v) {
+    const g = plane(52, 32), p2 = 4, x1 = v.Y / (2 * v.p1), x2 = v.Y / (2 * p2), U = x1 * x2, moved = Math.abs(v.Y - 100) > .5 || Math.abs(v.p1 - 4) > .01;
+    let s = g.axes('x₁', 'x₂', [12.5, 25, 50], [12.5, 25]);
+    if (v.tr === 'icc') s += g.clip(g.cur(g.P([[0, 0], [52, 52 * v.p1 / p2]]), 'M', true)) + g.lab(Math.min(46, 28 * p2 / v.p1), Math.min(28, 46 * v.p1 / p2), 'ICC', 'M', 'end', -8, -4);
+    if (v.tr === 'pcc') s += g.cur(g.P([[3, x2], [52, x2]]), 'M', true) + g.lab(50, x2, 'PCC', 'M', 'end', 0, -8);
+    if (moved) s += g.cur(g.P([[25, 0], [0, 25]]), 'K', true) + g.dot(12.5, 12.5, 'dt o');
+    s += g.poly([[0, 0], [Math.min(52, v.Y / v.p1), Math.max(0, v.Y / p2 - v.p1 / p2 * Math.min(52, v.Y / v.p1))], [0, v.Y / p2]], 'a-el')
+      + g.cur(g.P([[Math.min(52, v.Y / v.p1), Math.max(0, v.Y / p2 - v.p1 / p2 * Math.min(52, v.Y / v.p1))], [0, v.Y / p2]]), 'S') + g.cur(g.fn(x => U / x, U / 32, 52, 120), 'D')
+      + g.guide(x1, x2) + g.dot(x1, x2) + g.lab(x1, x2, 'E', 'K', 'start', 10, -8) + g.lab(51, U / 51, 'indiferenční křivka', 'D', 'end', 0, -10) + g.lab(Math.min(50, v.Y / v.p1) * .55, v.Y / p2 * .45, 'rozpočet', 'S', 'start', 6, 22);
+    return svgWrap(s) + leg([['a-el', 'dosažitelné koše']]) + stat(`U = √(x₁x₂), p₂ = 4. Optimum: x₁* = <b>${n1(x1)}</b>, x₂* = <b>${n1(x2)}</b>. V dotyku MRS = x₂/x₁ = ${n2(x2 / x1)} = p₁/p₂ = ${n2(v.p1 / p2)}. Na každý statek jde vždy polovina důchodu.`);
+  } };
+
+FIGDEF.engel = { opt: [['g', 'Statek', [['n', 'nezbytný'], ['l', 'luxusní'], ['i', 'podřadný']], 'n']], ctl: [['Y', 'Důchod Y', 10, 100, 1, 40]],
+  draw(v) {
+    const F = { n: Y => 3 * Math.sqrt(Y), l: Y => 0.003 * Y * Y, i: Y => 14 * Math.sin(Math.PI * Y / 130) + 2 }[v.g], g = plane(100, 32), Y = v.Y, x = F(Y), dx = (F(Y + .01) - F(Y - .01)) / .02, e = dx * Y / x;
+    let s = g.axes('důchod Y', 'spotřeba x', [25, 50, 75, 100], [10, 20, 30]) + g.cur(g.fn(F, 1, 100), 'G') + g.lab(98, F(98), 'Engelova křivka', 'G', 'end', 0, -10) + g.guide(Y, x) + g.dot(Y, x);
+    return svgWrap(s) + stat(`Důchodová elasticita YED = <b>${n2(e)}</b> → ${e > 1 ? 'luxusní statek (spotřeba roste rychleji než důchod)' : e > 0 ? 'nezbytný statek (roste pomaleji než důchod)' : 'podřadný statek (s vyšším důchodem ho kupuješ méně)'}. ${v.g === 'i' ? 'Typický průběh: při nízkém důchodu se chová jako normální, od určitého důchodu klesá (MHD, levné těstoviny).' : ''}`);
+  } };
+
+FIGDEF.sie = { opt: [['g', 'Statek x₁', [['n', 'normální'], ['i', 'podřadný'], ['gf', 'Giffenův']], 'n']], hid: { k: 3 },
+  steps: [['E₁ výchozí', { k: 0 }, 'Výchozí optimum E₁: rozpočtová přímka se dotýká indiferenční křivky I.'], ['Cena p₁ klesne', { k: 1 }, 'Zlevnění x₁ pootočí rozpočtovou přímku ven kolem průsečíku s osou x₂.'], ['Substituční efekt', { k: 2 }, 'Pomocná (čárkovaná) přímka má nové relativní ceny, ale dotýká se původní křivky I v E₂. Pohyb E₁ → E₂ je substituční efekt: vždy ve prospěch zlevněného statku.'], ['Důchodový efekt', { k: 3 }, 'Posun E₂ → E₃ na vyšší křivku je důchodový efekt (vzrostl reálný důchod). Celkový efekt E₁ → E₃ = SE + IE.']],
+  draw(v) {
+    const k = Math.floor(v.k + 1e-6), g = plane(42, 42), Y = 40, E1 = [10, 20], E2 = [Math.SQRT2 * 10, Math.SQRT2 * 10], x3 = { n: 20, i: 12, gf: 8 }[v.g], E3 = [x3, 40 - x3];
+    const ic = (P, ratio, c, dashed) => { const C = P[1] * P[0] ** ratio; return g.cur(g.fn(x => C / x ** ratio, 1, 42, 140), c, dashed); };
+    let s = g.axes('x₁', 'x₂', [10, +E2[0].toFixed(1), x3], [20]) + g.clip(ic(E1, 1, 'D') + g.cur(g.P([[20, 0], [0, 40]]), 'S') + (k >= 1 ? g.cur(g.P([[40, 0], [0, 40]]), 'S') : '') + (k >= 2 ? g.cur(g.P([[2 * E2[0], 0], [0, 2 * E2[0]]]), 'K', true) : '') + (k >= 3 ? ic(E3, E3[0] / E3[1], 'M') : ''));
+    s += g.dot(E1[0], E1[1]) + g.lab(E1[0], E1[1], 'E₁', 'K', 'end', -8, -6) + g.lab(38, 200 / 38, 'I', 'D', 'end', 0, -8);
+    if (k >= 2) s += g.dot(E2[0], E2[1]) + g.lab(E2[0], E2[1], 'E₂', 'K', 'start', 8, -8) + g.arrow(E1[0], 1.2, E2[0], 1.2, 'arr cG') + g.lab((E1[0] + E2[0]) / 2, 1.2, 'SE', 'G', 'middle', 0, -8);
+    if (k >= 3) s += g.dot(E3[0], E3[1]) + g.lab(E3[0], E3[1], 'E₃', 'K', 'start', 8, -8) + g.arrow(E2[0], 3.6, E3[0], 3.6, 'arr cM') + g.lab((E2[0] + E3[0]) / 2, 3.6, 'IE', 'M', 'middle', 0, -8) + g.lab(39, (E3[1] * E3[0] ** (E3[0] / E3[1])) / 39 ** (E3[0] / E3[1]), 'I′', 'M', 'end', 0, -8);
+    const se = E2[0] - E1[0], ie = E3[0] - E2[0];
+    return svgWrap(s) + leg([['l-G', 'substituční efekt SE'], ['l-M', 'důchodový efekt IE']]) + stat(k < 3 ? 'Klikni na další krok nebo na ▶ Přehrát.' : `SE = <b>+${n1(se)}</b>, IE = <b>${ie >= 0 ? '+' : ''}${n1(ie)}</b>, celkem <b>${x3 - 10 >= 0 ? '+' : ''}${n1(x3 - 10)}</b>. ${v.g === 'n' ? 'U normálního statku působí oba efekty stejným směrem.' : v.g === 'i' ? 'U podřadného statku jde IE proti SE, ale je slabší: spotřeba přesto vzroste.' : 'U Giffenova statku je opačný IE silnější než SE: po zlevnění se kupuje <b>méně</b>.'}`);
+  } };
+
+/* ===== 6. přednáška ===== */
+FIGDEF.prod = { ctl: [['L', 'Počet pracovníků L', 0.5, 9.5, 0.1, 3]],
+  steps: [['I. stádium', { L: 3 }, 'MP > AP: každý další pracovník zvedne průměr. Vyplatí se přidávat (stroj je zatím nevyužitý).'], ['Max MP', { L: 4 }, 'Při L = 4 je MP největší (inflexní bod TP). Odtud platí zákon klesajícího mezního produktu.'], ['MP = AP', { L: 6 }, 'Při L = 6 protíná MP průměrný produkt v jeho maximu. Začíná II. stádium, racionální oblast výroby.'], ['MP = 0', { L: 8 }, 'Při L = 8 je TP maximální a MP = 0. Další pracovník už nic nepřidá.'], ['III. stádium', { L: 9.2 }, 'MP < 0: lidé si překážejí, celkový produkt klesá. Tady se nevyrábí.']],
+  draw(v) {
+    const TP = L => 6 * L * L - L ** 3 / 2, MP = L => 12 * L - 1.5 * L * L, AP = L => 6 * L - L * L / 2, L = v.L;
+    const g = plane(10, 140, { h: 300 }), h = plane(10, 26, { h: 260, m: { l: 58, r: 28, t: 16, b: 46 } });
+    const st = (p, H) => p.shade(0, 6, 'stg1') + p.shade(6, 8, 'stg2') + p.shade(8, 10, 'stg3') + p.txt(3, p.ymax, 'I. stádium', 'stt', 'middle', 0, 16) + p.txt(7, p.ymax, 'II.', 'stt', 'middle', 0, 16) + p.txt(9, p.ymax, 'III.', 'stt', 'middle', 0, 16);
+    const top = svgWrap(st(g) + g.axes('L', 'celkový produkt TP', [4, 6, 8], [64, 108, 128]) + g.clip(g.cur(g.fn(TP, 0, 9.8, 120), 'D') + g.line(L - 1.6, TP(L) - 1.6 * MP(L), L + 1.6, TP(L) + 1.6 * MP(L), 'tg') + g.line(0, 0, 10, 10 * AP(L), 'ray'))
+      + g.dot(L, TP(L)) + g.lab(9.7, TP(9.7), 'TP', 'D', 'end', 0, -10) + g.lab(L, TP(L), 'tečna: sklon = MP', 'K', 'end', -10, -10), FW, 300);
+    const bot = svgWrap(st(h) + h.axes('L', 'AP, MP', [4, 6, 8], [18, 24]) + h.clip(h.cur(h.fn(AP, 0, 10, 100), 'G') + h.cur(h.fn(MP, 0, 9.6, 100), 'M'))
+      + h.dot(6, AP(6), 'dt o') + h.lab(6, AP(6), 'MP = AP', 'K', 'start', 8, -8) + h.dot(4, MP(4), 'dt o') + h.lab(4, MP(4), 'max MP', 'K', 'middle', 0, -12)
+      + h.lab(9.6, AP(9.6), 'AP', 'G', 'end', 0, -8) + h.lab(8.7, MP(8.7), 'MP', 'M', 'end', -6, 0) + h.line(L, 0, L, 25, 'reg') + h.dot(L, AP(L), 'dt', 4) + h.dot(L, Math.max(0, MP(L)), 'dt', 4), FW, 260);
+    const s = L < 6 ? 'I. stádium (AP roste)' : L <= 8 ? 'II. stádium (AP klesá, MP > 0): racionální výroba' : 'III. stádium (MP < 0)';
+    return top + bot + stat(`TP = 6L² − L³/2. Při L = ${n1(L)}: TP = <b>${n1(TP(L))}</b>, AP = TP/L = <b>${n1(AP(L))}</b>, MP = <b>${n1(MP(L))}</b> → ${s}. Sklon tečny je MP, sklon tenké čáry z počátku je AP.`);
+  } };
+
+FIGDEF.isoq = { opt: [['t', 'Produkční funkce', [['cd', 'Cobb-Douglasova'], ['l', 'lineární'], ['lt', 'Leontiefova']], 'cd']], ctl: [['x', 'Bod na izokvantě (práce L)', 2, 18, 0.2, 6]],
+  draw(v) {
+    const g = plane(20, 20); let s = g.axes('práce L', 'kapitál K', [5, 10, 15], [5, 10, 15]), st;
+    if (v.t === 'cd') { [5, 8, 11].forEach((q, i) => { s += g.cur(g.fn(x => q * q / x, q * q / 20, 20, 120), i === 1 ? 'D' : 'K', i !== 1) + g.lab(19.6, q * q / 19.6, 'q = ' + q, i === 1 ? 'D' : 'K', 'end', 0, -8); });
+      const x = clamp(v.x, 3.3, 19), y = 64 / x, m = y / x; s += g.clip(g.line(x - 4, y + 4 * m, x + 4, y - 4 * m, 'tg')) + g.dot(x, y) + g.lab(x, y, 'MRTS = ' + n2(m), 'R', 'start', 10, -10);
+      st = `q = √(KL). V bodě (${n1(x)}; ${n1(y)}) je MRTS = MP<sub>L</sub>/MP<sub>K</sub> = K/L = <b>${n2(m)}</b>: tolik kapitálu nahradí jeden pracovník. Elasticita substituce σ = 1.`; }
+    else if (v.t === 'l') { [6, 10, 14].forEach((c, i) => { s += g.cur(g.P([[0, c], [2 * c > 20 ? 20 : 2 * c, 2 * c > 20 ? c - 10 : 0]]), i === 1 ? 'D' : 'K', i !== 1); }); st = 'Lineární funkce q = L + 2K: izokvanty jsou přímky, vstupy jsou <b>dokonalé substituty</b> (σ = ∞).'; }
+    else { [4, 7, 10].forEach((c, i) => { s += g.cur(g.P([[c, 19], [c, c], [19, c]]), i === 1 ? 'D' : 'K', i !== 1) + g.dot(c, c, 'dt o', 3.5); }); s += g.cur(g.P([[0, 0], [19, 19]]), 'M', true); st = 'Leontiefova funkce q = min(L, K): pevný poměr vstupů (řidič a autobus), izokvanty ve tvaru L, <b>dokonalé komplementy</b> (σ = 0). Efektivní body leží na paprsku.'; }
+    return svgWrap(s) + stat(st + ' Izokvanta dál od počátku = vyšší výstup.');
+  } };
+
+FIGDEF.rts = { opt: [['h', 'Výnosy z rozsahu', [[0.75, 'rostoucí'], [0.5, 'konstantní'], [0.35, 'klesající']], 0.5]],
+  draw(v) {
+    const h = +v.h, A = 10 / 100 ** h, g = plane(22, 22), lev = [5, 10, 15], Lr = q => 10 * (q / 10) ** (1 / (2 * h));
+    let s = g.axes('práce L', 'kapitál K', lev.map(q => +Lr(q).toFixed(1)), []) + g.cur(g.P([[0, 0], [21, 21]]), 'K', true);
+    lev.forEach((q, i) => { const c = (q / A) ** (1 / h); s += g.clip(g.cur(g.fn(x => c / x, c / 22, 22, 120), 'D', i !== 1)) + g.dot(Lr(q), Lr(q)) + g.lab(Lr(q), Lr(q), 'q = ' + q, 'D', 'start', 10, 14); });
+    const k = 2 ** (2 * h);
+    return svgWrap(s) + stat(`Zdvojnásobení práce i kapitálu zvýší výstup <b>${n2(k)}krát</b> → ${h > 0.5 ? '<b>rostoucí</b> výnosy z rozsahu (izokvanty pro 5, 10, 15 se k sobě přibližují)' : h < 0.5 ? '<b>klesající</b> výnosy z rozsahu (izokvanty se od sebe vzdalují)' : '<b>konstantní</b> výnosy (izokvanty jsou stejně daleko)'}. Jde o dlouhé období, mění se <b>všechny</b> vstupy.`);
+  } };
+
+/* ===== 7. přednáška ===== */
+FIGDEF.isoprofit = { ctl: [['r', 'Reálná mzda w/p', 2, 6, 0.1, 3]],
+  steps: [['Optimum', { r: 3 }, 'Nejvyšší izozisková přímka, která se ještě dotýká produkční funkce. V dotyku p·MP = w.'], ['Dražší práce', { r: 5.5 }, 'Vyšší w/p = strmější izozisky: firma najme méně práce a vyrobí méně.']],
+  draw(v) {
+    const f = x => 20 * Math.sqrt(x), r = v.r, xs = (10 / r) ** 2, qs = f(xs), p0 = qs - r * xs, g = plane(30, 130);
+    let s = g.axes('vstup x (práce)', 'výstup q', [+xs.toFixed(1)], [+qs.toFixed(0)]) + `<path class="a-el" d="${g.fn(f, 0, 30, 100)} L${g.sx(30)} ${g.sy(0)} Z"/>` + g.cur(g.fn(f, 0, 30, 120), 'D') + g.lab(29, f(29), 'q = f(x)', 'D', 'end', 0, 22)
+      + g.clip([-18, 0, 18].map(d => g.line(0, p0 + d, 30, p0 + d + 30 * r, d ? 'iso' : 'iso on')).join('')) + g.guide(xs, qs) + g.dot(xs, qs) + g.lab(xs, qs, 'E', 'K', 'end', -8, -8)
+      + g.arrow(24, 30, 18, 60, 'arr cG') + g.lab(18, 60, 'vyšší zisk', 'G', 'end', -6, -4);
+    return svgWrap(s) + leg([['a-el', 'produkční množina']]) + stat(`Izozisky q = π/p + (w/p)·x mají sklon w/p = ${n1(r)}. Optimum: MP = w/p ⇒ x* = <b>${n1(xs)}</b>, q* = <b>${n1(qs)}</b>, zisk π/p = <b>${n1(p0)}</b> jednotek výstupu.`);
+  } };
+
+FIGDEF.isocost = { ctl: [['w', 'Mzda w (úrok r = 4)', 1, 12, 0.25, 4]],
+  steps: [['Optimum', { w: 4 }, 'Firma chce vyrobit q = 10 co nejlevněji: hledá nejnižší izokostu, která se dotkne izokvanty. V dotyku MRTS = w/r.'], ['Práce zdraží', { w: 11 }, 'Při dražší práci je izokosta strmější: firma nahradí část práce kapitálem.']],
+  draw(v) {
+    const r = 4, w = v.w, L = 10 * Math.sqrt(r / w), K = 10 * Math.sqrt(w / r), C = w * L + r * K, g = plane(30, 30);
+    const ic = c => g.cur(g.P([[0, c / r], [c / w, 0]]), 'S', c !== C);
+    let s = g.axes('práce L', 'kapitál K', [+L.toFixed(1)], [+K.toFixed(1)]) + g.clip(g.cur(g.fn(x => 100 / x, 100 / 30, 30, 120), 'D') + ic(C) + ic(C * .75) + ic(C * 1.3)) + g.guide(L, K) + g.dot(L, K) + g.lab(L, K, 'E', 'K', 'start', 10, -8)
+      + g.lab(28, 100 / 28, 'izokvanta q = 10', 'D', 'end', 0, -10) + g.lab(Math.min(28, C / w) * .2, C / r * .8, 'izokosta C = ' + n0(C), 'S', 'start', 10, 0);
+    return svgWrap(s) + stat(`q = √(KL) = 10. Optimum: MRTS = K/L = w/r ⇒ L* = <b>${n1(L)}</b>, K* = <b>${n1(K)}</b>, minimální náklady <b>${n0(C)}</b>. Platí MP<sub>L</sub>/w = MP<sub>K</sub>/r. Nižší izokosta (čárkovaná) na q = 10 nestačí, vyšší je zbytečně drahá.`);
+  } };
+
+/* ===== 8. přednáška ===== */
+const TCf = q => 50 + 20 * q - 4 * q * q + 0.5 * q ** 3, MCf = q => 20 - 8 * q + 1.5 * q * q, AVCf = q => 20 - 4 * q + 0.5 * q * q, ACf = q => AVCf(q) + 50 / q;
+const QAC = (() => { let b = 0, m = 1e9; for (let q = 1; q < 12; q += 0.0005) if (ACf(q) < m) { m = ACf(q); b = q; } return b; })(), ACMIN = ACf(QAC);
+FIGDEF.tc = { ctl: [['q', 'Výstup q', 1, 9.5, 0.1, 6]],
+  draw(v) {
+    const q = v.q, g = plane(10.3, 380), mc = MCf(q), ac = ACf(q);
+    let s = g.axes('q', 'Kč', [2, 4, 6, 8, 10], [50, 150, 250, 350]) + `<path class="a-ps" d="${g.P([[0, 0], [0, 50], [10.3, 50], [10.3, 0]])} Z"/>` + g.cur(g.P([[0, 50], [10.3, 50]]), 'K') + g.cur(g.fn(x => TCf(x) - 50, 0, 10.3), 'G') + g.cur(g.fn(TCf, 0, 10.3), 'D')
+      + g.clip(g.line(q - 2, TCf(q) - 2 * mc, q + 2, TCf(q) + 2 * mc, 'tg') + g.line(0, 0, 10.3, 10.3 * ac, 'ray'))
+      + g.dot(q, TCf(q)) + g.lab(10, TCf(10), 'TC', 'D', 'end', -8, 0) + g.lab(10, TCf(10) - 50, 'VC', 'G', 'start', 4, 6) + g.lab(10, 50, 'FC = 50', 'K', 'end', 0, -8);
+    return svgWrap(s) + leg([['a-ps', 'fixní náklady (i při q = 0)'], ['l-tg', 'tečna: sklon = MC'], ['l-ray', 'paprsek z počátku: sklon = AC']]) + stat(`TC = 50 + 20q − 4q² + 0,5q³. Při q = ${n1(q)}: TC = <b>${n1(TCf(q))}</b>, MC = <b>${n1(mc)}</b>, AC = <b>${n1(ac)}</b>, AVC = ${n1(AVCf(q))}, AFC = ${n1(50 / q)}. Svislá vzdálenost TC a VC je vždy FC.`);
+  } };
+
+FIGDEF.cost = { ctl: [['p', 'Tržní cena p', 6, 40, 0.2, 30]],
+  steps: [['Zisk', { p: 30 }, 'Cena nad minimem AC: firma vyrábí tam, kde p = MC, a má zisk (zelený obdélník).'], ['Bod vyrovnání', { p: +ACMIN.toFixed(1) }, 'Cena = min AC ≈ 22,2: nulový ekonomický zisk. Dlouhodobě pod touto cenou firma odejde.'], ['Ztráta, ale vyrábí', { p: 16 }, 'Cena mezi min AVC (12) a min AC: ztráta je menší než fixní náklady 50. Krátkodobě se vyplatí vyrábět.'], ['Uzavření', { p: 10 }, 'Cena pod min AVC = 12: tržby nepokryjí ani variabilní náklady. Firma nevyrábí, ztráta = FC = 50.']],
+  draw(v) {
+    const g = plane(11, 45), shut = v.p < 12 - 1e-9, q = shut ? 0 : (8 + Math.sqrt(64 - 6 * (20 - v.p))) / 3, ac = q ? ACf(q) : 0, pi = shut ? -50 : (v.p - ac) * q;
+    const rect = q ? g.poly([[0, ac], [q, ac], [q, v.p], [0, v.p]], pi >= 0 ? 'a-ps' : 'a-dwl') : '';
+    let s = g.axes('q', 'Kč', [4, +QAC.toFixed(1)], [12, +ACMIN.toFixed(1)]) + g.shade(0, 11, 'none') + rect + g.clip(g.cur(g.fn(ACf, 1.3, 11, 100), 'D') + g.cur(g.fn(AVCf, 0.2, 11, 100), 'G') + g.cur(g.fn(MCf, 1.2, 8.6, 100), 'M'))
+      + g.line(0, v.p, 11, v.p, 'reg') + g.lab(11, v.p, 'p = MR', 'K', 'end', 0, -8)
+      + g.dot(4, 12, 'dt o') + g.lab(4, 12, 'B: bod uzavření', 'G', 'middle', 0, 22) + g.dot(QAC, ACMIN, 'dt o') + g.lab(QAC, ACMIN, 'C: bod vyrovnání', 'D', 'start', 10, 18)
+      + g.lab(10.6, ACf(10.6), 'AC', 'D', 'end', -4, -10) + g.lab(10.6, AVCf(10.6), 'AVC', 'G', 'end', -4, 18) + g.lab(8.5, MCf(8.5), 'MC', 'M', 'end', -8, 0) + (q ? g.dot(q, v.p) + g.line(q, 0, q, v.p) : '');
+    return svgWrap(s) + leg([['a-ps', 'zisk'], ['a-dwl', 'ztráta']]) + stat(`${shut ? `Cena ${n1(v.p)} je pod minimem AVC (12): firma <b>nevyrábí</b>, ztráta = FC = 50.` : `Firma vyrábí q = <b>${n2(q)}</b> (p = MC). AC = ${n1(ac)}, zisk π = (p − AC)·q = <b>${n1(pi)}</b>. ${pi >= 0.5 ? 'Vyrábí se ziskem.' : pi > -0.5 ? 'Nulový ekonomický zisk.' : 'Ztráta je menší než FC = 50, krátkodobě se vyplatí vyrábět.'}`} Nabídka firmy = rostoucí část MC nad bodem B.`);
+  } };
+
+FIGDEF.lac = { ctl: [['q', 'Plánovaný výstup', 2, 38, 0.5, 9]],
+  draw(v) {
+    const LAC = q => 20 + 0.05 * (q - 20) ** 2, d = q => 0.1 * (q - 20), Q = [6, 13, 20, 27, 34], SAC = i => q => LAC(Q[i]) + d(Q[i]) * (q - Q[i]) + 0.2 * (q - Q[i]) ** 2;
+    const g = plane(40, 45), best = Q.map((_, i) => SAC(i)(v.q)).reduce((b, c, i, a) => c < a[b] ? i : b, 0);
+    let s = g.axes('výstup q', 'průměrné náklady', [20], [20]) + g.clip(Q.map((qi, i) => g.cur(g.fn(SAC(i), Math.max(0, qi - 9), Math.min(40, qi + 9), 60), i === best ? 'S' : 'K', i !== best)).join('') + g.cur(g.fn(LAC, 0, 40, 100), 'D'));
+    s += g.lab(38, LAC(38), 'LAC', 'D', 'end', 0, -10) + g.lab(Q[best], SAC(best)(Q[best]), 'SAC' + (best + 1), 'S', 'middle', 0, 24) + g.dot(v.q, SAC(best)(v.q)) + g.arrow(4, 41, 15, 41, 'arr cG') + g.lab(4, 41, 'úspory z rozsahu', 'G', 'start', 0, -8) + g.arrow(36, 41, 25, 41, 'arr cR') + g.lab(36, 41, 'nehospodárnost', 'R', 'end', 0, -8);
+    return svgWrap(s) + stat(`Pro výstup ${n1(v.q)} je nejlevnější velikost závodu č. <b>${best + 1}</b> (průměrné náklady ${n1(SAC(best)(v.q))}). Dlouhodobá LAC je <b>dolní obálka</b> krátkodobých SAC: v dlouhém období si firma zvolí velikost závodu. Vlevo od minima LAC klesá (rostoucí výnosy z rozsahu), vpravo roste.`);
+  } };
+
+/* ===== 9. přednáška ===== */
+FIGDEF.pc = { ctl: [['dd', 'Růst poptávky na trhu', 0, 15, 0.5, 0], ['ns', 'Vstup nových firem', 0, 40, 1, 0]],
+  steps: [['Dlouhodobá rovnováha', { dd: 0, ns: 0 }, 'Cena = min AC ≈ 22,2. Firma vyrábí, kde p = MC, a má nulový ekonomický zisk.'], ['Poptávka ↑', { dd: 10, ns: 0 }, 'Na trhu vzroste poptávka, cena stoupne na ≈ 27. Firma (příjemce ceny) zvýší výrobu po své MC a má kladný zisk.'], ['Vstup firem', { dd: 10, ns: 25 }, 'Zisk láká nové firmy, tržní nabídka roste, dokud cena neklesne zpět na min AC. Zisk je opět nulový.']],
+  draw(v) {
+    const D = Q => 50.2 - 0.4 * Q + v.dd, S = Q => -5.8 + 0.4 * (Q - v.ns), Qe = (56 + v.dd + 0.4 * v.ns) / 0.8, P = D(Qe);
+    const a = plane(140, 40, { w: 300, h: 340, m: { l: 50, r: 16, t: 26, b: 46 } }), b = plane(10, 40, { w: 300, h: 340, ox: 300, m: { l: 50, r: 16, t: 26, b: 46 } });
+    const q = (8 + Math.sqrt(Math.max(0, 64 - 6 * (20 - P)))) / 3, ac = ACf(q), pi = (P - ac) * q;
+    let s = `<text class="ptit" x="160" y="16" text-anchor="middle">celý trh</text><text class="ptit" x="460" y="16" text-anchor="middle">jedna firma</text>` + a.axes('Q', 'p', [], [+P.toFixed(1)]) + a.clip(a.cur(a.fn(D, 0, 140), 'D') + a.cur(a.fn(S, 0, 140), 'S') + (v.dd > .2 ? a.cur(a.fn(Q => 50.2 - 0.4 * Q, 0, 140), 'D', true) : '') + (v.ns > .5 ? a.cur(a.fn(Q => -5.8 + 0.4 * Q, 0, 140), 'S', true) : ''))
+      + a.guide(Qe, P) + a.dot(Qe, P) + a.lab(130, D(130), 'D', 'D', 'end', 0, -8) + a.lab(100, S(100), 'S', 'S', 'end', -8, 0);
+    s += b.axes('q', '', [+q.toFixed(1)], []) + (Math.abs(pi) > 0.3 ? b.poly([[0, ac], [q, ac], [q, P], [0, P]], pi > 0 ? 'a-ps' : 'a-dwl') : '') + b.clip(b.cur(b.fn(ACf, 1.5, 10, 80), 'K') + b.cur(b.fn(MCf, 1.2, 8, 80), 'M'))
+      + b.line(0, P, 10, P, 'reg') + b.lab(10, P, 'p = MR', 'K', 'end', 0, -8) + b.dot(q, P) + b.line(q, 0, q, P) + b.lab(9.7, ACf(9.7), 'AC', 'K', 'end', 0, -8) + b.lab(7.7, MCf(7.7), 'MC', 'M', 'end', -6, 0);
+    return svgWrap(s, 600, 340) + stat(`Tržní cena <b>${n1(P)}</b>. Firma vyrábí q = <b>${n1(q)}</b> (p = MC), AC = ${n1(ac)}, zisk <b>${n1(pi)}</b>. ${pi > 0.5 ? 'Kladný zisk přiláká nové firmy (posuň „Vstup nových firem“).' : 'Nulový zisk: nikdo nevstupuje ani neodchází. Dlouhodobě p = min AC.'}`);
+  } };
+
+FIGDEF.mono = { ctl: [['mc', 'Mezní náklady MC (konstantní)', 10, 60, 1, 20]],
+  steps: [['Monopol', { mc: 20 }, 'Monopol najde q, kde MR = MC (40), a cenu odečte z poptávky (60). Zisk je modrošedý obdélník, červený trojúhelník je ztráta mrtvé váhy.'], ['Vyšší MC', { mc: 44 }, 'Vyšší mezní náklady: monopol vyrobí méně a zdraží, ale ne o celé zvýšení MC.']],
+  draw(v) {
+    const g = plane(100, 110), qm = (100 - v.mc) / 2, pm = 100 - qm, qc = 100 - v.mc;
+    let s = g.axes('Q', 'p', [+qm.toFixed(0), +qc.toFixed(0), 50], [+v.mc.toFixed(0), +pm.toFixed(0)]) + g.poly([[0, 100], [0, pm], [qm, pm]], 'a-cs') + g.poly([[0, v.mc], [0, pm], [qm, pm], [qm, v.mc]], 'a-tax') + g.poly([[qm, pm], [qc, v.mc], [qm, v.mc]], 'a-dwl')
+      + g.cur(g.P([[0, 100], [100, 0]]), 'D') + g.cur(g.P([[0, 100], [50, 0]]), 'M') + g.cur(g.P([[0, v.mc], [100, v.mc]]), 'S')
+      + g.guide(qm, pm) + g.line(qm, 0, qm, v.mc) + g.dot(qm, pm) + g.dot(qm, v.mc, 'dt', 4) + g.lab(qm, v.mc, 'MR = MC', 'M', 'start', 8, 20) + g.dot(qc, v.mc, 'dt o') + g.lab(qc, v.mc, 'DK', 'K', 'middle', 0, 22)
+      + g.lab(96, 4, 'D = AR', 'D', 'end', 0, -8) + g.lab(46, 8, 'MR', 'M', 'end', -6, -4) + g.lab(100, v.mc, 'MC', 'S', 'end', 0, -8) + g.lab(40, 82, 'elastická část', 'K', 'start', 0, 0) + g.lab(62, 24, 'neelastická (MR < 0)', 'K', 'start', 0, 0);
+    return svgWrap(s) + leg([['a-cs', 'přebytek spotřebitele'], ['a-tax', 'zisk monopolu'], ['a-dwl', 'ztráta mrtvé váhy']])
+      + stat(`p = 100 − Q, MR = 100 − 2Q. Monopol: MR = MC ⇒ q = <b>${n1(qm)}</b>, p = <b>${n1(pm)}</b>, zisk ${n0((pm - v.mc) * qm)}. Dokonalá konkurence by vyráběla ${n1(qc)} za ${n1(v.mc)}. Ztráta mrtvé váhy <b>${n0(0.5 * (qc - qm) * (pm - v.mc))}</b>, Lernerův index ${n2((pm - v.mc) / pm)}.`);
+  } };
+
+FIGDEF.monocomp = { ctl: [['a', 'Poptávka po produktu firmy', 34.5, 46, 0.1, 42]],
+  steps: [['Krátké období', { a: 42 }, 'Firma s diferencovaným produktem se chová jako malý monopol: MR = MC, cena nad AC, kladný zisk.'], ['Dlouhé období', { a: 34.5 }, 'Zisk láká konkurenty s podobnými produkty. Poptávka po produktu firmy klesá, dokud se nedotkne AC: nulový zisk, ale <b>ne v minimu AC</b> (nevyužitá kapacita).']],
+  draw(v) {
+    const AC = q => 10 + 100 / q + 0.5 * q, MC = q => 10 + q, a = v.a, q = (a - 10) / 3, p = a - q, ac = AC(q), pi = (p - ac) * q, g = plane(26, 50);
+    let s = g.axes('q', 'p', [+q.toFixed(1), 14.1], [+p.toFixed(1)]) + (pi > 0.3 ? g.poly([[0, ac], [q, ac], [q, p], [0, p]], 'a-tax') : '') + g.clip(g.cur(g.fn(x => a - x, 0, 26), 'D') + g.cur(g.fn(x => a - 2 * x, 0, 26), 'M', true) + g.cur(g.fn(AC, 2.5, 26), 'K') + g.cur(g.fn(MC, 0, 26), 'S'))
+      + g.guide(q, p) + g.dot(q, p) + g.dot(Math.sqrt(200), AC(Math.sqrt(200)), 'dt o') + g.lab(Math.sqrt(200), AC(Math.sqrt(200)), 'min AC', 'K', 'start', 8, 20)
+      + g.lab(25, AC(25), 'AC', 'K', 'end', 0, -8) + g.lab(24, MC(24), 'MC', 'S', 'end', -6, 0) + g.lab(a - 4, 4, 'D', 'D', 'start', 6, -8) + g.lab((a - 4) / 2, 4, 'MR', 'M', 'end', -4, -8);
+    return svgWrap(s) + leg([['a-tax', 'zisk']]) + stat(`q = <b>${n1(q)}</b>, p = <b>${n1(p)}</b>, AC = ${n1(ac)} → zisk <b>${n1(pi)}</b>. ${pi > 0.5 ? 'Krátkodobě kladný zisk.' : 'Dlouhodobá rovnováha: AR = AC, nulový zisk, výroba vlevo od minima AC (nadbytečná kapacita).'}`);
+  } };
+
+FIGDEF.domfirm = { ctl: [['mc', 'Mezní náklady dominantní firmy MC_L', 5, 40, 1, 10]],
+  draw(v) {
+    const g = plane(100, 100), qL = (220 / 3 - v.mc) / (4 / 3), pL = 220 / 3 - qL / 1.5, qF = (pL - 20) / 2;
+    let s = g.axes('Q', 'p', [+qF.toFixed(0), +qL.toFixed(0), +(qL + qF).toFixed(0)], [20, +pL.toFixed(0), 73]) + g.cur(g.P([[0, 100], [100, 0]]), 'D') + g.cur(g.P([[0, 20], [40, 100]]), 'S')
+      + g.cur(g.P([[0, 220 / 3], [80, 20], [100, 0]]), 'G') + g.cur(g.P([[0, 220 / 3], [40, 220 / 3 - 160 / 3]]), 'M', true) + g.cur(g.P([[0, v.mc], [100, v.mc]]), 'K')
+      + g.line(0, pL, qL + qF, pL, 'reg') + g.dot(qL, pL) + g.dot(qF, pL) + g.dot(qL + qF, pL, 'dt o') + g.line(qL, v.mc, qL, pL, 'gd') + g.dot(qL, v.mc, 'dt', 4)
+      + g.lab(96, 4, 'D trhu', 'D', 'end', 0, -8) + g.lab(36, 92, 'S_F lem', 'S', 'start', 8, 0) + g.lab(80, 20, 'D_L zbytková', 'G', 'start', 6, -8) + g.lab(38, 220 / 3 - 152 / 3, 'MR_L', 'M', 'start', 6, 0) + g.lab(100, v.mc, 'MC_L', 'K', 'end', 0, -8);
+    return svgWrap(s) + stat(`Vůdce vidí <b>zbytkovou poptávku</b> (poptávka trhu minus nabídka lemu) a vyrábí, kde MR<sub>L</sub> = MC<sub>L</sub>: q<sub>L</sub> = <b>${n1(qL)}</b> za cenu p<sub>L</sub> = <b>${n1(pL)}</b>. Lem cenu převezme a vyrábí, kde p<sub>L</sub> = MC<sub>F</sub>: q<sub>F</sub> = <b>${n1(qF)}</b>. Celkem ${n1(qL + qF)}. Nad cenou ≈ 73 by vyráběl jen lem, pod 20 jen vůdce.`);
+  } };
+
+FIGDEF.pd = { opt: [['c', 'Cena Coca-Coly', [[7, '$7 (držet)'], [5, '$5 (zlevnit)']], 7], ['p', 'Cena Pepsi', [[7, '$7 (držet)'], [5, '$5 (zlevnit)']], 7]],
+  steps: [['Spolupráce', { c: 7, p: 7 }, 'Obě drží cenu $7 a mají po 15 mil. $. Pro obě dohromady nejlepší.'], ['Cola podvede', { c: 5, p: 7 }, 'Cola zlevní a přetáhne zákazníky: 30 pro Colu, 5 pro Pepsi. Totéž platí obráceně.'], ['Nashova rovnováha', { c: 5, p: 5 }, 'Zlevnit je pro každou nejlepší bez ohledu na soupeře (dominantní strategie). Obě skončí na 10 místo 15: vězňovo dilema.']],
+  draw(v) {
+    const T = { '7,7': [15, 15], '7,5': [5, 30], '5,7': [30, 5], '5,5': [10, 10] }, c = +v.c, p = +v.p, cell = (a, b) => { const [x, y] = T[a + ',' + b]; return `<td class="${a === c && b === p ? 'pd-on' : ''}${a === 5 && b === 5 ? ' pd-ne' : ''}"><b class="tD">${x}</b> / <b class="tS">${y}</b></td>`; };
+    const brC = T['5,' + p][0] > T['7,' + p][0] ? 5 : 7, brP = T[c + ',5'][1] > T[c + ',7'][1] ? 5 : 7;
+    return `<div class="tbl pdm"><table><thead><tr><th>tržby (mil. $)<br><span class="tD">Cola</span> / <span class="tS">Pepsi</span></th><th>Pepsi $7</th><th>Pepsi $5</th></tr></thead><tbody><tr><th>Cola $7</th>${cell(7, 7)}${cell(7, 5)}</tr><tr><th>Cola $5</th>${cell(5, 7)}${cell(5, 5)}</tr></tbody></table></div>`
+      + stat(`Cola $${c}, Pepsi $${p}: tržby <b>${T[c + ',' + p][0]}</b> / <b>${T[c + ',' + p][1]}</b>. Při Pepsi $${p} je pro Colu nejlepší $${brC}; při Cole $${c} je pro Pepsi nejlepší $${brP}. ${c === 5 && p === 5 ? '<b>Nikdo nemá důvod odchýlit se sám: Nashova rovnováha.</b>' : 'Aspoň jedna firma by si změnou ceny polepšila.'}`);
+  } };
+
+/* ===== 10. přednáška ===== */
+FIGDEF.hhi = { ctl: [['a', 'Podíl firmy 1 (%)', 0, 100, 1, 40], ['b', 'Podíl firmy 2 (%)', 0, 100, 1, 30], ['c', 'Podíl firmy 3 (%)', 0, 100, 1, 20], ['d', 'Podíl firmy 4 (%)', 0, 100, 1, 10]],
+  steps: [['Čtyři firmy', { a: 40, b: 30, c: 20, d: 10 }, 'Příklad z výkladu: CR₂ = 70 %, HHI = 3 000.'], ['Monopol', { a: 100, b: 0, c: 0, d: 0 }, 'Jedna firma má 100 %: HHI = 100² = 10 000.'], ['Rozdrobený trh', { a: 5, b: 5, c: 5, d: 5 }, 'Velké firmy mají po 5 % a zbytek trhu má spousta malých firem s 2 %: HHI je nízký.']],
+  draw(v) {
+    let sh = [v.a, v.b, v.c, v.d].map(Math.round); const sum = sh.reduce((x, y) => x + y, 0); if (sum > 100) sh = sh.map(x => x * 100 / sum);
+    const rest = Math.max(0, 100 - sh.reduce((x, y) => x + y, 0)), hhi = sh.reduce((x, y) => x + y * y, 0) + rest * 2, cr4 = 100 - rest, cr2 = [...sh].sort((x, y) => y - x).slice(0, 2).reduce((x, y) => x + y, 0);
+    const g = plane(6, 100, { h: 300 }); let s = g.axes('', 'podíl na trhu %', [], [25, 50, 75, 100]);
+    sh.forEach((x, i) => { s += `<rect class="bar on" x="${g.sx(i + .6)}" y="${g.sy(x)}" width="${g.sx(.8) - g.sx(0)}" height="${g.sy(0) - g.sy(x)}" rx="5"/>` + g.txt(i + 1, x, n0(x) + ' %', 'tk', 'middle', 0, -8) + g.txt(i + 1, 0, 'firma ' + (i + 1), 'tk', 'middle', 0, 20); });
+    s += `<rect class="bar" x="${g.sx(4.6)}" y="${g.sy(rest)}" width="${g.sx(.8) - g.sx(0)}" height="${g.sy(0) - g.sy(rest)}" rx="5"/>` + g.txt(5, rest, n0(rest) + ' %', 'tk', 'middle', 0, -8) + g.txt(5, 0, 'malé firmy', 'tk', 'middle', 0, 20);
+    return svgWrap(s, FW, 300) + stat(`CR<sub>2</sub> = <b>${n0(cr2)} %</b>, CR<sub>4</sub> = <b>${n0(cr4)} %</b>, HHI = <b>${n0(hhi)}</b> (malé firmy po 2 % přidají ${n0(rest * 2)}). ${hhi > 2500 ? 'Vysoce koncentrovaný trh.' : hhi > 1500 ? 'Středně koncentrovaný trh.' : 'Nekoncentrovaný trh.'} HHI = součet čtverců podílů <b>všech</b> firem v procentech.`);
+  } };
+
+FIGDEF.lorenz = { ctl: [['k', 'Nerovnost', 1, 6, 0.1, 2.5]],
+  steps: [['Dokonalá rovnost', { k: 1 }, 'Každých 10 % lidí má 10 % příjmu: Lorenzova křivka splyne s diagonálou, G = 0.'], ['Střední nerovnost', { k: 2.5 }, 'Křivka se prohne pod diagonálu. Plocha A mezi nimi roste.'], ['Velká nerovnost', { k: 6 }, 'Nejchudší polovina má jen zlomek příjmu. G se blíží 1.']],
+  draw(v) {
+    const g = plane(100, 100), L = x => 100 * (x / 100) ** v.k, G = (v.k - 1) / (v.k + 1), pts = []; for (let i = 0; i <= 60; i++) pts.push([i * 100 / 60, L(i * 100 / 60)]);
+    return svgWrap(g.axes('% populace (od nejchudších)', '% příjmu', [25, 50, 75, 100], [25, 50, 75, 100]) + `<path class="a-tax" d="${g.P([[0, 0], [100, 100], ...pts.slice().reverse()])} Z"/><path class="a-cs" d="${g.P([...pts, [100, 0]])} Z"/>`
+      + g.cur(g.P([[0, 0], [100, 100]]), 'K', true) + g.cur(g.P(pts), 'D') + g.lab(40, 52, 'A', 'S', 'middle') + g.lab(72, 18, 'B', 'D', 'middle') + g.lab(62, 66, 'přímka rovnosti', 'K', 'end', 0, -10)
+      + g.guide(50, L(50), '', num(L(50), 0) + ' %') + g.dot(50, L(50)))
+      + stat(`Nejchudší polovina má <b>${num(L(50), 1)} %</b> příjmu. Giniho koeficient G = A/(A + B) = <b>${n2(G)}</b> (0 = rovnost, 1 = jeden má vše).`);
+  } };
+
+/* ---------- motor: ovládání, kroky a animace ---------- */
 function initFigs(root) {
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { const s = e.target.querySelector('svg'); if (s && !reduceMotion()) { s.classList.add('intro'); } io.unobserve(e.target); } }), { threshold: .35 }) : null;
   root.querySelectorAll('figure[data-fig]').forEach(f => {
     const def = FIGDEF[f.dataset.fig]; if (!def || f.dataset.ok) return; f.dataset.ok = 1;
-    const val = Object.fromEntries(def.ctl.map(c => [c[0], c[5]]));
-    const box = document.createElement('div'); box.className = 'fbox'; f.prepend(box);
-    const ctl = document.createElement('div'); ctl.className = 'fctl';
-    ctl.innerHTML = def.ctl.map(([k, l, a, b, s, d]) => `<label><span>${l}</span><input type="range" min="${a}" max="${b}" step="${s}" value="${d}" data-k="${k}"></label>`).join('')
-      + `<button type="button" class="chip" data-reset>Výchozí</button>`;
-    f.insertBefore(ctl, f.querySelector('figcaption'));
-    const draw = () => { box.innerHTML = def.draw(val); };
-    ctl.addEventListener('input', e => { const k = e.target.dataset.k; if (k) { val[k] = +e.target.value; draw(); } });
-    ctl.querySelector('[data-reset]').addEventListener('click', () => { def.ctl.forEach(c => { val[c[0]] = c[5]; ctl.querySelector(`[data-k="${c[0]}"]`).value = c[5]; }); draw(); });
-    draw();
+    const ctl = def.ctl || [], opt = def.opt || [], steps = def.steps || [];
+    const base = Object.assign({}, def.hid || {}, ...ctl.map(c => ({ [c[0]]: c[5] })), ...opt.map(o => ({ [o[0]]: o[3] }))), optK = new Set(opt.map(o => o[0])), isNum = k => typeof base[k] === 'number' && !optK.has(k);
+    const val = { ...base }, dec = s => (String(s).split('.')[1] || '').length;
+    const cap = f.querySelector('figcaption'); const capHTML = cap ? cap.outerHTML : '';
+    f.innerHTML = (steps.length ? `<div class="fsteps" role="group" aria-label="Kroky výkladu">${steps.map((s, i) => `<button type="button" class="fstep" data-s="${i}"><b>${i + 1}</b>${s[0]}</button>`).join('')}<button type="button" class="fplay" data-play>▶ Přehrát</button></div><div class="fnote" aria-live="polite" hidden></div>` : '')
+      + `<div class="fbox"></div>`
+      + (ctl.length || opt.length ? `<div class="fctl">${opt.map(([k, l, ch]) => `<div class="fopt"><span>${l}</span><div class="seg">${ch.map(([cv, ct]) => `<button type="button" data-ok="${k}" data-ov="${cv}">${ct}</button>`).join('')}</div></div>`).join('')}${ctl.map(([k, l, a, b, s]) => `<label><span>${l.replace(/_(\w)/, '<sub>$1</sub>')}: <b data-o="${k}"></b></span><input type="range" min="${a}" max="${b}" step="${s}" data-k="${k}"></label>`).join('')}<button type="button" class="chip" data-reset>↺ Výchozí</button></div>` : '')
+      + capHTML;
+    const box = f.querySelector('.fbox'), note = f.querySelector('.fnote');
+    const sync = () => { ctl.forEach(([k, , , , s]) => { const i = f.querySelector(`[data-k="${k}"]`), o = f.querySelector(`[data-o="${k}"]`); if (i) i.value = val[k]; if (o) o.textContent = num(val[k], dec(s)); });
+      f.querySelectorAll('[data-ok]').forEach(b => b.setAttribute('aria-pressed', String(val[b.dataset.ok]) === b.dataset.ov)); };
+    const draw = () => { box.innerHTML = def.draw(val); if (/\\\(/.test(box.innerHTML) && window.typeset) typeset(box); };
+    let anim = 0, playing = false;
+    const tween = tgt => new Promise(res => {
+      cancelAnimationFrame(anim); const from = { ...val }, t0 = performance.now(), ms = 800;
+      for (const k in tgt) if (!isNum(k)) val[k] = tgt[k];
+      if (reduceMotion()) { Object.assign(val, tgt); sync(); draw(); return res(); }
+      const tick = now => { let u = Math.min(1, (now - t0) / ms); u = u < .5 ? 4 * u * u * u : 1 - (-2 * u + 2) ** 3 / 2;
+        for (const k in tgt) if (isNum(k)) val[k] = from[k] + (tgt[k] - from[k]) * u;
+        draw(); sync(); if (u < 1) anim = requestAnimationFrame(tick); else res(); };
+      anim = requestAnimationFrame(tick);
+    });
+    const showStep = i => { f.querySelectorAll('.fstep').forEach((b, j) => b.setAttribute('aria-current', j === i ? 'step' : 'false')); if (note) { note.hidden = false; note.innerHTML = `<b>${i + 1}. ${steps[i][0]}.</b> ${steps[i][2]}`; } return tween(steps[i][1]); };
+    const stopPlay = () => { playing = false; const b = f.querySelector('[data-play]'); if (b) b.textContent = '▶ Přehrát'; };
+    f.addEventListener('click', async e => {
+      const st = e.target.closest('[data-s]'); if (st) { stopPlay(); showStep(+st.dataset.s); return; }
+      if (e.target.closest('[data-play]')) {
+        if (playing) { stopPlay(); return; }
+        playing = true; e.target.closest('[data-play]').textContent = '❚❚ Zastavit';
+        Object.assign(val, base); sync(); draw();
+        for (let i = 0; i < steps.length && playing; i++) { await showStep(i); await new Promise(r => setTimeout(r, 2600)); }
+        stopPlay(); return;
+      }
+      const ob = e.target.closest('[data-ok]'); if (ob) { stopPlay(); const k = ob.dataset.ok; val[k] = typeof base[k] === 'number' ? +ob.dataset.ov : ob.dataset.ov; sync(); draw(); return; }
+      if (e.target.closest('[data-reset]')) { stopPlay(); if (note) note.hidden = true; f.querySelectorAll('.fstep').forEach(b => b.setAttribute('aria-current', 'false')); tween({ ...base }); }
+    });
+    f.addEventListener('input', e => { const k = e.target.dataset.k; if (k) { stopPlay(); cancelAnimationFrame(anim); val[k] = +e.target.value; sync(); draw(); } });
+    sync(); draw(); if (io) io.observe(f);
   });
 }
 
@@ -2416,20 +2977,34 @@ const slideHref = n => `slidy/prednaska-${String(n).padStart(2, '0')}.pdf`;
 /* na GitHub Pages slidy nejsou (window.NO_SLIDES nastaví skript zverejnit-github.sh) */
 const HAS_SLIDES = !window.NO_SLIDES;
 const slideLink = (n, cls = 'chip') => !HAS_SLIDES ? '' : `<a class="${cls}" href="${slideHref(n)}" target="_blank" rel="noopener">Slidy z přednášky ${n} (PDF, ${SLIDE_PAGES[n - 1]} stran) ↗</a>`;
+const readMap = () => store.get('rd', {});
 function viewTheoryIndex() {
-  return band('', `<span class="eyebrow">Teorie</span><h1 class="h1">Deset přednášek. Přehledně.</h1><p class="lead">Podle slidů přednášek Ekonomie I (verze 2026/27), vlastními slovy. U grafů hýbej posuvníky.</p><div class="ctas"><button class="pill ghost" data-go="tahak">Tahák vzorců</button></div>`, 'center')
-    + band('alt', `<div class="lgrid">${THEORY.map(t => `<button class="lcard" data-go="teorie-l${t.n}"><span class="no">Přednáška ${t.n}</span><b>${t.title}</b><span class="muted">${t.secs.length} oddílů · ${QB.filter(q => q[0] === t.n).length} otázek v kvízu</span></button>`).join('')}</div>
+  const rd = readMap(), done = THEORY.filter(t => rd[t.n]).length, nxt = THEORY.find(t => !rd[t.n]) || THEORY[0];
+  return band('', `<span class="eyebrow">Teorie</span><h1 class="h1">Deset přednášek. Krok za krokem.</h1><p class="lead">Každá přednáška začíná shrnutím „V kostce“, pak jde výklad s grafy, které si můžeš přehrát krok po kroku, a na konci rychlá kontrola.</p>
+<div class="ctas"><button class="pill" data-go="teorie-l${nxt.n}">${done ? 'Pokračovat' : 'Začít'}: ${nxt.n}. ${nxt.short}</button><button class="pill ghost" data-go="tahak">Tahák vzorců</button></div>
+<div class="lprog"><div class="meter"><i style="width:${10 * done}%"></i></div><span class="muted small">prostudováno ${done} z 10 přednášek</span></div>`, 'center')
+    + band('alt', `<div class="lgrid lgrid-t">${THEORY.map(t => `<button class="lcard${rd[t.n] ? ' done' : ''}" data-go="teorie-l${t.n}"><span class="no">Přednáška ${t.n}${rd[t.n] ? ' · ✓ prostudováno' : ''}</span><b>${t.title}</b><span class="muted">${t.key[0]}</span><span class="lmeta">${t.secs.length} oddílů · ${(t.secs.map(x => x.html).join('').match(/data-fig=/g) || []).length} grafů · ${QB.filter(q => q[0] === t.n).length} otázek</span></button>`).join('')}</div>
 ${HAS_SLIDES ? `<div class="note"><b>Původní slidy z přednášek (verze 2026/27)</b><div class="chips">${THEORY.map(t => `<a class="chip" href="${slideHref(t.n)}" target="_blank" rel="noopener">${t.n}. ${t.short} ↗</a>`).join('')}</div></div>` : ''}`);
 }
+function lectureCheck(n) {
+  const ids = QB.map((q, i) => [q, i]).filter(([q]) => q[0] === n).map(([, i]) => i);
+  if (!state.lchk || state.lchk.n !== n) state.lchk = { n, set: rng(n * 7919 + (state.lchkSeed || 0)).shuffle(ids).slice(0, 3), pick: {} };
+  const c = state.lchk, ok = c.set.filter(i => c.pick[i] === QB[i][3]).length, answered = Object.keys(c.pick).length;
+  return `<h2 class="h2 sh" id="s${n}-chk"><span class="num">✓</span>Rychlá kontrola</h2><p class="muted">Tři otázky z kvízu k této přednášce. Odpověď se hned vyhodnotí.</p>
+${c.set.map((qi, k) => qHTML(QB[qi], qi, { pick: c.pick[qi] ?? null, reveal: true, label: `${k + 1}/3`, chk: true })).join('')}
+<div class="qnav">${answered === 3 ? `<span class="small"><b>${ok} ze 3 správně.</b> ${ok === 3 ? 'Výborně.' : 'Projdi si vysvětlení výše.'}</span>` : '<span></span>'}<button class="chip" data-newchk>Jiné 3 otázky</button></div>`;
+}
 function viewTheory(n) {
-  const t = THEORY[n - 1], prev = THEORY[n - 2], next = THEORY[n];
-  return band('', `<span class="eyebrow">Přednáška ${n} z 10</span><h1 class="h1">${t.title}</h1>
-<div class="ctas">${slideLink(n, 'pill ghost')}</div>
-<div class="chips">${t.secs.map((s, i) => `<button class="chip" data-jump="s${n}-${i + 1}">${n}.${i + 1} ${s.t}</button>`).join('')}</div>`, 'center')
-    + band('alt', `<div class="topic"><div class="kostka"><h2>V kostce</h2><ul>${t.key.map(k => `<li>${k}</li>`).join('')}</ul></div>
-${t.secs.map((s, i) => `<h2 class="h2 sh" id="s${n}-${i + 1}"><span class="num">${n}.${i + 1}</span>${s.t}</h2><div class="prose">${s.html}</div>`).join('')}</div>
-<div class="note"><b>Procvič si to</b><div class="chips">${slideLink(n)}<button class="chip" data-go="kviz-${n}">Kvíz k přednášce ${n}</button>${FAM_IDS.filter(id => FAM[id].l === n).map(id => `<button class="chip" data-go="priklady-${id}">Příklady: ${FAM[id].title}</button>`).join('')}<button class="chip" data-gl="${n}">Kartičky pojmů</button></div></div>
-<div class="qnav">${prev ? `<button class="pill ghost" data-go="teorie-l${n - 1}">← ${prev.n}. ${prev.short}</button>` : '<span></span>'}${next ? `<button class="pill" data-go="teorie-l${n + 1}">${next.n}. ${next.short} →</button>` : '<button class="pill" data-go="testy">Cvičné testy →</button>'}</div>`, 'narrow');
+  const t = THEORY[n - 1], prev = THEORY[n - 2], next = THEORY[n], rd = readMap();
+  const toc = `<nav class="ltoc" aria-label="Obsah přednášky"><span class="lbl">Přednáška ${n}</span><a href="#s${n}-0" data-jump="s${n}-0">V kostce</a>${t.secs.map((s, i) => `<a href="#s${n}-${i + 1}" data-jump="s${n}-${i + 1}"><span>${n}.${i + 1}</span>${s.t}</a>`).join('')}<a href="#s${n}-chk" data-jump="s${n}-chk"><span>✓</span>Rychlá kontrola</a>
+<div class="ltoc-x">${slideLink(n)}<button class="chip" data-go="kviz-${n}">Kvíz k přednášce</button></div></nav>`;
+  return band('', `<span class="eyebrow">Přednáška ${n} z 10${rd[n] ? ' · ✓ prostudováno' : ''}</span><h1 class="h1">${t.title}</h1>
+<div class="ctas">${slideLink(n, 'pill ghost')}<button class="pill ghost" data-go="kviz-${n}">Kvíz k přednášce ${n}</button></div>`, 'center')
+    + band('alt', `<div class="lwrap">${toc}<div class="topic"><div class="kostka" id="s${n}-0"><h2>V kostce: co si odnést</h2><ul>${t.key.map(k => `<li>${k}</li>`).join('')}</ul><p class="muted small">Tip: grafy mají kroky 1, 2, 3… a tlačítko ▶ Přehrát. Posuvníky pod grafem si zkus sám.</p></div>
+${t.secs.map((s, i) => `<section class="lsec" id="s${n}-${i + 1}"><h2 class="h2 sh"><span class="num">${n}.${i + 1}</span>${s.t}</h2><div class="prose">${s.html}</div></section>`).join('')}
+${lectureCheck(n)}
+<div class="note done-note"><b>${rd[n] ? '✓ Tuhle přednášku máš prostudovanou.' : 'Máš přečteno?'}</b><div class="chips"><button class="chip" data-read="${n}"${rd[n] ? ' aria-pressed="true"' : ''}>${rd[n] ? 'Zrušit označení' : '✓ Označit jako prostudované'}</button><button class="chip" data-go="kviz-${n}">Kvíz k přednášce ${n}</button>${FAM_IDS.filter(id => FAM[id].l === n).map(id => `<button class="chip" data-go="priklady-${id}">Příklady: ${FAM[id].title}</button>`).join('')}<button class="chip" data-gl="${n}">Kartičky pojmů</button></div></div>
+<div class="qnav">${prev ? `<button class="pill ghost" data-go="teorie-l${n - 1}">← ${prev.n}. ${prev.short}</button>` : '<span></span>'}${next ? `<button class="pill" data-go="teorie-l${n + 1}">${next.n}. ${next.short} →</button>` : '<button class="pill" data-go="testy">Cvičné testy →</button>'}</div></div></div>`);
 }
 function viewCheat() {
   const groups = THEORY.map(t => [t, FORMULAS.filter(f => f[0] === t.n)]).filter(([, f]) => f.length);
@@ -2452,7 +3027,7 @@ function viewQuizIndex() {
 }
 function qHTML(q, i, opts = {}) {
   const [l, text, o, a, why] = q, pick = opts.pick, locked = pick != null && opts.reveal;
-  return `<article class="q${locked ? ' locked' : ''}" data-qi="${i}"><div class="q-h"><span class="tag">${opts.label || ''}</span><a class="tag hot qlink" href="#teorie-l${l}" data-go="teorie-l${l}" title="Otevřít výklad přednášky ${l}">Přednáška ${l}: ${THEORY[l - 1].short} ›</a>${opts.numTag ? '<span class="tag">početní</span>' : ''}</div>
+  return `<article class="q${locked ? ' locked' : ''}${opts.cls ? ' ' + opts.cls : ''}" data-qi="${i}"${opts.chk ? ' data-chk-q' : ''}><div class="q-h"><span class="tag">${opts.label || ''}</span><a class="tag hot qlink" href="#teorie-l${l}" data-go="teorie-l${l}" title="Otevřít výklad přednášky ${l}">Přednáška ${l}: ${THEORY[l - 1].short} ›</a>${opts.numTag ? '<span class="tag">početní</span>' : ''}</div>
 <div class="q-t">${text}</div><div class="opts">${o.map((t, j) => `<button type="button" class="opt${locked ? (j === a ? ' ok' : j === pick ? ' bad' : '') : ''}" data-opt="${j}" aria-pressed="${pick === j}"${locked ? ' tabindex="-1"' : ''}><span class="ol">${L[j].toLowerCase()}</span><span>${t}</span></button>`).join('')}</div>
 ${locked ? `<div class="why-box">${pick === a ? '<b class="okc">Správně.</b>' : `<b class="badc">Špatně, správně je ${L[a].toLowerCase()}).</b>`}<div>${why}</div><a class="more" href="#teorie-l${l}" data-go="teorie-l${l}">Výklad: přednáška ${l}, ${THEORY[l - 1].title}</a></div>` : ''}</article>`;
 }
@@ -2468,9 +3043,10 @@ function viewQuiz(key) {
   const qi = z.set[z.i];
   return band('', `<div class="qnav"><button class="chip" data-go="kviz">← Všechny kvízy</button><span class="muted small">${title} · otázka ${z.i + 1} z ${z.set.length} · správně ${z.score}</span></div>
 <div class="qprog">${z.set.map((_, j) => `<i class="${j < z.res.length ? (z.res[j] ? 'ok' : 'bad') : ''}${j === z.i ? ' cur' : ''}"></i>`).join('')}</div>
-${qHTML(QB[qi], qi, { pick: z.pick, reveal: true })}
-<div class="qnav"><span class="muted small">Klávesy: a–e vybere odpověď, Enter další otázka</span>${z.pick != null ? `<button class="pill" data-qnext>${z.i + 1 < z.set.length ? 'Další otázka →' : 'Výsledek'}</button>` : ''}</div>`, 'narrow');
+${qHTML(QB[qi], qi, { pick: z.pick, reveal: true, cls: z.pick == null ? 'qin' : '' })}
+<div class="qnav">${z.pick != null ? `<span class="muted small">Enter = další otázka</span><button class="pill" data-qnext>${z.i + 1 < z.set.length ? 'Další otázka →' : 'Výsledek'}</button>` : `<span class="muted small">Klávesy: a–e odpověď, S přeskočit</span><div class="chips"><button class="chip" data-qskip${z.i + 1 >= z.set.length ? ' disabled' : ''}>Přeskočit (vrátí se na konec)</button><button class="chip" data-qdk>Nevím, ukaž odpověď</button></div>`}</div>`, 'narrow');
 }
+function quizSkip() { const z = state.qz; if (!z || z.pick != null || z.i + 1 >= z.set.length) return; z.set.push(z.set.splice(z.i, 1)[0]); toast('Otázka přeskočena, vrátí se na konci.'); rerender(); }
 function quizPick(j) {
   const z = state.qz; if (!z || z.pick != null || z.i >= z.set.length) return;
   const qi = z.set[z.i], ok = j === QB[qi][3];
@@ -2522,17 +3098,26 @@ function viewTests() {
 let timerId = null;
 function stopTimer() { clearInterval(timerId); timerId = null; }
 function viewTest(i, seed) {
-  if (!state.test || state.test.i !== i || state.test.seed !== seed) state.test = { i, seed, qs: buildTest(i, seed), ans: {}, running: true, t0: Date.now(), done: false };
+  if (!state.test || state.test.i !== i || state.test.seed !== seed) state.test = { i, seed, qs: buildTest(i, seed), ans: {}, flag: {}, cur: 0, running: true, t0: Date.now(), done: false, filt: 'vse' };
   const T = state.test, label = i ? `Cvičný test ${i}` : 'Náhodný test', n = T.qs.length;
-  let head;
   if (T.done) {
-    const sc = T.qs.reduce((s, q, k) => s + (T.ans[k] === q.a ? 1 : 0), 0), p = Math.round(100 * sc / n);
-    head = band('', `<span class="eyebrow">${label} · vyhodnoceno</span><div class="res-big">${sc} / ${n}</div><p class="lead">${p} % správně za ${Math.max(1, Math.round((T.t1 - T.t0) / 60000))} min. ${p >= 80 ? 'Skvělé.' : p >= 60 ? 'Slušné, projdi chyby níže.' : 'Projdi vysvětlení a vrať se k teorii slabých přednášek.'}</p>
-<div class="chips">${THEORY.map(t => { const ks = T.qs.map((q, k) => [q, k]).filter(([q]) => q.l === t.n); const bad = ks.filter(([q, k]) => T.ans[k] !== q.a).length; return ks.length && bad ? `<button class="chip" data-go="teorie-l${t.n}">${t.n}. ${t.short} (${bad} chyb)</button>` : ''; }).join('')}</div>
+    const sc = T.qs.reduce((s, q, k) => s + (T.ans[k] === q.a ? 1 : 0), 0), p = Math.round(100 * sc / n), na = n - Object.keys(T.ans).length;
+    const head = band('', `<span class="eyebrow">${label} · vyhodnoceno</span><div class="res-big">${sc} / ${n}</div><p class="lead">${p} % správně za ${Math.max(1, Math.round((T.t1 - T.t0) / 60000))} min${na ? `, ${na} bez odpovědi` : ''}. ${p >= 80 ? 'Skvělé.' : p >= 60 ? 'Slušné, projdi chyby níže.' : 'Projdi vysvětlení a vrať se k teorii slabých přednášek.'}</p>
+<div class="chips">${THEORY.map(t => { const ks = T.qs.map((q, k) => [q, k]).filter(([q]) => q.l === t.n); const bad = ks.filter(([q, k]) => T.ans[k] !== q.a).length; return ks.length && bad ? `<button class="chip" data-go="teorie-l${t.n}">Zopakuj ${t.n}. ${t.short} (${bad} ${bad === 1 ? 'chyba' : bad < 5 ? 'chyby' : 'chyb'})</button>` : ''; }).join('')}</div>
 <div class="ctas"><button class="pill" data-go="testy">Všechny testy</button>${i && i < N_TESTS ? `<button class="pill ghost" data-go="test-${i + 1}">Test ${i + 1} →</button>` : `<button class="pill ghost" data-rnd>Další náhodný</button>`}</div>`, 'center');
-  } else head = `<div class="testbar"><div class="in"><b>${label}</b><span class="muted small" id="tprog">zodpovězeno ${Object.keys(T.ans).length} z ${n}</span><span class="tb-timer"><span id="tclock">${T_MIN}:00</span></span><button class="pill sm" data-tend>Vyhodnotit</button></div></div>`;
-  return head + band('', T.qs.map((q, k) => qHTML([q.l, q.q, q.o, q.a, q.why], k, { pick: T.ans[k] ?? null, reveal: T.done, label: `${k + 1}.`, numTag: q.num })).join('')
-    + (T.done ? '' : `<div class="qnav"><span class="muted small">Odpovědi můžeš měnit až do vyhodnocení.</span><button class="pill" data-tend>Vyhodnotit test</button></div>`), 'narrow');
+    const show = T.qs.map((q, k) => [q, k]).filter(([q, k]) => T.filt === 'vse' || (T.filt === 'chyby' ? T.ans[k] !== q.a : T.ans[k] == null));
+    return head + band('alt', `<div class="chips tfilt"><button class="chip" data-tf="vse"${T.filt === 'vse' ? ' aria-pressed="true"' : ''}>Všechny (${n})</button><button class="chip" data-tf="chyby"${T.filt === 'chyby' ? ' aria-pressed="true"' : ''}>Jen chyby (${n - sc})</button><button class="chip" data-tf="na"${T.filt === 'na' ? ' aria-pressed="true"' : ''}>Bez odpovědi (${na})</button></div>
+${show.map(([q, k]) => qHTML([q.l, q.q, q.o, q.a, q.why], k, { pick: T.ans[k] ?? null, reveal: true, label: `${k + 1}.`, numTag: q.num })).join('') || '<p class="lead">Nic tu není. 🎉</p>'}`, 'narrow');
+  }
+  const k = T.cur, q = T.qs[k], answered = Object.keys(T.ans).length;
+  const qin = T.lastCur !== k ? 'qin' : ''; T.lastCur = k;
+  const grid = `<div class="tgrid" role="group" aria-label="Přehled otázek">${T.qs.map((_, j) => `<button type="button" class="tg-i${T.ans[j] != null ? ' ans' : ''}${T.flag[j] ? ' flag' : ''}${j === k ? ' cur' : ''}" data-tq="${j}" aria-label="Otázka ${j + 1}${T.ans[j] != null ? ', zodpovězeno' : ''}${T.flag[j] ? ', označeno' : ''}"${j === k ? ' aria-current="step"' : ''}>${j + 1}</button>`).join('')}</div>`;
+  const nextUn = (() => { for (let d = 1; d < n; d++) { const j = (k + d) % n; if (T.ans[j] == null) return j; } return -1; })();
+  return `<div class="testbar"><div class="in"><b>${label}</b><span class="muted small" id="tprog">zodpovězeno ${answered} z ${n}</span><span class="tb-timer"><span id="tclock">${T_MIN}:00</span></span><button class="pill sm" data-tend>Vyhodnotit</button></div></div>`
+    + band('', `${grid}<div class="tlegend muted small"><span><i class="tg-i ans"></i>zodpovězeno</span><span><i class="tg-i flag"></i>označeno na později</span><span><i class="tg-i cur"></i>právě teď</span></div>
+${qHTML([q.l, q.q, q.o, q.a, q.why], k, { pick: T.ans[k] ?? null, reveal: false, label: `Otázka ${k + 1} z ${n}`, numTag: q.num, cls: qin })}
+<div class="tnav"><button class="pill ghost" data-tmove="-1"${k ? '' : ' disabled'}>← Předchozí</button><div class="chips"><button class="chip" data-tflag${T.flag[k] ? ' aria-pressed="true"' : ''}>⚑ ${T.flag[k] ? 'Označeno' : 'Označit na později'}</button>${T.ans[k] != null ? '<button class="chip" data-tclear>Zrušit odpověď</button>' : ''}${nextUn >= 0 && T.ans[k] == null ? `<button class="chip" data-tq="${nextUn}">Přeskočit →</button>` : ''}</div>${k + 1 < n ? `<button class="pill" data-tmove="1">Další →</button>` : `<button class="pill" data-tend>Vyhodnotit test</button>`}</div>
+<p class="muted small tkeys">Klávesy: a–e odpověď · ← → předchozí / další · F označit. Odpovědi můžeš měnit až do vyhodnocení.</p>`, 'narrow');
 }
 function startClock() {
   stopTimer(); const T = state.test; if (!T || T.done) return;
@@ -2593,10 +3178,19 @@ function render() {
   renderNav();
   const nv = NAV.find(n => n.id === navCur(state.view)), tm = state.view.match(/^teorie-l(\d+)$/), tt = tm ? THEORY[tm[1] - 1].title : state.view === 'tahak' ? 'Tahák' : nv?.l;
   document.title = state.view === 'domu' ? 'EKONOMIE I' : `${tt} · EKONOMIE I`;
-  initFigs($view); typesetAll();
+  initFigs($view); typesetAll(); initToc();
   if (state.test && !state.test.done && (TEST_RE.test(state.view) || state.view === 'nahodny')) startClock();
   if (state.fxAnim && typeof fxReveal === 'function') fxReveal($view);
   state.fxAnim = false;
+}
+let tocObs = null;
+function initToc() {
+  if (tocObs) { tocObs.disconnect(); tocObs = null; }
+  const toc = document.querySelector('.ltoc'); if (!toc || !('IntersectionObserver' in window)) return;
+  const links = [...toc.querySelectorAll('a[data-jump]')], vis = new Map();
+  tocObs = new IntersectionObserver(es => { es.forEach(e => vis.set(e.target.id, e.isIntersecting ? e.boundingClientRect.top : null));
+    const on = [...vis.entries()].filter(([, v]) => v != null).sort((a, b) => a[1] - b[1])[0]; if (on) links.forEach(a => a.classList.toggle('on', a.dataset.jump === on[0])); }, { rootMargin: '-80px 0px -55% 0px' });
+  links.forEach(a => { const el = document.getElementById(a.dataset.jump); if (el) tocObs.observe(el); });
 }
 function rerender() { const y = scrollY; render(); scrollTo({ top: y }); }
 function typeset(el) {
@@ -2618,11 +3212,21 @@ document.addEventListener('click', e => {
   const op = t.closest('[data-opt]');
   if (op) {
     const k = +op.closest('[data-qi]').dataset.qi, j = +op.dataset.opt;
+    if (op.closest('[data-chk-q]')) { const c = state.lchk; if (c && c.pick[k] == null) { c.pick[k] = j; const qs = qStat(); qs[k] = j === QB[k][3] ? 1 : 0; store.set('qs', qs); rerender(); } return; }
     if (/^kviz-/.test(state.view)) { quizPick(j); return; }
-    const T = state.test; if (T && !T.done) { T.ans[k] = j; op.closest('.opts').querySelectorAll('.opt').forEach((b, bj) => b.setAttribute('aria-pressed', bj === j)); const p = document.getElementById('tprog'); if (p) p.textContent = `zodpovězeno ${Object.keys(T.ans).length} z ${T.qs.length}`; }
+    const T = state.test; if (T && !T.done) { T.ans[k] = j; rerender(); }
     return;
   }
   if (t.closest('[data-qnext]')) { const z = state.qz; z.i++; z.pick = null; rerender(); scrollTo({ top: 0 }); return; }
+  if (t.closest('[data-qskip]')) { quizSkip(); return; }
+  if (t.closest('[data-qdk]')) { const z = state.qz; if (z && z.pick == null) { const qi = z.set[z.i]; z.pick = -1; z.res.push(false); const qs = qStat(); qs[qi] = 0; store.set('qs', qs); rerender(); } return; }
+  const tq = t.closest('[data-tq]'); if (tq && state.test && !state.test.done) { state.test.cur = +tq.dataset.tq; rerender(); return; }
+  const tm = t.closest('[data-tmove]'); if (tm && state.test) { const T = state.test; T.cur = Math.max(0, Math.min(T.qs.length - 1, T.cur + +tm.dataset.tmove)); rerender(); return; }
+  if (t.closest('[data-tflag]') && state.test) { const T = state.test; T.flag[T.cur] = !T.flag[T.cur]; rerender(); return; }
+  if (t.closest('[data-tclear]') && state.test) { delete state.test.ans[state.test.cur]; rerender(); return; }
+  const tf = t.closest('[data-tf]'); if (tf && state.test) { state.test.filt = tf.dataset.tf; rerender(); return; }
+  const rdb = t.closest('[data-read]'); if (rdb) { const rd = readMap(), n = +rdb.dataset.read; rd[n] = !rd[n]; store.set('rd', rd); toast(rd[n] ? `Přednáška ${n} označena jako prostudovaná.` : 'Označení zrušeno.'); rerender(); return; }
+  if (t.closest('[data-newchk]')) { state.lchkSeed = (state.lchkSeed || 0) + 1; state.lchk = null; rerender(); return; }
   if (t.closest('[data-qagain]')) { startQuiz(state.qz.key); rerender(); return; }
   if (t.closest('[data-tend]')) { endTest(); return; }
   if (t.closest('[data-rnd]')) { state.rndSeed = Math.floor(Math.random() * 1e9); state.test = null; if (state.view === 'nahodny') { render(); scrollTo({ top: 0 }); } else go('nahodny'); return; }
@@ -2639,7 +3243,16 @@ document.addEventListener('input', e => { if (e.target.id === 'glq') { state.glq
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { setMobileMenu(false); closeMenus(); return; }
   if (e.target.matches('input, textarea')) { if (e.key === 'Enter' && e.target.closest('.numin')) checkNum(e.target.closest('.numin').querySelector('[data-chk]')); return; }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const T = state.test;
+  if (T && !T.done && (TEST_RE.test(state.view) || state.view === 'nahodny')) {
+    const k = 'abcde'.indexOf(e.key.toLowerCase()); if (k >= 0 && k < T.qs[T.cur].o.length) { T.ans[T.cur] = k; rerender(); return; }
+    if (e.key === 'ArrowRight' || e.key === 'Enter') { if (T.cur + 1 < T.qs.length) { T.cur++; rerender(); } return; }
+    if (e.key === 'ArrowLeft') { if (T.cur) { T.cur--; rerender(); } return; }
+    if (e.key.toLowerCase() === 'f') { T.flag[T.cur] = !T.flag[T.cur]; rerender(); return; }
+  }
   if (/^kviz-/.test(state.view) && state.qz) {
+    if (e.key.toLowerCase() === 's' && state.qz.pick == null) { quizSkip(); return; }
     const k = 'abcde'.indexOf(e.key.toLowerCase()); if (k >= 0 && state.qz.pick == null) { quizPick(k); return; }
     if (e.key === 'Enter' && state.qz.pick != null) { document.querySelector('[data-qnext]')?.click(); }
   }
