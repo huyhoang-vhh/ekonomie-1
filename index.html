@@ -1327,6 +1327,14 @@ a.chip:hover, a.pill:hover { text-decoration: none; }
 .qprog button.ok { background: var(--ok); } .qprog button.bad { background: var(--bad); } .qprog button.cur { box-shadow: 0 0 0 2px var(--blue); }
 .qprog button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 @media (max-width: 734px) { .qprog button { width: 14px; height: 14px; } }
+.semrow { justify-content: center; align-items: center; }
+.semlist { display: flex; flex-direction: column; gap: 10px; }
+.semlist > div { display: flex; flex-direction: column; gap: 4px; }
+
+/* přepínač IES ▾ (ies-nav.js) */
+a.dd-i, a.dd-i:hover { text-decoration: none; }
+span.dd-i[aria-current] { cursor: default; }
+.ies-sw > .nv-b span { font-weight: 600; letter-spacing: .02em; }
 
 </style>
 
@@ -3091,6 +3099,22 @@ if (window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matche
   }, { passive: true });
 }
 
+/* ---------- přepínač IES ▾ (rozcestník Studium IES ↔ Matematika I ↔ Ekonomie I) ----------
+   Stejný soubor je v MAT I/WEB/src i EKO I/WEB/src (liší se jen IES_SELF). Na GitHub Pages vede na
+   huyhoang-vhh.github.io/, /matematika-1/, /ekonomie-1/; v Artifactu na artifacty (nová karta). */
+const IES_SELF = 'eko';
+const IES_GH = /(^|\.)github\.io$/.test(location.hostname) || /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+const IES_URL = IES_GH
+  ? { hub: '/', mat: '/matematika-1/', eko: '/ekonomie-1/' }
+  : { hub: 'IES_HUB_ARTIFACT', mat: 'https://claude.ai/artifact/GBUD1Pozz6yiuu1kuV3z4H', eko: 'https://claude.ai/artifact/Pxpy6GJsuRUEFgzC3kgg71' };
+function iesSwitch() {
+  const it = [['hub', 'Studium IES', 'Rozcestník: termíny, pokrok a plán na dnes'], ['mat', 'Matematika I', 'Písemky, důkazy, pojmy a definice'], ['eko', 'Ekonomie I', 'Teorie s grafy, kvíz, testy a kartičky']];
+  const tg = IES_GH ? '' : ' target="_blank" rel="noopener"';
+  return `<div class="nv has-dd ies-sw"><button type="button" class="nv-b" data-dd="ies" aria-expanded="false" aria-haspopup="true" title="Přepnout předmět"><span>IES</span>${CHEV}</button><div class="dd"><div class="dd-box"><div class="dd-list">${it.map(([k, t, d]) => k === IES_SELF
+    ? `<span class="dd-i" aria-current="page"><b>${t}</b><span>právě tady</span></span>`
+    : `<a class="dd-i" href="${IES_URL[k]}"${tg}><b>${t}</b><span>${d}</span></a>`).join('')}</div></div></div></div>`;
+}
+
 /* ---------- stav a navigace ---------- */
 const $view = document.getElementById('view');
 const TEST_RE = /^test-(\d+)$/;
@@ -3122,7 +3146,7 @@ function renderNav() {
   const v = state.view, cur = navCur(v);
   document.getElementById('links').innerHTML = NAV.map(n => n.sub
     ? `<div class="nv has-dd${cur === n.id ? ' is-cur' : ''}"><button type="button" class="nv-b" data-dd="${n.id}" aria-expanded="false" aria-haspopup="true"${cur === n.id ? ' aria-current="true"' : ''}><span>${n.l}</span>${CHEV}</button><div class="dd"><div class="dd-box"><div class="dd-list">${n.sub().map(([go, t, d]) => `<button type="button" class="dd-i" data-go="${go}"${v === go ? ' aria-current="page"' : ''}><b>${t}</b><span>${d}</span></button>`).join('')}</div></div></div></div>`
-    : `<button type="button" class="nv-b" data-go="${n.id}"${cur === n.id ? ' aria-current="page"' : ''}><span>${n.l}</span></button>`).join('');
+    : `<button type="button" class="nv-b" data-go="${n.id}"${cur === n.id ? ' aria-current="page"' : ''}><span>${n.l}</span></button>`).join('' + iesSwitch();
   const br = document.querySelector('.brand'); if (v === 'domu') br.setAttribute('aria-current', 'page'); else br.removeAttribute('aria-current');
   setMobileMenu(false);
 }
@@ -3193,7 +3217,11 @@ const SEM = { 1: ['Úvod do ekonomie', 1], 2: ['Ekonomie jako věda', 4], 3: ['T
 const HAS_SEM = !window.NO_SEM;
 const semHref = n => `seminare/seminar-${String(n).padStart(2, '0')}.pdf`;
 const pgWord = k => k === 1 ? 'strana' : k < 5 ? 'strany' : 'stran';
-const semLink = (n, cls = 'chip') => !HAS_SEM || !SEM[n] ? '' : `<a class="${cls}" href="${semHref(n)}" target="_blank" rel="noopener">Seminář ${n}: zadání (PDF, ${SEM[n][1]} ${pgWord(SEM[n][1])}) ↗</a>`;
+/* materiály ze seminářů (složka CVIKA/PREZENTACE): [popis, soubor, stran] */
+const SEMX = { 1: [['prezentace ze semináře', 'cviceni-01-prezentace', 10]], 2: [['prezentace ze semináře', 'cviceni-02-prezentace', 23]], 4: [['prezentace se zadáním', 'cviceni-04-zadani', 36]], 5: [['prezentace se zadáním', 'cviceni-05-zadani', 18], ['řešení', 'cviceni-05-reseni', 52]], 6: [['řešení', 'cviceni-06-reseni', 48]], 7: [['řešení', 'cviceni-07-reseni', 52]], 8: [['prezentace se zadáním', 'cviceni-08-zadani', 10]] };
+const semItems = n => !HAS_SEM ? [] : [...(SEM[n] ? [[`zadání z e-klubu`, `seminar-${String(n).padStart(2, '0')}`, SEM[n][1]]] : []), ...(SEMX[n] || [])];
+const semA = (n, [t, f, k], cls) => `<a class="${cls}" href="seminare/${f}.pdf" target="_blank" rel="noopener">Seminář ${n}: ${t} (PDF, ${k} ${pgWord(k)}) ↗</a>`;
+const semLink = (n, cls = 'chip') => semItems(n).map(it => semA(n, it, cls)).join('');
 const readMap = () => store.get('rd', {});
 function viewTheoryIndex() {
   const rd = readMap(), done = THEORY.filter(t => rd[t.n]).length, nxt = THEORY.find(t => !rd[t.n]) || THEORY[0];
@@ -3202,7 +3230,7 @@ function viewTheoryIndex() {
 <div class="lprog"><div class="meter"><i style="width:${10 * done}%"></i></div><span class="muted small">prostudováno ${done} z 10 přednášek</span></div>`, 'center')
     + band('alt', `<div class="lgrid lgrid-t">${THEORY.map(t => `<button class="lcard${rd[t.n] ? ' done' : ''}" data-go="teorie-l${t.n}"><span class="no">Přednáška ${t.n}${rd[t.n] ? ' · ✓ prostudováno' : ''}</span><b>${t.title}</b><span class="muted">${t.key[0]}</span><span class="lmeta">${t.secs.length} oddílů · ${(t.secs.map(x => x.html).join('').match(/data-fig=/g) || []).length} grafů · ${QB.filter(q => q[0] === t.n).length} otázek</span></button>`).join('')}</div>
 ${HAS_SLIDES ? `<div class="note"><b>Původní slidy z přednášek (verze 2026/27)</b><div class="chips">${THEORY.map(t => `<a class="chip" href="${slideHref(t.n)}" target="_blank" rel="noopener">${t.n}. ${t.short} ↗</a>`).join('')}</div></div>` : ''}
-${HAS_SEM ? `<div class="note"><b>Zadání seminářů (k přednáškám 1–9)</b><div class="chips">${Object.entries(SEM).map(([k, v]) => `<a class="chip" href="${semHref(k)}" target="_blank" rel="noopener">${k}. ${v[0]} ↗</a>`).join('')}</div></div>` : ''}`);
+${HAS_SEM ? `<div class="note"><b>Semináře: zadání, prezentace a řešení (k přednáškám 1–9)</b><div class="semlist">${THEORY.filter(t => semItems(t.n).length).map(t => `<div><span class="muted small">${t.n}. ${SEM[t.n] ? SEM[t.n][0] : t.short}</span><div class="chips">${semItems(t.n).map(it => `<a class="chip" href="seminare/${it[1]}.pdf" target="_blank" rel="noopener">${it[0]} ↗</a>`).join('')}</div></div>`).join('')}</div></div>` : ''}`);
 }
 function lectureCheck(n) {
   const ids = QB.map((q, i) => [q, i]).filter(([q]) => q[0] === n).map(([, i]) => i);
@@ -3217,7 +3245,7 @@ function viewTheory(n) {
   const toc = `<nav class="ltoc" aria-label="Obsah přednášky"><span class="lbl">Přednáška ${n}</span><a href="#s${n}-0" data-jump="s${n}-0">V kostce</a>${t.secs.map((s, i) => `<a href="#s${n}-${i + 1}" data-jump="s${n}-${i + 1}"><span>${n}.${i + 1}</span>${s.t}</a>`).join('')}<a href="#s${n}-chk" data-jump="s${n}-chk"><span>✓</span>Rychlá kontrola</a>
 <div class="ltoc-x">${slideLink(n)}${semLink(n)}<button class="chip" data-go="kviz-${n}">Kvíz k přednášce</button></div></nav>`;
   return band('', `<span class="eyebrow">Přednáška ${n} z 10${rd[n] ? ' · ✓ prostudováno' : ''}</span><h1 class="h1">${t.title}</h1>
-<div class="ctas">${slideLink(n, 'pill ghost')}${semLink(n, 'pill ghost')}<button class="pill ghost" data-go="kviz-${n}">Kvíz k přednášce ${n}</button></div>`, 'center')
+<div class="ctas">${slideLink(n, 'pill ghost')}<button class="pill ghost" data-go="kviz-${n}">Kvíz k přednášce ${n}</button></div>${semItems(n).length ? `<div class="chips semrow"><span class="muted small">Seminář ${n}:</span>${semItems(n).map(it => `<a class="chip" href="seminare/${it[1]}.pdf" target="_blank" rel="noopener">${it[0]} ↗</a>`).join('')}</div>` : ''}`, 'center')
     + band('alt', `<div class="lwrap">${toc}<div class="topic"><div class="kostka" id="s${n}-0"><h2>V kostce: co si odnést</h2><ul>${t.key.map(k => `<li>${k}</li>`).join('')}</ul><p class="muted small">Tip: grafy mají kroky 1, 2, 3… a tlačítko ▶ Přehrát. Posuvníky pod grafem si zkus sám.</p></div>
 ${t.secs.map((s, i) => `<section class="lsec" id="s${n}-${i + 1}"><h2 class="h2 sh"><span class="num">${n}.${i + 1}</span>${s.t}</h2><div class="prose">${s.html}</div></section>`).join('')}
 ${lectureCheck(n)}
