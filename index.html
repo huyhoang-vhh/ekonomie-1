@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
-<script>window.NO_SEM = true;</script>
 <title>EKONOMIE I</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -3146,7 +3145,7 @@ function renderNav() {
   const v = state.view, cur = navCur(v);
   document.getElementById('links').innerHTML = NAV.map(n => n.sub
     ? `<div class="nv has-dd${cur === n.id ? ' is-cur' : ''}"><button type="button" class="nv-b" data-dd="${n.id}" aria-expanded="false" aria-haspopup="true"${cur === n.id ? ' aria-current="true"' : ''}><span>${n.l}</span>${CHEV}</button><div class="dd"><div class="dd-box"><div class="dd-list">${n.sub().map(([go, t, d]) => `<button type="button" class="dd-i" data-go="${go}"${v === go ? ' aria-current="page"' : ''}><b>${t}</b><span>${d}</span></button>`).join('')}</div></div></div></div>`
-    : `<button type="button" class="nv-b" data-go="${n.id}"${cur === n.id ? ' aria-current="page"' : ''}><span>${n.l}</span></button>`).join('' + iesSwitch();
+    : `<button type="button" class="nv-b" data-go="${n.id}"${cur === n.id ? ' aria-current="page"' : ''}><span>${n.l}</span></button>`).join('') + iesSwitch();
   const br = document.querySelector('.brand'); if (v === 'domu') br.setAttribute('aria-current', 'page'); else br.removeAttribute('aria-current');
   setMobileMenu(false);
 }
