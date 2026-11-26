@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Neoficiální studijní web k Ekonomii I na IES FSV UK: přednášky s grafy, tahák, kvízy, cvičné testy a termíny."><meta name="theme-color" content="#ad4708"><meta property="og:type" content="website"><meta property="og:title" content="Ekonomie I · IES"><meta property="og:description" content="Neoficiální studijní web k Ekonomii I na IES FSV UK: přednášky s grafy, tahák, kvízy, cvičné testy a termíny."><meta property="og:url" content="https://huyhoang-vhh.github.io/ekonomie-1/"><meta property="og:locale" content="cs_CZ"><link rel="canonical" href="https://huyhoang-vhh.github.io/ekonomie-1/"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2715%27 fill=%27%23ad4708%27/%3E%3Ctext x=%2732%27 y=%2744%27 font-family=%27-apple-system,Helvetica,Arial%27 font-size=%2734%27 font-weight=%27700%27 fill=%27%23fff%27 text-anchor=%27middle%27%3EE%3C/text%3E%3C/svg%3E"></head><body>
+<html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Neoficiální studijní web k Ekonomii I na IES FSV UK: přednášky s grafy, tahák, kvízy, cvičné testy a termíny."><meta name="theme-color" content="#ad4708"><meta property="og:type" content="website"><meta property="og:title" content="Ekonomie I · IES"><meta property="og:description" content="Neoficiální studijní web k Ekonomii I na IES FSV UK: přednášky s grafy, tahák, kvízy, cvičné testy a termíny."><meta property="og:url" content="https://huyhoang-vhh.github.io/ekonomie-1/"><meta property="og:image" content="https://huyhoang-vhh.github.io/ekonomie-1/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta property="og:locale" content="cs_CZ"><link rel="canonical" href="https://huyhoang-vhh.github.io/ekonomie-1/"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2715%27 fill=%27%23ad4708%27/%3E%3Ctext x=%2732%27 y=%2744%27 font-family=%27-apple-system,Helvetica,Arial%27 font-size=%2734%27 font-weight=%27700%27 fill=%27%23fff%27 text-anchor=%27middle%27%3EE%3C/text%3E%3C/svg%3E"></head><body>
 <title>EKONOMIE I</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -1141,6 +1141,11 @@ html { accent-color: var(--blue); caret-color: var(--blue); scrollbar-color: col
 a { text-underline-offset: .18em; }
 .stat b, .hp-when, .hp-stat b, .meter + *, .badge, time, .tl-n, .cd, .num { font-variant-numeric: tabular-nums; }
 summary:not(.pf-open)::after { margin-left: .3em; }
+/* mobil: u písemky a důkazu drží nahoře jen jejich lišta, hlavička webu odjede (porota 2026-11-26) */
+@media (max-width: 734px) {
+  body:has(.testbar) .gnav, body:has(.pbar) .gnav { position: relative; }
+  body:has(.testbar) .testbar, body:has(.pbar) .pbar { top: env(safe-area-inset-top, 0px); }
+}
 
 /* ===== EKO I: doplňky ke společnému stylu ===== */
 :root { --cs: #0a6cff; --ps: #1d8a3a; --tx: #e5832b; --dwl: #d70015; }
@@ -1419,12 +1424,36 @@ details.qmap > .qprog { padding-top: 10px; flex-direction: row; }
 .qprog { gap: 6px; }
 .qprog button { width: 18px; height: 18px; }
 @media (max-width: 734px) { .qprog button { width: 18px; height: 18px; } }
+/* graf uvnitř rámečku (box): bez vlastní karty, aby nevznikl dvojitý rámeček (porota 2026-11-26) */
+.box figure.efig { background: transparent; box-shadow: none; padding: 4px 0 0; }
+
+/* hledání (stejné jako MAT I, 2026-11-26) */
+.gnav-in .srch-btn { margin-left: auto; }
+.gnav-in .srch-btn + .theme { margin-left: 0; }
+.srch-btn svg { width: 18px; height: 18px; }
+.srch { position: fixed; inset: 0; z-index: 60; background: rgba(10, 12, 25, .38); display: flex; justify-content: center; align-items: flex-start; padding: calc(env(safe-area-inset-top, 0px) + 72px) 16px 16px; animation: dd-in .15s var(--ease-out); }
+.srch[hidden] { display: none; }
+.srch-box { width: 100%; max-width: 620px; background: var(--tile); border-radius: 18px; box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 10%, transparent), 0 30px 80px -20px rgba(0, 0, 0, .45); overflow: hidden; }
+.srch-in { display: flex; align-items: center; gap: 10px; padding: 0 16px; border-bottom: 1px solid var(--line); }
+.srch-in svg { width: 20px; height: 20px; flex: none; fill: none; stroke: var(--ink-2); stroke-width: 2; stroke-linecap: round; }
+.srch-in input { flex: 1; min-width: 0; font: inherit; font-size: 18px; border: 0; outline: none; background: none; color: var(--ink); padding: 16px 0; }
+.srch-in kbd { color: var(--ink-2); }
+.srch-res { max-height: min(60vh, 520px); overflow-y: auto; padding: 6px; }
+.srch-i { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 110px minmax(0, 1fr); column-gap: 12px; width: 100%; padding: 10px 12px; border-radius: 12px; }
+.srch-i b { font-size: 15px; font-weight: 600; color: var(--ink); grid-column: 2; }
+.srch-i span:last-child { grid-column: 2; font-size: 13px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.srch-k { grid-row: 1 / span 2; align-self: center; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--link); }
+.srch-i:hover, .srch-i.on { background: color-mix(in srgb, var(--blue) 10%, transparent); }
+.srch-hint { padding: 16px; color: var(--ink-2); font-size: 15px; }
+@media (max-width: 560px) { .srch-i { grid-template-columns: minmax(0, 1fr); } .srch-k { grid-row: auto; } .srch-i b, .srch-i span:last-child { grid-column: 1; } }
+.srch-k { text-transform: none; letter-spacing: -.005em; font-size: 13px; }
 
 </style>
 
 <header class="gnav"><div class="gnav-in">
   <button class="brand" type="button" data-go="domu" title="Na úvodní stránku" aria-label="Ekonomie I – úvodní stránka"><span class="bm" aria-hidden="true"><svg viewBox="0 1.75 32 32"><path class="bm-tan" d="M7 9.5l18 18"/><path class="bm-cur" pathLength="1" d="M7 27.5L25 9.5"/><circle class="bm-dot" cx="16" cy="18.5" r="2.1"/></svg></span><span class="bt"><b>Ekonomie I</b><small>IES FSV UK</small></span></button>
   <nav class="links" id="links" aria-label="Sekce"></nav>
+  <button class="theme srch-btn" type="button" data-act="search" aria-label="Hledat na webu (klávesa /)" title="Hledat (/ nebo Ctrl+K)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button>
   <button class="theme" id="themeBtn" type="button"></button>
   <button class="menu-btn" id="menuBtn" type="button" aria-label="Otevřít menu" aria-expanded="false" aria-controls="links"><span></span><span></span><span></span></button>
 </div></header>
@@ -3203,6 +3232,75 @@ function iesSwitch() {
   const b = document.createElement('button'); b.type = 'button'; b.className = 'skip'; b.textContent = 'Přeskočit na obsah';
   b.addEventListener('click', () => { m.focus({ preventScroll: true }); m.scrollIntoView(); }); document.body.prepend(b); })();
 
+/* ===== Hledání přes celý web (stejné ovládání jako MAT I: lupa, klávesa / nebo Ctrl+K) ===== */
+const sFold = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const sStrip = h => String(h || '').replace(/<[^>]+>/g, ' ').replace(/\\\(|\\\)|\\\[|\\\]/g, ' ').replace(/\s+/g, ' ').trim();
+let S_IDX = null;
+function sIndex() {
+  if (S_IDX) return S_IDX;
+  const out = [];
+  THEORY.forEach(t => {
+    out.push({ k: 'Přednáška', t: `${t.n}. ${t.title}`, d: t.short, go: 'teorie-l' + t.n });
+    t.secs.forEach((s, i) => out.push({ k: 'Kapitola', t: sStrip(s.t), d: `Přednáška ${t.n}: ${t.short}`, go: 'teorie-l' + t.n, jump: `s${t.n}-${i + 1}` }));
+  });
+  GLOSS.forEach(([n, cz, en, ex]) => out.push({ k: 'Pojem', t: `${cz} (${en})`, d: ex, go: 'teorie-l' + n }));
+  FORMULAS.forEach(([n, name]) => out.push({ k: 'Vzorec', t: name, d: `Tahák · přednáška ${n}`, go: 'tahak' }));
+  [['kviz', 'Kvíz', `${QB.length} otázek podle přednášek`], ['testy', 'Cvičné testy', 'testy s časem a hodnocením'], ['priklady', 'Příklady', 'počítání krok za krokem'],
+   ['karticky', 'Kartičky', 'pojmy česky ↔ anglicky'], ['tahak', 'Tahák vzorců', 'všechny vzorce na jedné stránce'], ['terminy', 'Termíny a zkouška', 'předtermíny, řádné termíny']].forEach(([go, t, d]) => out.push({ k: 'Stránka', t, d, go }));
+  out.forEach(o => { o.ft = sFold(o.t); o.fd = sFold(o.d); });
+  return S_IDX = out;
+}
+function sRun(q) {
+  const f = sFold(q.trim()); if (!f) return [];
+  const words = f.split(/\s+/);
+  return sIndex().map(o => {
+    let sc = 0;
+    for (const w of words) { if (o.ft.startsWith(w)) sc += 6; else if (o.ft.includes(' ' + w)) sc += 4; else if (o.ft.includes(w)) sc += 3; else if (o.fd.includes(w)) sc += 1; else return null; }
+    return [sc, o];
+  }).filter(Boolean).sort((a, b) => b[0] - a[0]).slice(0, 14).map(x => x[1]);
+}
+function openSearch() {
+  let ov = document.getElementById('srch');
+  if (!ov) {
+    ov = document.createElement('div'); ov.id = 'srch'; ov.className = 'srch'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-label', 'Hledat na webu');
+    ov.innerHTML = `<div class="srch-box"><div class="srch-in"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><input id="srchQ" type="search" placeholder="Hledej přednášku, pojem, vzorec…" autocomplete="off" aria-label="Hledat"><kbd>Esc</kbd></div><div class="srch-res" id="srchRes" role="listbox"></div></div>`;
+    document.body.appendChild(ov);
+  }
+  ov.hidden = false; document.documentElement.classList.add('menu-lock');
+  const q = document.getElementById('srchQ'); q.value = ''; sRender(''); setTimeout(() => q.focus(), 10);
+}
+function closeSearch() { const ov = document.getElementById('srch'); if (ov && !ov.hidden) { ov.hidden = true; document.documentElement.classList.remove('menu-lock'); } }
+function sRender(q) {
+  const box = document.getElementById('srchRes'); if (!box) return;
+  const res = sRun(q);
+  box.innerHTML = !q.trim() ? '<p class="srch-hint">Například: <b>elasticita</b>, <b>monopol</b>, <b>PPF</b>, <b>daň</b>, <b>Giffenův</b>.</p>'
+    : res.length ? res.map((o, i) => `<button type="button" class="srch-i${i ? '' : ' on'}" role="option" data-sgo="${esc(o.go)}"${o.jump ? ` data-sjump="${esc(o.jump)}"` : ''}><span class="srch-k">${o.k}</span><b>${esc(o.t)}</b><span>${esc(o.d)}</span></button>`).join('') : '<p class="srch-hint">Nic nenalezeno.</p>';
+}
+document.addEventListener('click', e => {
+  if (e.target.closest('[data-act="search"]')) { openSearch(); return; }
+  const it = e.target.closest('[data-sgo]');
+  if (it) {
+    const jump = it.dataset.sjump; closeSearch(); go(it.dataset.sgo);
+    if (jump) setTimeout(() => { const el = document.getElementById(jump); if (el) el.scrollIntoView({ block: 'start' }); }, 120);
+    return;
+  }
+  if (e.target.id === 'srch') closeSearch();
+});
+document.addEventListener('input', e => { if (e.target.id === 'srchQ') sRender(e.target.value); });
+document.addEventListener('keydown', e => {
+  const ov = document.getElementById('srch'), open = ov && !ov.hidden;
+  if (e.key === 'Escape' && open) { closeSearch(); return; }
+  const typing = e.target.closest && e.target.closest('input, textarea, select, [contenteditable]');
+  if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || (e.key === '/' && !typing)) { e.preventDefault(); openSearch(); return; }
+  if (open) e.stopPropagation(); /* psaní do hledání nesmí spouštět zkratky kvízu a kartiček */
+  if (open && (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter')) {
+    const items = [...ov.querySelectorAll('.srch-i')]; if (!items.length) return;
+    let i = items.findIndex(x => x.classList.contains('on')); if (i < 0) i = 0;
+    if (e.key === 'Enter') { e.preventDefault(); items[i].click(); return; }
+    e.preventDefault(); items[i].classList.remove('on'); i = (i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length; items[i].classList.add('on'); items[i].scrollIntoView({ block: 'nearest' });
+  }
+}, true);
+
 /* ---------- stav a navigace ---------- */
 const $view = document.getElementById('view');
 const TEST_RE = /^test-(\d+)$/;
@@ -3255,6 +3353,7 @@ function toast(msg, kind = 'ok') {
 const twiceAt = {};
 function twice(k, msg) { if (Date.now() - (twiceAt[k] || 0) < 5000) { twiceAt[k] = 0; return true; } twiceAt[k] = Date.now(); toast(msg, 'warn'); return false; }
 const scrollMem = {};
+let PREV_LAST = null; /* při neplatné adrese se vrátí předchozí „kde jsi skončil“ */
 function go(token, push = true, restore = false) {
   token = String(token || '');
   if (!/^[a-z0-9-]{1,80}$/i.test(token)) token = 'domu'; /* bezpečnost: do stavu a úložiště jen platné cesty (ne HTML z adresy) */
@@ -3264,7 +3363,7 @@ function go(token, push = true, restore = false) {
   scrollMem[state.view] = scrollY;
   const from = state.view; state.view = token;
   if (push) { try { history.pushState({ v: token }, '', '#' + token); } catch { } }
-  if (token !== 'domu') store.set('last', token);
+  if (token !== 'domu') { PREV_LAST = store.get('last', null); store.set('last', token); }
   const doIt = () => { state.fxAnim = true; render(); scrollTo({ top: restore ? (scrollMem[token] || 0) : 0 }); };
   if (typeof fxGo === 'function') fxGo(from, token, restore, doIt); else doIt();
 }
@@ -3453,7 +3552,7 @@ function viewTest(i, seed) {
   const T = state.test, label = i ? `Cvičný test ${i}` : 'Náhodný test', n = T.qs.length;
   if (T.done) {
     const sc = T.qs.reduce((s, q, k) => s + (T.ans[k] === q.a ? 1 : 0), 0), p = Math.round(100 * sc / n), na = n - Object.keys(T.ans).length;
-    const head = band('', `<span class="eyebrow">${label} · vyhodnoceno</span><div class="res-big">${sc} / ${n}</div><p class="lead">${p} % správně za ${Math.max(1, Math.round((T.t1 - T.t0) / 60000))} min${na ? `, ${na} bez odpovědi` : ''}. ${p >= 80 ? 'Skvělé.' : p >= 60 ? 'Slušné, projdi chyby níže.' : 'Projdi vysvětlení a vrať se k teorii slabých přednášek.'}</p>
+    const head = band('', `<h1 class="vh">${label}: výsledek</h1><span class="eyebrow">${label} · vyhodnoceno</span><div class="res-big">${sc} / ${n}</div><p class="lead">${p} % správně za ${Math.max(1, Math.round((T.t1 - T.t0) / 60000))} min${na ? `, ${na} bez odpovědi` : ''}. ${p >= 80 ? 'Skvělé.' : p >= 60 ? 'Slušné, projdi chyby níže.' : 'Projdi vysvětlení a vrať se k teorii slabých přednášek.'}</p>
 <div class="chips">${THEORY.map(t => { const ks = T.qs.map((q, k) => [q, k]).filter(([q]) => q.l === t.n); const bad = ks.filter(([q, k]) => T.ans[k] !== q.a).length; return ks.length && bad ? `<button class="chip" data-go="teorie-l${t.n}">Zopakuj ${t.n}. ${t.short} (${bad} ${bad === 1 ? 'chyba' : bad < 5 ? 'chyby' : 'chyb'})</button>` : ''; }).join('')}</div>
 <div class="ctas"><button class="pill" data-go="testy">Všechny testy</button>${i && i < N_TESTS ? `<button class="pill ghost" data-go="test-${i + 1}">Test ${i + 1} →</button>` : `<button class="pill ghost" data-rnd>Další náhodný</button>`}</div>`, 'center');
     const show = T.qs.map((q, k) => [q, k]).filter(([q, k]) => T.filt === 'vse' || (T.filt === 'chyby' ? T.ans[k] !== q.a : T.ans[k] == null));
@@ -3464,7 +3563,7 @@ ${show.map(([q, k]) => qHTML([q.l, q.q, q.o, q.a, q.why, q.z ? 'z' : ''], k, { p
   const qin = T.lastCur !== k ? 'qin' : ''; T.lastCur = k;
   const grid = `<div class="tgrid" role="group" aria-label="Přehled otázek">${T.qs.map((_, j) => `<button type="button" class="tg-i${T.ans[j] != null ? ' ans' : ''}${T.flag[j] ? ' flag' : ''}${j === k ? ' cur' : ''}" data-tq="${j}" aria-label="Otázka ${j + 1}${T.ans[j] != null ? ', zodpovězeno' : ''}${T.flag[j] ? ', označeno' : ''}"${j === k ? ' aria-current="step"' : ''}>${j + 1}</button>`).join('')}</div>`;
   const nextUn = (() => { for (let d = 1; d < n; d++) { const j = (k + d) % n; if (T.ans[j] == null) return j; } return -1; })();
-  return `<div class="testbar"><div class="in"><b>${label}</b><span class="muted small" id="tprog">zodpovězeno ${answered} z ${n}</span><span class="tb-timer"><span id="tclock">${T_MIN}:00</span></span><button class="pill sm" data-tend>Vyhodnotit</button></div></div>`
+  return `<h1 class="vh">${label}</h1><div class="testbar"><div class="in"><b>${label}</b><span class="muted small" id="tprog">zodpovězeno ${answered} z ${n}</span><span class="tb-timer"><span id="tclock">${T_MIN}:00</span></span><button class="pill sm" data-tend>Vyhodnotit</button></div></div>`
     + band('', `${grid}<div class="tlegend muted small"><span><i class="tg-i ans"></i>zodpovězeno</span><span><i class="tg-i flag"></i>označeno na později</span><span><i class="tg-i cur"></i>právě teď</span></div>
 ${qHTML([q.l, q.q, q.o, q.a, q.why, q.z ? 'z' : ''], k, { pick: T.ans[k] ?? null, reveal: false, label: `Otázka ${k + 1} z ${n}`, numTag: q.num, cls: qin })}
 <div class="tnav"><button class="pill ghost" data-tmove="-1"${k ? '' : ' disabled'}>← Předchozí</button><div class="chips"><button class="chip" data-tflag${T.flag[k] ? ' aria-pressed="true"' : ''}>⚑ ${T.flag[k] ? 'Označeno' : 'Označit na později'}</button>${T.ans[k] != null ? '<button class="chip" data-tclear>Zrušit odpověď</button>' : ''}${nextUn >= 0 && T.ans[k] == null ? `<button class="chip" data-tq="${nextUn}">Přeskočit →</button>` : ''}</div>${k + 1 < n ? `<button class="pill" data-tmove="1">Další →</button>` : `<button class="pill" data-tend>Vyhodnotit test</button>`}</div>
@@ -3509,6 +3608,12 @@ function viewTerms() {
 }
 
 /* ---------- vykreslení ---------- */
+/* neplatná adresa: vlastní stránka místo tichého přesměrování (porota 2026-11-26) */
+function viewNotFound() {
+  if (PREV_LAST) store.set('last', PREV_LAST); else { try { localStorage.removeItem('eko1:last'); } catch { } delete store.mem.last; }
+  return band('', `<span class="eyebrow">Chyba 404</span><h1 class="h1">Tahle stránka neexistuje</h1><p class="sub">Odkaz je asi starý nebo neúplný. Pokračuj jednou z hlavních částí.</p>
+<div class="ctas"><button class="pill" data-go="domu">Na úvod</button><button class="pill ghost" data-go="teorie">Teorie</button><button class="pill ghost" data-go="kviz">Kvíz</button><button class="pill ghost" data-go="testy">Testy</button></div>`, 'center');
+}
 function render() {
   const v = state.view; let html, m;
   if (v === 'domu') html = viewHome();
@@ -3524,11 +3629,11 @@ function render() {
   else if (v === 'nahodny') html = viewTest(0, state.rndSeed ?? (state.rndSeed = Math.floor(Math.random() * 1e9)));
   else if (v === 'karticky') html = viewCards();
   else if (v === 'terminy') html = viewTerms();
-  else { state.view = 'domu'; html = viewHome(); }
+  else { html = viewNotFound(); }
   $view.innerHTML = html;
   renderNav();
   const nv = NAV.find(n => n.id === navCur(state.view)), tm = state.view.match(/^teorie-l(\d+)$/), tt = tm ? THEORY[tm[1] - 1].title : state.view === 'tahak' ? 'Tahák' : nv?.l;
-  document.title = state.view === 'domu' ? 'EKONOMIE I' : `${tt} · EKONOMIE I`;
+  document.title = state.view === 'domu' ? 'EKONOMIE I' : html.includes('Tahle stránka neexistuje') ? 'Stránka nenalezena · EKONOMIE I' : `${tt} · EKONOMIE I`;
   initFigs($view); typesetAll(); initToc();
   if (state.test && !state.test.done && (TEST_RE.test(state.view) || state.view === 'nahodny')) startClock();
   if (state.fxAnim && typeof fxReveal === 'function') fxReveal($view);
