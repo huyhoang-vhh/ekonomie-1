@@ -1140,6 +1140,7 @@ a.tag, a.qlink.tag { display: inline-flex; align-items: center; min-height: 24px
 html { accent-color: var(--blue); caret-color: var(--blue); scrollbar-color: color-mix(in srgb, var(--ink) 30%, transparent) transparent; }
 a { text-underline-offset: .18em; }
 .stat b, .hp-when, .hp-stat b, .meter + *, .badge, time, .tl-n, .cd, .num { font-variant-numeric: tabular-nums; }
+summary:not(.pf-open)::after { margin-left: .3em; }
 
 /* ===== EKO I: doplňky ke společnému stylu ===== */
 :root { --cs: #0a6cff; --ps: #1d8a3a; --tx: #e5832b; --dwl: #d70015; }
@@ -1402,6 +1403,22 @@ span.dd-i[aria-current] { cursor: default; }
 /* barevný text křivek v tabulkách: dost kontrastu i mimo graf */
 span.tS, b.tS { color: color-mix(in srgb, var(--cS) 72%, var(--ink)); }
 span.tD, b.tD { color: color-mix(in srgb, var(--cD) 72%, var(--ink)); }
+/* dlouhé kvízy: mapa otázek sbalená, aby otázka byla hned vidět (porota 2026-11-26) */
+details.qmap { border-top: 0; padding-top: 0; }
+details.qmap > summary { font-size: 14px; font-weight: 600; }
+details.qmap > .qprog { padding-top: 10px; flex-direction: row; }
+/* mobil: nadpisy panelů ve vícedílných grafech čitelné (~11 px), pás kroků ukazuje, že pokračuje (porota 2026-11-26) */
+@media (max-width: 734px) {
+  .fg text.ptit { font-size: 22px; }
+  .fsteps { -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent); mask-image: linear-gradient(90deg, #000 82%, transparent); }
+}
+.fplay { background: var(--btn); color: #fff; }
+.fstep[aria-current="step"] { background: var(--btn); }
+.fstep[aria-current="step"] b { color: var(--btn); }
+/* tečky mapy otázek: rozestup středů aspoň 24 px (WCAG 2.5.8) */
+.qprog { gap: 6px; }
+.qprog button { width: 18px; height: 18px; }
+@media (max-width: 734px) { .qprog button { width: 18px; height: 18px; } }
 
 </style>
 
@@ -2115,9 +2132,9 @@ FIGDEF.excess = { ctl: [['p', 'Cena na trhu', 4, 42, 0.5, 34]],
 FIGDEF.mktsum = { ctl: [['p', 'Cena', 0.5, 7, 0.5, 3]],
   steps: [['p = 1', { p: 1 }, 'Spotřebitel 1 chce 2 kusy, spotřebitel 2 osm. Trh: 2 + 8 = 10.'], ['p = 3', { p: 3 }, 'Spotřebitel 1 chce 1, spotřebitel 2 pět. Trh: 6.'], ['p = 5', { p: 5 }, 'Spotřebitel 1 už nekoupí nic, spotřebitel 2 dva kusy. Trh: 2. Proto má tržní poptávka zlom.']],
   draw(v) {
-    const Q1 = p => Math.max(0, (5 - p) / 2), Q2 = p => Math.max(0, 9.5 - 1.5 * p), p = v.p, W = 200, o = { w: W, h: 320, m: { l: 40, r: 14, t: 20, b: 46 } };
+    const Q1 = p => Math.max(0, (5 - p) / 2), Q2 = p => Math.max(0, 9.5 - 1.5 * p), p = v.p, W = 200, o = { w: W, h: 320, m: { l: 40, r: 14, t: 34, b: 46 } };
     const pan = (k, xm, f, t, c) => { const g = plane(xm, 9, { ...o, ox: k * W }); const pts = []; for (let i = 0; i <= 60; i++) { const pp = 9 * i / 60; pts.push([f(pp), pp]); }
-      const q = f(p); return g.axes('Q', 'p', [xm / 2, xm], k ? [] : [1, 3, 5, 7]) + g.cur(g.P(pts), c) + g.line(0, p, xm, p, 'reg') + g.dot(q, p) + g.lab(q, p, n1(q), 'K', 'start', 7, -8) + `<text class="ptit" x="${k * W + W / 2 + 12}" y="14" text-anchor="middle">${t}</text>`; };
+      const q = f(p); return g.axes('Q', 'p', [xm / 2, xm], k ? [] : [1, 3, 5, 7]) + g.cur(g.P(pts), c) + g.line(0, p, xm, p, 'reg') + g.dot(q, p) + g.lab(q, p, n1(q), 'K', 'start', 7, -8) + `<text class="ptit" x="${k * W + 66}" y="25" text-anchor="start">${t}</text>`; };
     return svgWrap(pan(0, 4, Q1, 'spotřebitel 1', 'D') + pan(1, 10, Q2, 'spotřebitel 2', 'D') + pan(2, 12, x => Q1(x) + Q2(x), 'trh = součet', 'M') + `<text class="bigop" x="200" y="170" text-anchor="middle">+</text><text class="bigop" x="400" y="170" text-anchor="middle">=</text>`, 600, 320)
       + stat(`Při ceně ${n1(p)}: ${n1(Q1(p))} + ${n1(Q2(p))} = <b>${n1(Q1(p) + Q2(p))}</b>. Tržní poptávka je <b>vodorovný součet</b>: při každé ceně se sečtou množství.`);
   } };
@@ -2381,7 +2398,7 @@ FIGDEF.pc = { ctl: [['dd', 'Růst poptávky na trhu', 0, 15, 0.5, 0], ['ns', 'Vs
     const D = Q => 50.2 - 0.4 * Q + v.dd, S = Q => -5.8 + 0.4 * (Q - v.ns), Qe = (56 + v.dd + 0.4 * v.ns) / 0.8, P = D(Qe);
     const a = plane(140, 40, { w: 300, h: 340, m: { l: 50, r: 16, t: 26, b: 46 } }), b = plane(10, 40, { w: 300, h: 340, ox: 300, m: { l: 50, r: 16, t: 26, b: 46 } });
     const q = (8 + Math.sqrt(Math.max(0, 64 - 6 * (20 - P)))) / 3, ac = ACf(q), pi = (P - ac) * q;
-    let s = `<text class="ptit" x="160" y="16" text-anchor="middle">celý trh</text><text class="ptit" x="460" y="16" text-anchor="middle">jedna firma</text>` + a.axes('Q', 'p', [], [+P.toFixed(1)]) + a.clip(a.cur(a.fn(D, 0, 140), 'D') + a.cur(a.fn(S, 0, 140), 'S') + (v.dd > .2 ? a.cur(a.fn(Q => 50.2 - 0.4 * Q, 0, 140), 'D', true) : '') + (v.ns > .5 ? a.cur(a.fn(Q => -5.8 + 0.4 * Q, 0, 140), 'S', true) : ''))
+    let s = `<text class="ptit" x="160" y="23" text-anchor="middle">celý trh</text><text class="ptit" x="460" y="23" text-anchor="middle">jedna firma</text>` + a.axes('Q', 'p', [], [+P.toFixed(1)]) + a.clip(a.cur(a.fn(D, 0, 140), 'D') + a.cur(a.fn(S, 0, 140), 'S') + (v.dd > .2 ? a.cur(a.fn(Q => 50.2 - 0.4 * Q, 0, 140), 'D', true) : '') + (v.ns > .5 ? a.cur(a.fn(Q => -5.8 + 0.4 * Q, 0, 140), 'S', true) : ''))
       + a.guide(Qe, P) + a.dot(Qe, P) + a.lab(130, D(130), 'D', 'D', 'end', 0, -8) + a.lab(100, S(100), 'S', 'S', 'end', -8, 0);
     s += b.axes('q', '', [+q.toFixed(1)], []) + (Math.abs(pi) > 0.3 ? b.poly([[0, ac], [q, ac], [q, P], [0, P]], pi > 0 ? 'a-ps' : 'a-dwl') : '') + b.clip(b.cur(b.fn(ACf, 1.5, 10, 80), 'K') + b.cur(b.fn(MCf, 1.2, 8, 80), 'M'))
       + b.line(0, P, 10, P, 'reg') + b.lab(10, P, 'p = MR', 'K', 'end', 0, -8) + b.dot(q, P) + b.line(q, 0, q, P) + b.lab(9.7, ACf(9.7), 'AC', 'K', 'end', 0, -8) + b.lab(7.7, MCf(7.7), 'MC', 'M', 'end', -6, 0);
@@ -3267,7 +3284,9 @@ function viewHome() {
 <p class="muted small">${ev ? 'Jiný termín?' : 'Na který termín jdeš? Web pak ukáže odpočet.'}</p>${pick}`, 'center');
   const last = store.get('last', null), lastLbl = last && (last.startsWith('teorie-l') ? 'Přednáška ' + last.slice(8) : last.startsWith('priklady-') ? 'Příklady · ' + (FAM[last.slice(9)]?.title || '') : null);
   const chips = [lastLbl ? `<button class="chip" data-go="${last}">↺ Pokračuj: ${esc(lastLbl)}</button>` : '', qWrong().length ? `<button class="chip" data-go="kviz-chyby">↺ Opravit chyby z kvízu (${qWrong().length})</button>` : ''].filter(Boolean).join('');
-  const stats = band('', `<div class="stats"><div class="stat"><b>${qn}</b><span>z ${QB.length} otázek kvízu umíš (naposledy správně)</span></div><div class="stat"><b>${td}</b><span>z ${N_TESTS} cvičných testů hotovo</span></div><div class="stat"><b>${gk}</b><span>z ${GLOSS.length} pojmů umíš</span></div></div>${chips ? `<div class="chips">${chips}</div>` : ''}`);
+  /* bez jakéhokoli pokroku neukazuj tři nuly, ale první krok (porota 2026-11-26) */
+  const fresh = !qn && !td && !gk;
+  const stats = fresh ? band('', `<div class="row-h"><h2 class="h2">${chips ? 'Pokračuj, kde jsi skončil(a)' : 'Kde začít'}</h2></div>${chips ? `<div class="chips">${chips}</div>` : `<p class="lead">Projdi první přednášku a pak si ji ověř v kvízu. Tady se potom ukáže tvůj pokrok.</p><div class="ctas"><button class="pill" data-go="teorie-l1">1. ${THEORY[0].short}</button><button class="more" data-go="kviz">Kvíz</button></div>`}`) : band('', `<div class="stats"><div class="stat"><b>${qn}</b><span>z ${QB.length} otázek kvízu umíš (naposledy správně)</span></div><div class="stat"><b>${td}</b><span>z ${N_TESTS} cvičných testů hotovo</span></div><div class="stat"><b>${gk}</b><span>z ${GLOSS.length} pojmů umíš</span></div></div>${chips ? `<div class="chips">${chips}</div>` : ''}`);
   const tiles = band('alt', `<h2 class="h2">Jak se připravit</h2><div class="tiles">
 <button class="tile dark" data-go="teorie"><span class="eyebrow">1 · Pochop</span><h3 class="h2">Teorie s grafy</h3><p>10 přednášek vlastními slovy. Posuvníky ukážou, co dělá daň, strop, monopol nebo pokles ceny.</p><span class="more">Otevřít teorii</span></button>
 <button class="tile" data-go="kviz"><span class="eyebrow">2 · Procvič</span><h3 class="h2">Kvíz</h3><p>${QB.length} otázek s výběrem odpovědi a vysvětlením, proč je správná ta správná a proč ostatní ne.</p><span class="more">Spustit kvíz</span></button>
@@ -3365,8 +3384,8 @@ function viewQuiz(key) {
   }
   const qi = z.set[z.i], pick = z.picks[z.i] ?? null, nxt = qzNextOpen(z, z.i), last = z.i + 1 >= n;
   const qin = z.lastI !== z.i ? 'qin' : ''; z.lastI = z.i;
-  return band('', `<div class="qnav"><button class="chip" data-go="kviz">← Všechny kvízy</button><span class="muted small">${title} · otázka ${z.i + 1} z ${n} · zodpovězeno ${answered} · správně ${sc}</span></div>
-<div class="qprog" role="group" aria-label="Přehled otázek">${z.set.map((q2, j) => `<button type="button" class="${z.picks[j] != null ? (z.picks[j] === QB[q2][3] ? 'ok' : 'bad') : ''}${j === z.i ? ' cur' : ''}" data-qj="${j}" aria-label="Otázka ${j + 1}"></button>`).join('')}</div>
+  return band('', `<h1 class="vh">Kvíz: ${title}</h1><div class="qnav"><button class="chip" data-go="kviz">← Všechny kvízy</button><span class="muted small">${title} · otázka ${z.i + 1} z ${n} · zodpovězeno ${answered} · správně ${sc}</span></div>
+${(m => z.set.length > 40 ? `<details class="qmap"><summary>Mapa otázek</summary>${m}</details>` : m)(`<div class="qprog" role="group" aria-label="Přehled otázek">${z.set.map((q2, j) => `<button type="button" class="${z.picks[j] != null ? (z.picks[j] === QB[q2][3] ? 'ok' : 'bad') : ''}${j === z.i ? ' cur' : ''}" data-qj="${j}" aria-label="Otázka ${j + 1}"></button>`).join('')}</div>`)}
 ${qHTML(QB[qi], qi, { pick, reveal: true, cls: qin })}
 <div class="tnav"><button class="pill ghost" data-qmove="-1"${z.i ? '' : ' disabled'}>← Předchozí</button>
 <div class="chips">${pick == null ? `<button class="chip" data-qdk>Nevím, ukaž odpověď</button>` : ''}${nxt >= 0 && nxt !== z.i + 1 && (pick != null || last) ? `<button class="chip" data-qj="${nxt}">Další nezodpovězená →</button>` : ''}<button class="chip" data-qend>Ukončit a vyhodnotit</button></div>
