@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
+<html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Neoficiální studijní web k Ekonomii I na IES FSV UK: přednášky s grafy, tahák, kvízy, cvičné testy a termíny."><meta name="theme-color" content="#ad4708"><meta property="og:type" content="website"><meta property="og:title" content="Ekonomie I · IES"><meta property="og:description" content="Neoficiální studijní web k Ekonomii I na IES FSV UK: přednášky s grafy, tahák, kvízy, cvičné testy a termíny."><meta property="og:url" content="https://huyhoang-vhh.github.io/ekonomie-1/"><meta property="og:locale" content="cs_CZ"><link rel="canonical" href="https://huyhoang-vhh.github.io/ekonomie-1/"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2715%27 fill=%27%23ad4708%27/%3E%3Ctext x=%2732%27 y=%2744%27 font-family=%27-apple-system,Helvetica,Arial%27 font-size=%2734%27 font-weight=%27700%27 fill=%27%23fff%27 text-anchor=%27middle%27%3EE%3C/text%3E%3C/svg%3E"></head><body>
 <title>EKONOMIE I</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -1122,6 +1122,25 @@ kbd { font: 600 11px var(--font); padding: 2px 6px; border-radius: 6px; backgrou
 .tag, .prow-no small, th { text-transform: none; letter-spacing: 0; }
 .prow-no small { font-size: 11px; }
 
+/* ===== kontrast, dotykové cíle a plochy prohlížeče (2026-11-26, videa Awards + Impeccable) =====
+   Bílý text na tlačítku musí mít kontrast aspoň 4,5 : 1 i v tmavém režimu → tlačítka mají vlastní tmavší odstín.
+   Každý klikací prvek má na dotyk aspoň 24 px. Výběr textu, kurzor, posuvník a zaškrtávátka nesou barvu webu. */
+:root { --btn: #0071e3; --btn-warm: #b64400; --ok: #187a33; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ok: #32d74b; } }
+:root[data-theme="dark"] { --ok: #32d74b; }
+.pill, summary.pf-open, .tl-n { background-color: var(--btn); }
+.pill.end { background-color: var(--btn-warm); }
+.more, .linkbtn { display: inline-flex; align-items: center; min-height: 24px; }
+.hp-hide, summary, .back { min-height: 24px; min-width: 24px; }
+.hp-hide { display: inline-flex; align-items: center; }
+summary:not(.pf-open) { line-height: 24px; }
+a.tag, a.qlink.tag { display: inline-flex; align-items: center; min-height: 24px; }
+.vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+::selection { background: color-mix(in srgb, var(--blue) 30%, transparent); }
+html { accent-color: var(--blue); caret-color: var(--blue); scrollbar-color: color-mix(in srgb, var(--ink) 30%, transparent) transparent; }
+a { text-underline-offset: .18em; }
+.stat b, .hp-when, .hp-stat b, .meter + *, .badge, time, .tl-n, .cd, .num { font-variant-numeric: tabular-nums; }
+
 /* ===== EKO I: doplňky ke společnému stylu ===== */
 :root { --cs: #0a6cff; --ps: #1d8a3a; --tx: #e5832b; --dwl: #d70015; }
 :root[data-theme="dark"] { --cs: #2997ff; --ps: #32d74b; --tx: #ff9f45; --dwl: #ff453a; }
@@ -1376,6 +1395,13 @@ span.dd-i[aria-current] { cursor: default; }
 .lcard .no, .box-l, .kostka h2, .ltoc .lbl, .tbl th { text-transform: none; letter-spacing: -.005em; }
 .fg text.ptit { text-transform: none; letter-spacing: 0; }
 .lcard .no, .box-l, .ltoc .lbl { font-size: 13px; }
+
+/* odkazy v nadpisech taháku: dotykový cíl aspoň 24 px (2026-11-26) */
+.cheat-g h3 a { display: inline-block; padding: 2px 0; }
+.box.def .box-l, .box.idea .box-l { color: var(--link); }
+/* barevný text křivek v tabulkách: dost kontrastu i mimo graf */
+span.tS, b.tS { color: color-mix(in srgb, var(--cS) 72%, var(--ink)); }
+span.tD, b.tD { color: color-mix(in srgb, var(--cD) 72%, var(--ink)); }
 
 </style>
 
@@ -1954,8 +1980,7 @@ function plane(xmax, ymax, o = {}) {
   const f1 = v => (+v).toFixed(1);
   const P = pts => pts.map(([x, y], i) => (i ? 'L' : 'M') + f1(sx(x)) + ' ' + f1(sy(y))).join(' ');
   const fn = (f, a, b, n = 90) => { const pts = []; for (let i = 0; i <= n; i++) { const x = a + (b - a) * i / n, y = f(x); if (isFinite(y)) pts.push([x, Math.max(-ymax * .2, Math.min(ymax * 1.3, y))]); } return P(pts); };
-  const id = 'fc' + (++CLIPN);
-  const clip = inner => `<defs><clipPath id="${id}"><rect x="${sx(0)}" y="${sy(ymax)}" width="${sx(xmax) - sx(0)}" height="${sy(0) - sy(ymax)}"/></clipPath></defs><g clip-path="url(#${id})">${inner}</g>`;
+  const clip = inner => { const id = 'fc' + (++CLIPN); return `<defs><clipPath id="${id}"><rect x="${sx(0)}" y="${sy(ymax)}" width="${sx(xmax) - sx(0)}" height="${sy(0) - sy(ymax)}"/></clipPath></defs><g clip-path="url(#${id})">${inner}</g>`; };
   const poly = (pts, cls) => `<path class="${cls}" d="${P(pts)} Z"/>`;
   const line = (x1, y1, x2, y2, cls = 'gd') => `<line class="${cls}" x1="${f1(sx(x1))}" y1="${f1(sy(y1))}" x2="${f1(sx(x2))}" y2="${f1(sy(y2))}"/>`;
   const sub = s => String(s).replace(/_\{([^}]+)\}|_(\w+)/g, (_, a, b) => `<tspan baseline-shift="sub" font-size="72%">${a || b}</tspan>`);
