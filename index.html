@@ -1447,6 +1447,12 @@ details.qmap > .qprog { padding-top: 10px; flex-direction: row; }
 .srch-hint { padding: 16px; color: var(--ink-2); font-size: 15px; }
 @media (max-width: 560px) { .srch-i { grid-template-columns: minmax(0, 1fr); } .srch-k { grid-row: auto; } .srch-i b, .srch-i span:last-child { grid-column: 1; } }
 .srch-k { text-transform: none; letter-spacing: -.005em; font-size: 13px; }
+/* tečky kvízu: viditelný bod 14 px, klikací plocha 24 × 24 px */
+.qprog { gap: 2px; }
+.qprog button { width: 24px; height: 24px; padding: 5px; box-sizing: border-box; background-clip: content-box; }
+.qprog button.cur { box-shadow: inset 0 0 0 2px var(--blue); }
+.qprog button:hover { box-shadow: inset 0 0 0 2px var(--ink-2); }
+@media (max-width: 734px) { .qprog button { width: 24px; height: 24px; } }
 
 </style>
 
@@ -2888,6 +2894,298 @@ QB.forEach((q, i) => {
   q[3] = ord.indexOf(q[3]); q[2] = ord.map(k => q[2][k]);
 });
 
+/* ---------- další otázky (verze 12): víc otázek ke každé přednášce ----------
+   Formát [přednáška, otázka, [možnosti], index správné, vysvětlení, 'z' = úroveň zkoušky].
+   Správná odpověď je napsaná první; pořadí se na konci souboru zamíchá (odkazové možnosti zůstanou poslední). */
+const QB4_START = QB.length;
+QB.push(
+/* ===== 1 Racionalita a úvod ===== */
+[1, 'Vzácnost (scarcity) v ekonomii znamená, že', ['zdrojů je méně, než by lidé chtěli použít, kdyby byly zadarmo', 'nějaký statek se v přírodě vyskytuje jen výjimečně', 'statek je drahý', 'statek je nezbytný pro život', 'statek vyrábí jen stát'], 0, 'Ekonomická vzácnost je vztah mezi přáním a dostupností. Geograficky vzácná věc, o kterou nikdo nestojí, ekonomicky vzácná není.'],
+[1, 'Miliardář, který si může koupit cokoli, čelí vzácnosti', ['ano, vzácný je pro něj například čas', 'ne, vzácnost se týká jen chudých', 'jen pokud podniká', 'jen v době krize', 'nic z uvedeného'], 0, 'Vzácnost je univerzální: i bohatý musí volit, jak naložit s omezeným časem.'],
+[1, 'Volným statkem je obvykle', ['vzduch na horách', 'pitná voda z vodovodu', 'vzdělání na veřejné škole', 'parkovací místo v centru', 'elektřina'], 0, 'Volný statek je k dispozici v neomezeném množství a nikdo o něj nesoupeří. Ostatní mají kladnou cenu nebo náklady.'],
+[1, 'Mezní veličina v ekonomii vyjadřuje', ['změnu (přínosu, nákladu) při malé dodatečné změně, typicky o jednu jednotku', 'průměr všech jednotek', 'celkovou hodnotu', 'okrajové, nedůležité jevy', 'nic z uvedeného'], 0, 'Teze 3: racionální lidé rozhodují o malých dodatečných přizpůsobeních.'],
+[1, 'Student zvažuje, zda se učit ještě hodinu. Přínos další hodiny je 2 body navíc, náklad hodina spánku. Racionálně by měl', ['porovnat přínos právě této další hodiny s jejím nákladem', 'porovnat celkový čas učení s celkovým spánkem', 'učit se, dokud celkový přínos roste', 'nikdy nespat méně než průměrný student', 'rozhodnout podle toho, kolik se už učil'], 0, 'Rozhoduje mezní přínos a mezní náklad další hodiny, ne celkové nebo minulé hodnoty.'],
+[1, 'Do kterého ze tří bloků deseti tezí patří teze „trh je dobrý způsob organizace ekonomické aktivity“?', ['jak spolu lidé jednají (interakce)', 'jak se lidé rozhodují', 'jak funguje ekonomika jako celek', 'jak stát reguluje ceny', 'do žádného'], 0, 'Teze 5–7 (obchod, trh, vláda) popisují interakce mezi lidmi.'],
+[1, 'Do bloku „jak funguje ekonomika jako celek“ patří teze', ['tiskne-li vláda příliš mnoho peněz, ceny rostou', 'lidé reagují na podněty', 'lidé zvažují náklady příležitosti', 'obchodem si polepší obě strany', 'vlády mohou zlepšit výsledky trhu'], 0, 'Teze 8–10: produktivita, inflace z tisku peněz, krátkodobá volba inflace × nezaměstnanost.'],
+[1, 'Tržní ekonomika alokuje zdroje', ['decentralizovaným rozhodováním mnoha firem a domácností na trzích', 'podle plánu ústředního orgánu', 'podle tradice', 'losem', 'výhradně přes státní podniky'], 0, 'Definice ze slidů k tezi „trh je dobrý způsob organizace ekonomické aktivity“.'],
+[1, 'Externalita je', ['dopad činnosti na třetí osobu, který není kompenzován v ceně', 'vývoz zboží do zahraničí', 'zakázka od externího dodavatele', 'dohoda dvou firem', 'daň na dovoz'], 0, 'Spolu s tržní silou nejčastější důvod selhání trhu (teze 7).'],
+[1, 'Phillipsova křivka popisuje', ['krátkodobou volbu mezi inflací a nezaměstnaností', 'vztah daňové sazby a výnosu daně', 'nerovnost příjmů', 'vztah ceny a poptávaného množství', 'hranici produkčních možností'], 0, 'Teze 10.'],
+[1, 'Firma utratila 2 mil. Kč za reklamu, která nezabrala. Při rozhodování o další kampani', ['2 mil. Kč nehrají roli, rozhoduje očekávaný přínos a náklad nové kampaně', 'musí nejdřív „vydělat zpět“ 2 mil. Kč', 'nesmí utratit víc než 2 mil. Kč', 'musí 2 mil. Kč přičíst k nákladům nové kampaně', 'kampaň nesmí opakovat'], 0, 'Utracené peníze jsou utopené náklady.', 'z'],
+[1, 'Prodejce zmrzliny zvažuje, zda nechat stánek otevřený o hodinu déle. Rozhodující je', ['zda tržby za tuto hodinu převýší náklady této hodiny (mzda, energie)', 'zda celodenní tržby převýší celodenní náklady', 'nájem stánku za celý měsíc', 'průměrné tržby za hodinu', 'cena mrazáku'], 0, 'Nájem a mrazák jsou pro hodinu navíc fixní/utopené; rozhoduje mezní přínos a mezní náklad.', 'z'],
+[1, 'Které tvrzení o nákladech příležitosti je pravdivé?', ['mohou být i nepeněžní, např. ušlý volný čas', 'jsou vždy rovny ceně statku', 'zahrnují utopené náklady', 'jsou součtem všech odmítnutých možností', 'týkají se jen firem'], 0, 'Je to hodnota nejlepší ušlé alternativy, peněžní i nepeněžní.'],
+[1, 'Zvýšení daně z cigaret o 20 % sníží kouření. To je ilustrace teze', ['lidé reagují na podněty', 'obchodem si polepší obě strany', 'čím bohatší země, tím vyšší produktivita', 'tiskne-li vláda moc peněz, ceny rostou', 'lidé volí mezi efektivností a rovností'], 0, 'Změna nákladů změní chování.'],
+[1, 'Firma „maximalizuje zisk“ v ekonomickém smyslu, když', ['pokračuje ve výrobě, dokud mezní příjem převyšuje mezní náklad', 'prodává co nejvíce kusů', 'má co nejnižší náklady', 'má co nejvyšší cenu', 'má největší podíl na trhu'], 0, 'Princip mezního rozhodování: MR ≥ MC.'],
+[1, 'Člověk nakoupí lístek do kina za 200 Kč, ztratí ho a lístek nejde nahradit zdarma. Zvažuje, zda koupit nový. Racionální úvaha', ['ztracený lístek je utopený náklad; koupí nový, pokud film má pro něj hodnotu aspoň 200 Kč', 'film ho teď „stojí“ 400 Kč, takže nekoupí', 'musí koupit, aby se ztráta vrátila', 'nesmí koupit, protože už jednou zaplatil', 'nic z uvedeného'], 0, 'Minulý výdaj nejde vrátit, srovnává se jen hodnota filmu a cena nového lístku.', 'z'],
+[1, 'Efektivnost v ekonomickém smyslu znamená', ['získat ze vzácných zdrojů co nejvíce', 'rozdělit výnos spravedlivě', 'mít nízkou inflaci', 'pracovat co nejrychleji', 'mít vyrovnaný rozpočet'], 0, 'Efektivnost = velikost koláče; rovnost = jak je rozdělen.'],
+[1, 'Produktivita je podle přednášky', ['množství statků a služeb vyrobených za hodinu pracovního času', 'celkový výstup ekonomiky', 'zisk firmy', 'počet zaměstnaných', 'objem exportu'], 0, 'Teze 8.'],
+[1, 'Inflace je', ['růst cenové hladiny v ekonomice', 'růst ceny jednoho statku', 'pokles nezaměstnanosti', 'růst množství peněz', 'pokles produktivity'], 0, 'Teze 9 ji spojuje s nadměrným tiskem peněz.'],
+[1, 'Které rozhodnutí NEodporuje racionalitě?', ['přestat jíst, když další sousto už nechutná víc, než kolik stojí', 'dojíst předražené menu, „když už je zaplacené“', 'čekat na kino v dešti kvůli koupenému lístku, i když tě už nebaví', 'pokračovat ve špatné investici, protože do ní už šly peníze', 'vše uvedené odporuje racionalitě'], 0, 'Ostatní možnosti jsou typické omyly utopených nákladů.', 'z'],
+
+/* ===== 2 Ekonomie jako věda ===== */
+[2, 'Mikroekonomie zkoumá', ['rozhodování domácností a firem a jejich interakce na trzích', 'inflaci a nezaměstnanost', 'ekonomický růst státu', 'státní rozpočet', 'měnový kurz'], 0, 'Makroekonomie studuje ekonomiku jako celek.'],
+[2, 'Makroekonomie zkoumá', ['ekonomiku jako celek: inflaci, nezaměstnanost, růst', 'chování jedné firmy', 'cenu chleba na trhu', 'volbu spotřebitele', 'tvar indiferenčních křivek'], 0, 'Mikro × makro ze začátku přednášky 2.'],
+[2, 'Ekonomický model je', ['zjednodušený popis reality postavený na předpokladech', 'přesná kopie skutečnosti', 'statistická tabulka', 'zákon platný vždy', 'normativní doporučení'], 0, 'Vědecká metoda: teorie, pozorování, předpoklady, modely.'],
+[2, 'Výrok „Daň z příjmu by měla být progresivní“ je', ['normativní', 'pozitivní', 'empiricky ověřitelný', 'omyl skladby', 'post hoc'], 0, 'Obsahuje hodnotový soud („měla by“).'],
+[2, 'Výrok „Po zvýšení spotřební daně klesla spotřeba alkoholu o 5 %“ je', ['pozitivní', 'normativní', 'hodnotový soud', 'záměna příčiny a následku', 'vždy nepravdivý'], 0, 'Popisuje, co se stalo, a dá se ověřit.'],
+[2, 'Výrobní faktory jsou', ['práce, půda a kapitál', 'peníze, akcie a dluhopisy', 'mzda, renta a zisk', 'daně a transfery', 'poptávka a nabídka'], 0, 'Mzda, renta a zisk jsou jejich odměny (důchody).'],
+[2, 'Odměnou za výrobní faktor půda je', ['renta', 'mzda', 'úrok', 'dividenda', 'transfer'], 0, 'Práce → mzda, půda → renta, kapitál → zisk/úrok.'],
+[2, 'V modelu koloběhu na trhu zboží a služeb', ['firmy prodávají a domácnosti kupují', 'domácnosti prodávají práci', 'firmy kupují kapitál', 'stát vybírá daně', 'nic z uvedeného'], 0, 'Na trhu výrobních faktorů je to obráceně.'],
+[2, 'Model ekonomického koloběhu je zjednodušený, protože', ['zachycuje statickou rovnováhu a nezahrnuje toky do zahraničí', 'neobsahuje firmy', 'neobsahuje peníze', 'platí jen pro socialismus', 'obsahuje příliš mnoho trhů'], 0, 'Slidy: „vše je složitější“ — statika, toky ven a do ekonomiky, boj o monopol.'],
+[2, 'Bod na PPF je efektivní, protože', ['víc jednoho statku lze získat jen za cenu méně druhého', 'vyrábí se tam nejvíc obou statků', 'tam jsou nejnižší ceny', 'tam je plná zaměstnanost všech zdrojů a víc už nelze vyrobit z ničeho', 'možnosti první a čtvrtá jsou správně'], 4, 'Na hranici jsou zdroje plně a efektivně využité; zvýšit jeden statek lze jen snížením druhého.', 'z'],
+[2, 'Rostoucí náklady příležitosti na PPF vysvětluje', ['to, že zdroje nejsou stejně vhodné pro výrobu obou statků', 'inflace', 'technologický pokrok', 'rostoucí poptávka', 'nezaměstnanost'], 0, 'Příklad: nejdřív obdělávám nejúrodnější půdu, nakonec hory (zákon klesajících výnosů).'],
+[2, 'Ekonomika je uvnitř PPF. Platí, že', ['může vyrábět víc obou statků bez obětí', 'je na hranici svých možností', 'nemůže zvýšit výrobu bez nových zdrojů', 'má rostoucí náklady příležitosti', 'nic z uvedeného'], 0, 'Neefektivita (nevyužité zdroje): zlepšení je možné bez nákladu příležitosti.'],
+[2, 'Válka zničí část továren. V modelu PPF', ['se PPF posune k počátku', 'se ekonomika posune po PPF', 'se PPF posune ven', 'se nic nezmění', 'se PPF pootočí ven'], 0, 'Méně kapitálu = menší produkční možnosti.'],
+[2, 'Imigrace pracovníků (ceteris paribus) v modelu PPF', ['posune PPF od počátku', 'posune PPF k počátku', 'posune bod dovnitř PPF', 'nezmění PPF', 'pootočí PPF k počátku'], 0, 'Víc práce = víc zdrojů.'],
+[2, 'Země vyrábí spotřební a kapitálové statky. Která volba dnes nejvíc posune její PPF v budoucnu ven?', ['vyrábět víc kapitálových statků na úkor dnešní spotřeby', 'vyrábět jen spotřební statky', 'vyrábět uvnitř PPF', 'snížit výrobu obou statků', 'nic z uvedeného'], 0, 'Investice dnes = víc kapitálu a výroby zítra.', 'z'],
+[2, 'Petr umí za hodinu 4 dorty nebo 8 chlebů, Jana 2 dorty nebo 2 chleby. Absolutní výhodu', ['má Petr v obou statcích', 'má Jana v dortech', 'má Petr jen v chlebu', 'nemá nikdo', 'má Jana v obou'], 0, 'Petr vyrobí za hodinu víc obojího.'],
+[2, 'Petr: 4 dorty nebo 8 chlebů za hodinu, Jana: 2 dorty nebo 2 chleby. Komparativní výhodu v dortech má', ['Jana (OC dortu 1 chléb vs. Petrovy 2 chleby)', 'Petr (vyrobí víc dortů)', 'oba stejně', 'nikdo', 'nelze určit'], 0, 'OC dortu: Petr 8/4 = 2 chleby, Jana 2/2 = 1 chléb. Nižší OC má Jana.', 'z'],
+[2, 'V předchozím příkladu (Petr OC dortu 2 chleby, Jana 1 chléb) se obchod vyplatí oběma za cenu 1 dortu', ['mezi 1 a 2 chleby', 'pod 1 chlebem', 'nad 2 chleby', 'přesně 3 chleby', 'za žádnou cenu'], 0, 'Cena musí ležet mezi náklady příležitosti obou stran.', 'z'],
+[2, 'D. Ricardo (1817) ukázal, že země', ['může mít absolutní výhodu v produkci statku, aniž by měla výhodu komparativní', 'může obchodovat jen se statky, v nichž má absolutní výhodu', 'by měla vyrábět vše sama', 'se specializací vždy prodělá', 'nic z uvedeného'], 0, 'Citace ze slidů k PPF a zahraničnímu obchodu.'],
+[2, 'Ekonomická expanze se v modelu PPF projeví jako', ['posun křivky (E₁ → E₃)', 'pohyb po křivce (E₁ → E₂)', 'bod uvnitř křivky', 'pootočení kolem počátku', 'nic z uvedeného'], 0, 'Slidy: pohyb křivky = expanze, pohyb po křivce = realokace zdrojů.'],
+[2, '„Zavedli jsme novou reklamu a prodeje vzrostly, reklama tedy zabrala.“ Pokud prodeje rostly kvůli Vánocům, šlo o', ['omyl „poté, tedy proto“ (post hoc)', 'omyl skladby', 'záměnu příčiny a následku', 'normativní výrok', 'nic z uvedeného'], 0, 'Časová posloupnost nedokazuje příčinnost.'],
+[2, '„Kdo nosí deštník, ten má mokré boty. Deštníky tedy způsobují mokré boty.“ Chyba spočívá v', ['opomenuté proměnné (déšť)', 'omylu skladby', 'trendu', 'ceteris paribus', 'nic z uvedeného'], 0, 'Třetí proměnná (déšť) působí na obojí.'],
+[2, 'Vědecká předpojatost (léčka č. 1) znamená, že', ['výzkumník vidí jen to, co chce vidět, a vybírá si data podle předem daného názoru', 'věda je vždy objektivní', 'ekonom nepoužívá data', 'model nemá předpoklady', 'nic z uvedeného'], 0, 'První ze sedmi léček.'],
+[2, 'Konvexní PPF (prohnutá k počátku) vzniká, když', ['jsou ve výrobě rostoucí výnosy, takže náklady příležitosti klesají', 'zdroje nejsou stejně vhodné', 'je nezaměstnanost', 'roste populace', 'nic z uvedeného'], 0, 'Slidy: oblouk D–E při rostoucích výnosech ve výrobě aut.', 'z'],
+[2, 'Země A má lepší PPF než země B, ale nižší spotřebu soukromých statků. Je to možné?', ['ano, země A si mohla zvolit víc veřejných nebo kapitálových statků', 'ne, lepší PPF znamená vždy vyšší spotřebu', 'jen při nezaměstnanosti v B', 'jen pokud A neobchoduje', 'nic z uvedeného'], 0, 'Slidy: „může se stát, že C_A < C_B, přestože země A je výkonnější“.', 'z'],
+
+/* ===== 3 Nabídka a poptávka ===== */
+[3, 'Poptávané množství je', ['množství, které kupující chtějí koupit při konkrétní ceně (bod poptávkové křivky)', 'celá poptávková křivka', 'množství, které se skutečně prodá', 'množství, které nabízejí výrobci', 'nic z uvedeného'], 0, 'Poptávka = celá funkce D(p), poptávané množství = jeden její bod.'],
+[3, 'Zákon poptávky platí ceteris paribus. To znamená, že', ['ostatní determinanty poptávky (důchod, ceny jiných statků, chutě) se nemění', 'cena je konstantní', 'poptávka je vždy lineární', 'platí jen v dokonalé konkurenci', 'nic z uvedeného'], 0, 'Jinak bychom pohyb po křivce zaměnili s posunem křivky.'],
+[3, 'Zákon poptávky (klesající poptávka) vysvětlují', ['substituční a důchodový efekt', 'jen důchodový efekt', 'jen Giffenův efekt', 'rostoucí mezní náklady', 'výnosy z rozsahu'], 0, 'Při zdražení lidé přejdou k substitutům a klesne jejich reálný důchod.'],
+[3, 'Změnu poptávky (posun křivky) NEzpůsobí', ['změna ceny samotného statku', 'změna důchodu', 'změna ceny substitutu', 'změna očekávání', 'změna počtu spotřebitelů'], 0, 'Změna vlastní ceny = pohyb po křivce.'],
+[3, 'Lidé očekávají, že benzín příští týden výrazně zdraží. Dnes', ['poptávka po benzínu vzroste (posun doprava)', 'poptávka klesne', 'nabídka vzroste', 'nic se nestane', 'poptávané množství klesne kvůli ceně'], 0, 'Očekávání je determinant poptávky.'],
+[3, 'Pokles ceny inkoustových náplní (komplement tiskáren) způsobí', ['posun poptávky po tiskárnách doprava', 'posun poptávky po tiskárnách doleva', 'pohyb po poptávce po tiskárnách', 'posun nabídky tiskáren', 'nic'], 0, 'Komplementy: P_A ↓ ⇒ Q_B ↑.'],
+[3, 'Nabízené množství při ceně pod p_min (minimální cenou nabídky) je', ['nulové, výroba by byla ztrátová', 'maximální', 'rovno poptávanému', 'záporné', 'nic z uvedeného'], 0, 'Slidy: při p < p_min nelze efektivně vyrábět.'],
+[3, 'Nad technologickým maximem q_max', ['nelze vyrábět žádnou cenou', 'stačí vyšší cena', 'se nabídka stává elastickou', 'roste poptávka', 'nic z uvedeného'], 0, 'Proto nabídka u q_max končí svisle.'],
+[3, 'Determinantem nabídky NENÍ', ['důchod spotřebitelů', 'ceny vstupů', 'technologie', 'počet výrobců', 'vládní zásahy (daně, dotace)'], 0, 'Důchod spotřebitelů posouvá poptávku.'],
+[3, 'Stát zavede dotaci na solární panely pro výrobce. Na trhu panelů', ['nabídka se posune doprava, cena klesne a množství vzroste', 'poptávka se posune doprava', 'nabídka se posune doleva', 'cena vzroste', 'nic se nezmění'], 0, 'Dotace výrobcům snižuje jejich náklady.'],
+[3, 'Při rovnovážné ceně platí', ['poptávané množství = nabízené množství', 'poptávka = nabídka jako celé křivky', 'cena = průměrné náklady', 'zisk je nulový', 'nic z uvedeného'], 0, 'Rovnováha = průsečík křivek.'],
+[3, 'Současně klesne poptávka i nabídka. Bez dalších údajů jistě víme, že', ['rovnovážné množství klesne', 'cena klesne', 'cena vzroste', 'množství vzroste', 'nevíme nic'], 0, 'Obě posuny snižují množství; dopad na cenu je nejasný.', 'z'],
+[3, 'Vzroste poptávka a současně klesne nabídka. Jistě víme, že', ['cena vzroste', 'množství vzroste', 'množství klesne', 'cena klesne', 'nevíme nic'], 0, 'Oba posuny tlačí cenu nahoru; množství záleží na velikosti posunů.', 'z'],
+[3, 'Poptávka po statku je Q = 50 − 5p. Při ceně 4 je cenová elasticita (absolutně)', ['0,67', '1,5', '5', '0,8', '1'], 0, 'Q = 30, |ε| = 5 · 4/30 = 0,67.', 'z'],
+[3, 'Cenová elasticita poptávky po kině je 2. Kino zlevní o 10 %. Tržby', ['vzrostou (množství +20 %)', 'klesnou', 'se nezmění', 'klesnou o 10 %', 'nelze určit'], 0, '%ΔQ = +20 %; 0,9 · 1,2 = 1,08, tržby +8 %.', 'z'],
+[3, 'Cenová elasticita poptávky po hodinkách je 0,5. Cena vzroste o 20 %. Poptávané množství', ['klesne o 10 %', 'klesne o 40 %', 'vzroste o 10 %', 'klesne o 20 %', 'se nezmění'], 0, '%ΔQ = −0,5 · 20 % = −10 %. Tržby vzrostou.'],
+[3, 'Firma chce zvýšit tržby. Odhaduje |ε| = 0,3. Měla by', ['zvýšit cenu', 'snížit cenu', 'cenu ponechat', 'zdvojnásobit výrobu', 'nelze rozhodnout'], 0, 'Neelastická poptávka: vyšší cena = vyšší tržby.'],
+[3, 'Z bodu A (p = 9, Q = 2) do bodu B (p = 8, Q = 4) vychází elasticita metodou z výchozího bodu', ['−9', '−0,5', '−2', '−1', '−0,11'], 0, '(2/2)/(−1/9) = −9. Poptávka je zde silně elastická.', 'z'],
+[3, 'Poptávka po soli je velmi neelastická hlavně proto, že', ['je to levná nezbytnost s malým podílem na důchodu', 'má mnoho substitutů', 'je luxusní statek', 'trh je úzce vymezený', 'nic z uvedeného'], 0, 'Determinanty PED: nezbytnost, podíl na důchodu.'],
+[3, 'Poptávka po konkrétní značce zubní pasty je ve srovnání s poptávkou po zubní pastě obecně', ['elastičtější', 'méně elastická', 'stejně elastická', 'dokonale neelastická', 'nelze srovnat'], 0, 'Úzce vymezený trh má víc blízkých substitutů.'],
+[3, 'Poptávka po benzínu je v dlouhém období ve srovnání s krátkým', ['elastičtější (lidé změní auto, bydliště, dopravu)', 'méně elastická', 'stejná', 'dokonale neelastická', 'nelze určit'], 0, 'Časový horizont: delší = vyšší elasticita.'],
+[3, 'Důchodová elasticita poptávky po zahraniční dovolené je 2,5. Jde o', ['luxusní statek', 'nezbytný statek', 'podřadný statek', 'Giffenův statek', 'komplement'], 0, 'YED > 1.'],
+[3, 'Důchodová elasticita chleba je 0,2. Chléb je', ['nezbytný (normální) statek', 'luxusní statek', 'podřadný statek', 'Giffenův statek', 'volný statek'], 0, '0 < YED < 1.'],
+[3, 'Křížová elasticita mezi kávou a cukrem je −0,6. Statky jsou', ['komplementy', 'substituty', 'nesouvisející', 'podřadné', 'luxusní'], 0, 'XED < 0.'],
+[3, 'Křížová elasticita je 0. Statky jsou', ['nesouvisející', 'substituty', 'komplementy', 'podřadné', 'Giffenovy'], 0, 'Změna ceny jednoho nemá vliv na poptávku po druhém.'],
+[3, 'Cenová elasticita nabídky je vyšší, když', ['je delší časový horizont a vstupy jsou snadno dostupné', 'je velmi krátké období', 'vstupy jsou vzácné', 'statek je nezbytný', 'poptávka je neelastická'], 0, 'Determinanty PES ze slidů.'],
+[3, 'Lineární poptávka p = 20 − Q. Tržby jsou maximální při', ['Q = 10, p = 10', 'Q = 20, p = 0', 'Q = 5, p = 15', 'Q = 15, p = 5', 'Q = 0, p = 20'], 0, 'TR = 20Q − Q², maximum v polovině, kde |ε| = 1.', 'z'],
+[3, 'Výdaje spotřebitelů na statek se po zdražení zvýšily. Poptávka je v daném úseku', ['neelastická', 'elastická', 'jednotkově elastická', 'dokonale elastická', 'nelze určit'], 0, 'Výdaje = tržby; rostou se zdražením jen při |ε| < 1.', 'z'],
+[3, 'Konvexnost poptávky (zakřivení k počátku) slidy vysvětlují tím, že', ['změna ceny o jednotku při nízké ceně „osloví“ víc spotřebitelů', 'lidé jsou iracionální', 'nabídka je konvexní', 'poptávka je lineární', 'nic z uvedeného'], 0, 'Při nízké ceně stejné Δp vyvolá větší Δq.'],
+[3, 'Trh je podle přednášky', ['skupina kupujících a prodávajících určitého zboží nebo služby', 'místo, kde se nakupuje', 'burza', 'jen konkurenční prostředí', 'nic z uvedeného'], 0, 'Definice ze slidů.'],
+[3, 'Laissez-faire („nechte nás být“) charakterizuje období', ['19. století', 'konce 20. století', 'státu blahobytu', 'centrálního plánování', 'současnosti'], 0, 'Historie tržní ekonomiky ze slidů přednášky 3.'],
+[3, 'Při ceně 6 kupující chtějí 3 000 kusů a výrobci nabízejí 5 000. Co nastane?', ['cena klesne, poptávané množství vzroste a nabízené klesne', 'cena vzroste', 'cena se nezmění', 'nabídka se posune doleva', 'poptávka se posune doprava'], 0, 'Převis nabídky; cena se pohybuje k rovnováze po křivkách (pohyby, ne posuny).', 'z'],
+
+/* ===== 4 Vládní politiky ===== */
+[4, 'Křivka poptávky ukazuje z pohledu efektivity', ['mezní užitek (ochotu platit) kupujících', 'mezní náklady výrobců', 'průměrné náklady', 'výnos daně', 'nic z uvedeného'], 0, 'Proto přebytek spotřebitele = plocha pod D nad cenou.'],
+[4, 'Křivka nabídky ukazuje z pohledu efektivity', ['mezní náklady výrobců', 'mezní užitek', 'cenu kupujících', 'zisk', 'nic z uvedeného'], 0, 'Přebytek výrobce = plocha nad S pod cenou.'],
+[4, 'Přebytek výrobce je', ['rozdíl mezi tržní cenou a mezními náklady výrobce', 'zisk firmy po zdanění', 'tržby firmy', 'rozdíl ceny a průměrných nákladů', 'nic z uvedeného'], 0, 'Definice ze slidů.'],
+[4, 'Výrobci by čtyři auta prodali za 100, 200, 300 a 400 tis. Kč, tržní cena je 400 tis. Kč. Přebytek výrobců je', ['600 tis. Kč', '1 000 tis. Kč', '400 tis. Kč', '1 600 tis. Kč', '0'], 0, '300 + 200 + 100 + 0 = 600.', 'z'],
+[4, 'Daň na jednotku zvýší cenu pro kupující', ['nanejvýš o celou výši daně, typicky o méně', 'vždy přesně o výši daně', 'vždy o polovinu daně', 'o víc, než je daň', 'vůbec'], 0, 'Celou daň zaplatí kupující jen při dokonale neelastické poptávce nebo dokonale elastické nabídce.'],
+[4, 'Po zavedení daně je prodané množství', ['menší než bez daně (pokud nejsou křivky svislé)', 'větší než bez daně', 'stejné', 'nulové', 'nelze určit'], 0, 'Klín mezi cenami snižuje obchodované množství.'],
+[4, 'Výnos daně je v grafu', ['obdélník: daň × množství po zdanění', 'trojúhelník mezi křivkami', 'plocha pod poptávkou', 'plocha nad nabídkou', 'nic z uvedeného'], 0, 'C + D na slidech; E + F je ztráta mrtvé váhy.'],
+[4, 'Ztráta mrtvé váhy daně je tím větší, čím', ['elastičtější jsou nabídka a poptávka', 'neelastičtější jsou nabídka a poptávka', 'nižší je daň', 'menší je trh', 'nic z uvedeného'], 0, 'Elastické křivky = velký pokles množství = velká DWL.', 'z'],
+[4, 'Poptávka Q = 100 − 2p, nabídka Q = 2p − 20. Rovnovážná cena je', ['30', '25', '40', '20', '35'], 0, '100 − 2p = 2p − 20 ⇒ p = 30, Q = 40.', 'z'],
+[4, 'Na trhu Q_D = 100 − 2p, Q_S = 2p − 20 (p* = 30) se zavede daň 10 na prodávající. Kupující zaplatí', ['35', '40', '30', '25', '32,5'], 0, 'Křivky stejně strmé ⇒ daň napůl: p_D = 35, p_S = 25, Q = 30.', 'z'],
+[4, 'Kupující nesou podíl daně d/(b + d), kde Q_D = a − bp a Q_S = c + dp. Při b = 1, d = 3 nesou', ['75 %', '25 %', '50 %', '33 %', '100 %'], 0, '3/(1 + 3) = 0,75. Nabídka je elastičtější, takže víc nesou kupující.', 'z'],
+[4, 'Trh s léky na rakovinu: poptávka je velmi neelastická. Daň uložená výrobcům', ['zaplatí ve formě vyšší ceny hlavně pacienti', 'zaplatí hlavně výrobci', 'se rozdělí napůl', 'sníží prodané množství na nulu', 'nemá vliv na cenu'], 0, 'Slidy: daň na úkor nepružnější strany.'],
+[4, 'Místní poplatek z ubytování v horském hotelu s pevnou kapacitou (nabídka nepružná) ponesou hlavně', ['hoteliéři (dostanou nižší čistou cenu)', 'hosté', 'obec', 'oba stejně', 'nikdo'], 0, 'Slidy: nepružná nabídka ⇒ daň nese prodávající.'],
+[4, 'Cenový strop je', ['nejvyšší povolená cena', 'nejnižší povolená cena', 'daň na jednotku', 'dotace k ceně', 'kvóta na dovoz'], 0, 'Minimální cena je nejnižší povolená.'],
+[4, 'Cenový strop pod rovnovážnou cenou způsobí', ['nedostatek zboží (q_D > q_S)', 'přebytek zboží', 'nic', 'vyšší prodané množství', 'pokles poptávky'], 0, 'Strop váže jen pod p*.'],
+[4, 'Minimální cena pod rovnovážnou cenou', ['trh neváže, nic se nemění', 'vytvoří přebytek', 'vytvoří nedostatek', 'zvýší cenu', 'sníží množství'], 0, 'Trh dál funguje při p*.'],
+[4, 'Vedlejším důsledkem závazného cenového stropu bývá', ['fronty, černý trh a nižší kvalita', 'přebytek zboží', 'vyšší nabízené množství', 'nižší poptávka', 'nic z uvedeného'], 0, 'Nedostatek se rozděluje jinak než cenou.'],
+[4, 'Lafferova křivka při sazbě 0 % a 100 %', ['dává nulový daňový příjem', 'dává maximální příjem', 'není definovaná', 'dává záporný příjem', 'nic z uvedeného'], 0, 'Při 100 % se nikomu nevyplatí vydělávat.'],
+[4, 'Podle Lafferovy křivky lze stejný daňový výnos (kromě maxima) vybrat', ['dvěma různými sazbami', 'jen jednou sazbou', 'nekonečně mnoha sazbami', 'jen sazbou 50 %', 'nic z uvedeného'], 0, 'Na rostoucí a na klesající části.'],
+[4, 'Zemědělci zvýší efektivnost a nabídka vzroste. Tržby zemědělců klesnou, protože', ['poptávka po potravinách je neelastická, cena klesne víc než vzroste množství', 'poptávka je elastická', 'nabídka je elastická', 'stát sníží dotace', 'nic z uvedeného'], 0, 'Slidy: p₁q₁ < p₀q₀.'],
+[4, 'Dotace k ceně (stát platí část ceny výrobci)', ['zvýší tržby zemědělců bez růstu ceny pro spotřebitele, ale vytvoří dvojí ceny', 'zvýší cenu pro spotřebitele', 'sníží užitek spotřebitelů', 'zvýší hektarové výnosy', 'nic z uvedeného'], 0, 'Srovnání dvou dotací ze slidů.'],
+[4, 'Minimální mzda, která trh práce váže, má za následek', ['přebytek nabízené práce, tedy nezaměstnanost', 'nedostatek pracovníků', 'nižší mzdy', 'vyšší zaměstnanost', 'nic'], 0, 'q_S − q_D na trhu práce.'],
+[4, 'Daň 4 Kč na kus sníží prodané množství ze 100 na 90. Ztráta mrtvé váhy je', ['20 Kč', '40 Kč', '360 Kč', '400 Kč', '10 Kč'], 0, '½ · 4 · 10 = 20.', 'z'],
+[4, 'V předchozím příkladu (daň 4 Kč, prodej 90 kusů) vybere stát', ['360 Kč', '400 Kč', '20 Kč', '40 Kč', '380 Kč'], 0, '4 · 90 = 360.', 'z'],
+[4, 'Efektivní (Pareto) alokace na konkurenčním trhu vyžaduje', ['aby se vyrobil každý kus, jehož mezní užitek je aspoň jeho mezní náklad', 'aby cena byla co nejnižší', 'aby výrobci neměli zisk', 'aby stát určil množství', 'nic z uvedeného'], 0, 'MU = MC v rovnováze.'],
+[4, 'Které tvrzení o dani je pravdivé?', ['ekonomická incidence (kdo daň skutečně nese) nezávisí na tom, komu je daň uložena', 'daň vždy nese ten, komu je uložena', 'daň nese vždy spotřebitel', 'daň nikdy nemění množství', 'nic z uvedeného'], 0, 'Rozhodují elasticity.', 'z'],
+[4, 'Slidy uvádějí příklad „PED > PES“. V takovém případě', ['daň nesou převážně prodávající', 'daň nesou převážně kupující', 'daň se dělí napůl', 'nevzniká ztráta mrtvé váhy', 'nic z uvedeného'], 0, 'Méně elastická strana (zde nabídka) nese víc.'],
+
+/* ===== 5 Spotřebitel ===== */
+[5, 'Užitek je', ['relativní uspokojení, které spotřebiteli plyne ze spotřeby', 'cena statku', 'množství statku', 'zisk spotřebitele', 'nic z uvedeného'], 0, 'Definice ze slidů.'],
+[5, 'Kardinální užitek', ['lze vyjádřit čísly a porovnávat jeho velikost', 'jen seřadí koše', 'neexistuje', 'je vždy záporný', 'je totéž co cena'], 0, 'Ordinální užitek jen uspořádá preference.'],
+[5, 'Celkový užitek po kusech: 30, 50, 60, 65. Mezní užitek třetího kusu je', ['10', '60', '20', '5', '15'], 0, '60 − 50 = 10.'],
+[5, 'Celkový užitek roste, ale stále pomaleji. Mezní užitek je', ['kladný a klesající', 'záporný', 'nulový', 'rostoucí', 'konstantní'], 0, 'Zákon klesajícího mezního užitku.'],
+[5, 'Spotřebitel kupuje jen jablka a hrušky, obojí za 10 Kč. MU posledního jablka je 30, hrušky 20. Měl by', ['koupit víc jablek a méně hrušek', 'koupit víc hrušek', 'nic neměnit', 'koupit víc obojího', 'nelze určit'], 0, 'Při stejných cenách se srovná MU; jablka dávají víc na korunu.'],
+[5, 'MU/p je pro statek A 4, pro B 6. Přesun koruny z A do B', ['zvýší celkový užitek', 'sníží celkový užitek', 'užitek nezmění', 'je nemožný', 'nelze určit'], 0, 'Koruna v B přinese 6, v A ztratíme 4.'],
+[5, 'Indiferenční křivka je řez užitkovou funkcí. Body na ní mají', ['stejný užitek', 'stejnou cenu', 'stejné výdaje', 'stejné množství obou statků', 'nic z uvedeného'], 0, 'Spotřebitel je mezi nimi indiferentní.'],
+[5, 'Indiferenční křivky jsou klesající, protože', ['když dostanu víc jednoho statku, musím dostat méně druhého, aby užitek zůstal stejný', 'ceny rostou', 'důchod klesá', 'statky jsou podřadné', 'nic z uvedeného'], 0, 'Oba statky jsou žádoucí.'],
+[5, 'MRS₁₂ = 4 znamená, že spotřebitel', ['je ochoten vzdát se 4 jednotek x₂ za jednu jednotku x₁', 'chce 4 jednotky x₁', 'má 4krát víc x₂', 'platí za x₁ 4 Kč', 'nic z uvedeného'], 0, 'MRS je sklon indiferenční křivky v absolutní hodnotě.'],
+[5, 'MU₁ = 12, MU₂ = 3. Mezní míra substituce MRS₁₂ je', ['4', '0,25', '15', '9', '36'], 0, 'MRS₁₂ = MU₁/MU₂ = 4.'],
+[5, 'Statek x₁ není pro spotřebitele žádoucí (nezajímá ho). Jeho indiferenční křivky jsou', ['vodorovné (užitek závisí jen na x₂)', 'svislé', 'přímky se sklonem −1', 'tvaru L', 'kružnice'], 0, 'Slidy: speciální případ (a). x₁ na vodorovné ose, změna x₁ nemění užitek.'],
+[5, 'Rozpočtová přímka má průsečík s osou x₁ v bodě', ['Y/p₁', 'Y/p₂', 'p₁/p₂', 'Y·p₁', 'p₂/p₁'], 0, 'Kdyby utratil vše za statek 1.'],
+[5, 'Důchod 200 Kč, p₁ = 10, p₂ = 20. Rovnice rozpočtové přímky je', ['x₂ = 10 − 0,5x₁', 'x₂ = 20 − 2x₁', 'x₂ = 10 − 2x₁', 'x₂ = 20 − 0,5x₁', 'x₁ = 10 − 0,5x₂'], 0, 'x₂ = Y/p₂ − (p₁/p₂)x₁ = 10 − 0,5x₁.', 'z'],
+[5, 'Důchod vzroste o 20 % a ceny se nemění. Rozpočtová přímka', ['se rovnoběžně posune od počátku', 'se pootočí', 'se posune k počátku', 'změní sklon', 'zůstane stejná'], 0, 'Sklon −p₁/p₂ se nemění.'],
+[5, 'Zdraží statek 2 (na svislé ose). Rozpočtová přímka', ['se pootočí kolem průsečíku s osou x₁ dovnitř', 'se pootočí kolem průsečíku s osou x₂', 'se rovnoběžně posune', 'zůstane stejná', 'nic z uvedeného'], 0, 'Průsečík Y/p₂ klesne, Y/p₁ zůstane.', 'z'],
+[5, 'V optimu spotřebitele (vnitřní řešení) platí', ['MRS₁₂ = p₁/p₂', 'MU₁ = MU₂', 'x₁ = x₂', 'p₁ = p₂', 'MRS = 1'], 0, 'Sklon indiferenční křivky = sklon rozpočtové přímky.'],
+[5, 'Spotřebitel je v bodě, kde MRS₁₂ = 1, ale p₁/p₂ = 2. Měl by', ['kupovat méně x₁ a víc x₂', 'kupovat víc x₁', 'zůstat', 'kupovat víc obou', 'nelze určit'], 0, 'Statek 1 si cení na 1 jednotku x₂, trh chce 2. Pro něj je drahý.', 'z'],
+[5, 'U = x₁·x₂, Y = 80, p₁ = 2, p₂ = 4. Optimum je', ['x₁ = 20, x₂ = 10', 'x₁ = 10, x₂ = 20', 'x₁ = 40, x₂ = 0', 'x₁ = 20, x₂ = 20', 'x₁ = 16, x₂ = 12'], 0, 'Polovina důchodu na každý statek: 40/2 = 20, 40/4 = 10.', 'z'],
+[5, 'U = x₁·x₂. Cena statku 1 klesne na polovinu. Spotřeba x₂', ['se nezmění', 'klesne na polovinu', 'vzroste na dvojnásobek', 'vzroste o polovinu', 'klesne na nulu'], 0, 'x₂ = Y/(2p₂) nezávisí na p₁: PCC je vodorovná.', 'z'],
+[5, 'Engelova křivka luxusního statku', ['roste rychleji než důchod (YED > 1)', 'klesá', 'je vodorovná', 'roste pomaleji než důchod', 'je svislá'], 0, 'Spotřeba roste víc než úměrně.'],
+[5, 'Celkový cenový efekt = substituční efekt + důchodový efekt. Pro normální statek po zlevnění', ['oba efekty zvyšují spotřebu zlevněného statku', 'SE zvyšuje, IE snižuje', 'oba snižují', 'SE snižuje, IE zvyšuje', 'oba jsou nulové'], 0, 'Normální statek: reálný důchod ↑ ⇒ víc statku.'],
+[5, 'Při grafickém rozkladu cenového efektu se kreslí pomocná rozpočtová přímka, která je', ['rovnoběžná s novou rozpočtovou přímkou a dotýká se původní indiferenční křivky', 'rovnoběžná s původní přímkou', 'svislá', 'totožná s novou přímkou', 'nic z uvedeného'], 0, 'Nové relativní ceny, původní užitek ⇒ bod E₂.', 'z'],
+[5, 'Substituční efekt pro druhý (nezlevněný) statek x₂ při zlevnění x₁', ['snižuje spotřebu x₂', 'zvyšuje spotřebu x₂', 'je nulový', 'závisí na tom, zda je x₂ luxusní', 'nic z uvedeného'], 0, 'Slidy: SE u x₂ je opačný (nahrazuji ho x₁).'],
+[5, 'Při Giffenově statku je poptávková křivka v příslušném úseku', ['rostoucí', 'klesající', 'svislá', 'vodorovná', 'neexistuje'], 0, 'Zdražení zvyšuje poptávané množství.'],
+[5, 'Indiferenční křivky jsou konvexní. Spotřebitel proto obvykle volí', ['kombinaci obou statků (vnitřní řešení)', 'jen jeden statek', 'nic', 'vždy stejné množství obou', 'nic z uvedeného'], 0, 'Rohová řešení vznikají u substitutů nebo nežádoucích statků.'],
+[5, 'Spotřebitel utrácí celý důchod za dva statky. Je-li jeden statek podřadný, druhý musí být', ['normální', 'také podřadný', 'Giffenův', 'luxusní a zároveň podřadný', 'nic nelze říct'], 0, 'Při růstu důchodu musí spotřeba aspoň jednoho statku růst, jinak by neutratil víc.', 'z'],
+[5, 'Které tvrzení o indiferenčních křivkách NENÍ pravdivé?', ['vyšší indiferenční křivka znamená nižší užitek', 'neprotínají se', 'jsou klesající', 'jsou obvykle konvexní vůči počátku', 'každým košem prochází jedna křivka'], 0, 'Výše položené jsou preferovány.'],
+)
+
+/* ---------- další otázky (verze 12), přednášky 6–10, a zamíchání odpovědí u nových otázek ---------- */
+QB.push(
+/* ===== 6 Produkční funkce ===== */
+[6, 'Firma je podle přednášky', ['základní výrobní jednotka, která najímá vstupy a vyrábí statky za účelem zisku', 'jakákoli skupina lidí', 'jen akciová společnost', 'státní organizace', 'nic z uvedeného'], 0, 'Definice ze slidů.'],
+[6, 'Zisk firmy je', ['rozdíl výnosů a nákladů', 'tržby', 'rozdíl ceny a mezních nákladů', 'odpisy', 'nic z uvedeného'], 0, 'π = TR − TC.'],
+[6, 'Mezi náklady firmy podle slidů NEpatří', ['dividendy vyplacené akcionářům', 'mzdy', 'materiálové náklady', 'odpisy strojů', 'úroky z úvěrů'], 0, 'Dividendy jsou rozdělení zisku, ne náklad.'],
+[6, 'Produkční funkce q = f(x) udává', ['maximální technologicky realizovatelný výstup při daném vstupu', 'náklady na výrobu', 'cenu výstupu', 'poptávku po výstupu', 'zisk'], 0, 'Definice ze slidů.'],
+[6, 'Produkční množina je', ['množina technologicky realizovatelných výrobních situací', 'body na rozpočtové přímce', 'výrobní situace, kterou firma právě realizuje', 'kombinace výrobků prodaných na trhu', 'nic z uvedeného'], 0, 'Vše na a pod produkční funkcí.'],
+[6, 'V krátkém období se produkční funkce s fixním kapitálem píše', ['Q = f(K̄, L) = f(L)', 'Q = F(K, L) s oběma variabilními', 'Q = K + L', 'Q = min(K, L)', 'nic z uvedeného'], 0, 'Kapitál fixní, mění se jen práce.'],
+[6, 'Ryze konkávní produkční funkce znamená, že mezní produkt', ['klesá od začátku', 'nejdřív roste, pak klesá', 'je konstantní', 'roste', 'je záporný'], 0, 'Konvexně-konkávní má nejdřív rostoucí MP.'],
+[6, 'Lineární produkční funkce jednoho vstupu (do kapacity) má mezní produkt', ['konstantní', 'klesající', 'rostoucí', 'záporný', 'nulový'], 0, 'Každá jednotka vstupu přidá stejně.'],
+[6, 'Geometricky je mezní produkt', ['sklon tečny k produkční funkci', 'sklon přímky z počátku', 'výška produkční funkce', 'plocha pod funkcí', 'nic z uvedeného'], 0, 'Průměrný produkt je sklon paprsku z počátku.'],
+[6, 'TP při 1, 2, 3, 4 pracovnících: 10, 25, 35, 40. Průměrný produkt při 4 pracovnících je', ['10', '5', '40', '8,75', '12,5'], 0, '40/4 = 10.'],
+[6, 'TP při 1, 2, 3, 4 pracovnících: 10, 25, 35, 40. Mezní produkt 3. pracovníka je', ['10', '15', '35', '11,67', '5'], 0, '35 − 25 = 10.'],
+[6, 'Q = 144L + 30L² − 2L³. Mezní produkt práce je', ['MP = 144 + 60L − 6L²', 'MP = 144 + 30L − 2L²', 'MP = 60 − 12L', 'MP = 144L', 'MP = 30 − 6L'], 0, 'Derivace podle L. AP = 144 + 30L − 2L².', 'z'],
+[6, 'Q = 144L + 30L² − 2L³. Klesající výnosy z variabilního vstupu nastávají od', ['L = 5', 'L = 7,5', 'L = 10', 'L = 0', 'L = 12'], 0, 'Maximum MP: 60 − 12L = 0 ⇒ L = 5.', 'z'],
+[6, 'Když MP < AP, pak přijetím dalšího pracovníka', ['AP klesne', 'AP vzroste', 'TP klesne', 'MP vzroste', 'nic se nezmění'], 0, 'Podprůměrný přírůstek snižuje průměr.'],
+[6, 'AP je kladný, dokud', ['je kladný celkový produkt', 'je kladný MP', 'MP roste', 'MP > AP', 'nic z uvedeného'], 0, 'AP = TP/L.'],
+[6, 'II. stádium produkce začíná v bodě, kde', ['MP = AP (maximum AP)', 'MP je maximální', 'MP = 0', 'TP = 0', 'AP = 0'], 0, 'A končí, kde MP = 0.'],
+[6, 'Izokvanta produkční funkce dvou vstupů je', ['množina kombinací vstupů, které dají stejný výstup', 'množina kombinací se stejnými náklady', 'křivka nákladů', 'poptávka po práci', 'nic z uvedeného'], 0, 'Výrobce je mezi nimi indiferentní.'],
+[6, 'Sklon izokvanty (absolutně) se rovná', ['MP₁/MP₂ (MRTS)', 'w₁/w₂', 'p₁/p₂', 'AP₁/AP₂', 'nic z uvedeného'], 0, 'Z podmínky MP₁Δx₁ + MP₂Δx₂ = 0.'],
+[6, 'Izokvanty Cobb-Douglasovy funkce představují elasticitu substituce', ['1', '0', '∞', '0,5', 'záporná'], 0, 'Lineární ∞, Leontief 0.'],
+[6, 'Autobus a řidič jsou typickým příkladem', ['Leontiefovy funkce (dokonalé komplementy)', 'lineární funkce', 'Cobb-Douglasovy funkce', 'rostoucích výnosů', 'nic z uvedeného'], 0, 'Pevný poměr vstupů 1 : 1.'],
+[6, 'Q = 10K^0,5 L^0,5. Při K = 4, L = 9 je výstup', ['60', '36', '130', '65', '6'], 0, '10 · 2 · 3 = 60.', 'z'],
+[6, 'Q = K^0,5 L^0,5. Zdvojnásobením K i L se výstup', ['zdvojnásobí', 'zčtyřnásobí', 'zvýší o 41 %', 'nezmění', 'sníží'], 0, 'Konstantní výnosy z rozsahu (součet exponentů 1).'],
+[6, 'Zákon klesajících výnosů z rozsahu je koncept', ['dlouhého období (mění se všechny vstupy)', 'krátkého období', 'spotřebitelské teorie', 'jen lineární technologie', 'nic z uvedeného'], 0, 'Slidy výslovně.'],
+[6, 'Dlouhodobá produkční funkce F(x) je', ['horní obalová křivka krátkodobých produkčních funkcí', 'dolní obálka', 'průměr krátkodobých funkcí', 'vždy lineární', 'nic z uvedeného'], 0, 'Na rozdíl od LAC, která je dolní obálka.', 'z'],
+[6, 'Které tvrzení NENÍ pravdivé?', ['zákon klesajícího mezního produktu platí, i když se mění všechny vstupy současně', 'v krátkém období je aspoň jeden vstup fixní', 'izokvanty dál od počátku znamenají vyšší výstup', 'MP může být záporný', 'MP = 0 v maximu TP'], 0, 'Klesající MP se týká jednoho vstupu při fixních ostatních.', 'z'],
+[6, 'S 1 až 7 pracovníky se vyrobí 10, 17, 22, 25, 26, 25, 23 stolků. Záporný mezní produkt má', ['6. a 7. pracovník', 'jen 7. pracovník', '5. pracovník', '4. až 7. pracovník', 'nikdo'], 0, 'MP: 10, 7, 5, 3, 1, −1, −2.', 'z'],
+[6, 'Mezi formy podnikání fyzických osob patří', ['živnost', 'akciová společnost', 'společnost s ručením omezeným', 'evropská společnost', 'státní podnik'], 0, 'Obchodní společnosti jsou právnické osoby.'],
+
+/* ===== 7 Zisk a náklady ===== */
+[7, 'Rozvaha zachycuje', ['stav aktiv a pasiv k určitému datu', 'výnosy a náklady za období', 'peněžní toky v budoucnu', 'jen dluhy', 'nic z uvedeného'], 0, 'Stavový výkaz.'],
+[7, 'Pasiva firmy ukazují', ['z čeho firma majetek financovala (vlastní kapitál, dluh)', 'co firma vlastní', 'tržby', 'náklady', 'zisk'], 0, 'Aktiva = co vlastní.'],
+[7, 'Výkaz cash-flow slouží k', ['posouzení dostatečnosti peněžních prostředků', 'výpočtu ekonomického zisku', 'zjištění tržního podílu', 'stanovení ceny', 'nic z uvedeného'], 0, 'Doplňkový výkaz ze slidů.'],
+[7, 'Účetní zisk je vždy', ['větší nebo roven ekonomickému zisku', 'menší než ekonomický zisk', 'roven ekonomickému zisku', 'záporný', 'nulový v dokonalé konkurenci'], 0, 'Ekonomický zisk odečítá navíc implicitní náklady (≥ 0).', 'z'],
+[7, 'Učitelka opustí práci za 400 tis. Kč ročně a otevře kavárnu s účetním ziskem 300 tis. Kč. Její ekonomický zisk je', ['−100 tis. Kč', '300 tis. Kč', '700 tis. Kč', '100 tis. Kč', '0'], 0, '300 − 400 = −100.', 'z'],
+[7, 'Izozisková přímka (jeden vstup x, výstup q) má rovnici', ['q = π/p + (w/p)·x', 'q = π − w·x', 'x = q·p', 'q = (p/w)·x', 'nic z uvedeného'], 0, 'Z π = pq − wx.'],
+[7, 'Izoziskové přímky s vyšším průsečíkem s osou q znamenají', ['vyšší zisk', 'nižší zisk', 'vyšší náklady', 'stejný zisk', 'nic z uvedeného'], 0, 'Průsečík π/p.'],
+[7, 'Firma maximalizuje zisk v bodě, kde', ['se nejvyšší dosažitelná izozisková přímka dotýká produkční funkce', 'produkční funkce protíná osu', 'je MP maximální', 'je AP maximální', 'nic z uvedeného'], 0, 'Tečna: MP = w/p.'],
+[7, 'Při p = 10 a w = 50 firma najme práci, dokud mezní produkt práce neklesne na', ['5', '50', '500', '0,2', '10'], 0, 'p·MP = w ⇒ MP = 5.', 'z'],
+[7, 'Mzda vzroste (cena výstupu stejná). Firma s jedním vstupem', ['sníží množství práce i výstupu', 'zvýší množství práce', 'nic nezmění', 'zvýší výstup', 'nic z uvedeného'], 0, 'Strmější izozisky, dotyk vlevo.'],
+[7, 'Technologie neumožňuje při daných cenách žádný kladný zisk. Optimum je', ['nevyrábět (E = 0)', 'vyrábět na maximu kapacity', 'vyrábět, kde MP = 0', 'vyrábět, kde AP je maximální', 'nic z uvedeného'], 0, 'Slidy: v E ≡ 0 je optimální.'],
+[7, 'Lineární technologie q = min(a·x, b), w/p = a. Optimum je', ['libovolný bod na úsečce E₁E₂ (všechny stejně dobré)', 'jen E₁', 'jen E₂', 'neexistuje', 'nic z uvedeného'], 0, 'Zisk je nulový na celé úsečce.', 'z'],
+[7, 'Izokosta je', ['množina kombinací vstupů se stejnými náklady', 'množina kombinací se stejným výstupem', 'křivka zisku', 'nabídka firmy', 'nic z uvedeného'], 0, 'C = w₁x₁ + w₂x₂.'],
+[7, 'Náklady 1 000 Kč, mzda 50, cena kapitálu 100 (L na vodorovné ose). Průsečík izokosty s osou L je', ['20', '10', '1 000', '50', '0,5'], 0, '1 000/50 = 20 jednotek práce.'],
+[7, 'V nákladovém optimu se dvěma vstupy platí', ['MRTS = w₁/w₂', 'MP₁ = MP₂', 'w₁ = w₂', 'x₁ = x₂', 'nic z uvedeného'], 0, 'Sklon izokvanty = sklon izokosty.'],
+[7, 'Firma minimalizuje náklady. Zvýší se rozpočet na vstupy (ceny stejné). Nové optimum', ['leží na vyšší izokvantě, izokosta se posune rovnoběžně ven', 'se nezmění', 'leží na nižší izokvantě', 'změní poměr cen', 'nic z uvedeného'], 0, 'Spojnice optim je dlouhodobá expanzní cesta.'],
+[7, 'MP práce = 20, mzda = 10, MP kapitálu = 30, cena kapitálu = 15. Firma', ['je v nákladovém optimu', 'by měla použít víc práce', 'by měla použít víc kapitálu', 'by měla snížit oba vstupy', 'nelze určit'], 0, 'MP/w: 20/10 = 2 = 30/15.', 'z'],
+[7, 'Leontiefova funkce q = min(x₁, 3x₂). Pro q = 30 firma použije', ['x₁ = 30, x₂ = 10', 'x₁ = 10, x₂ = 30', 'x₁ = 30, x₂ = 30', 'x₁ = 10, x₂ = 10', 'x₁ = 90, x₂ = 10'], 0, 'x₁ = 3x₂ = 30.', 'z'],
+[7, 'Firma má lineární technologii a izokvanta je strmější než izokosta. Firma použije', ['jen vstup na vodorovné ose', 'jen vstup na svislé ose', 'oba vstupy', 'žádný vstup', 'nelze určit'], 0, 'Strmější izokvanta = MP₁/MP₂ > w₁/w₂: vstup 1 je relativně produktivnější na korunu.', 'z'],
+[7, 'Maximalizace zisku a minimalizace nákladů', ['nejsou totéž, ale platí mezi nimi reciprocita', 'jsou totéž (dualita)', 'vedou vždy k jiným výsledkům', 'se týkají jen monopolu', 'nic z uvedeného'], 0, 'Slidy: „nejde o dualitu“.'],
+[7, 'Reálná mzda je', ['nominální mzda vydělená cenou (w/p)', 'mzda po zdanění', 'minimální mzda', 'mzda v cizí měně', 'nic z uvedeného'], 0, 'Je to sklon izozisku.'],
+[7, 'Ušlý úrok z vlastních peněz vložených do firmy je', ['implicitní náklad', 'explicitní náklad', 'utopený náklad', 'výnos', 'nic z uvedeného'], 0, 'Nikomu se neplatí, ale je to náklad příležitosti.'],
+
+/* ===== 8 Nákladové funkce ===== */
+[8, 'Fixní náklady jsou', ['náklady, které firma platí i při nulové výrobě', 'náklady na materiál', 'náklady rostoucí s výstupem', 'utopené náklady vždy', 'nic z uvedeného'], 0, 'FC = TC(0).'],
+[8, 'Variabilním nákladem automobilky je', ['ocel na karoserie', 'plat vrátného', 'nájem továrny', 'licence na software', 'úroky z půjčky'], 0, 'Mění se s počtem aut.'],
+[8, 'TC = 200 + 5q + q². Variabilní náklady při q = 10 jsou', ['150', '350', '200', '15', '25'], 0, 'VC = 5q + q² = 50 + 100 = 150.'],
+[8, 'TC = 200 + 5q + q². Průměrné náklady při q = 10 jsou', ['35', '15', '25', '350', '20'], 0, 'AC = 350/10 = 35.'],
+[8, 'TC = 200 + 5q + q². Mezní náklady při q = 10 jsou', ['25', '35', '15', '5', '20'], 0, 'MC = 5 + 2q = 25.', 'z'],
+[8, 'TC = 200 + 5q + q². Minimum AC je při', ['q ≈ 14,1', 'q = 10', 'q = 5', 'q = 0', 'q = 20'], 0, 'AC = 200/q + 5 + q, minimum √200 ≈ 14,1 (tam MC = AC).', 'z'],
+[8, 'Průměrné fixní náklady', ['s výstupem stále klesají', 'rostou', 'jsou konstantní', 'nejdřív klesají, pak rostou', 'jsou nulové'], 0, 'AFC = FC/q.'],
+[8, 'AC = AVC + AFC. Graficky jde o', ['svislý součet křivek', 'vodorovný součet', 'rozdíl', 'součin', 'nic z uvedeného'], 0, 'Slidy: graficky vertikální součet.'],
+[8, 'AVC dosahuje minima', ['při nižším výstupu než AC', 'při vyšším výstupu než AC', 'při stejném výstupu jako AC', 'nikdy', 'v nule'], 0, 'Kvůli AFC je minimum AC posunuté doprava.'],
+[8, 'MC protíná AVC v', ['minimu AVC', 'maximu AVC', 'minimu MC', 'bodě, kde AVC = AFC', 'nic z uvedeného'], 0, 'Bod B (ukončení činnosti).'],
+[8, 'Geometricky jsou mezní náklady', ['sklon tečny ke křivce TC', 'sklon paprsku z počátku k TC', 'výška TC', 'rozdíl TC a VC', 'nic z uvedeného'], 0, 'AC = sklon paprsku z počátku.'],
+[8, 'Vzdálenost mezi křivkami TC a VC (svisle) je', ['všude stejná a rovná FC', 'rostoucí', 'klesající', 'rovná MC', 'nulová'], 0, 'TC = VC + FC.'],
+[8, 'Konvexně-konkávní produkční funkce vede k nákladové funkci TC, která je', ['konkávně-konvexní', 'lineární', 'vždy konvexní', 'klesající', 'nic z uvedeného'], 0, 'Slidy: tvar TC je zrcadlem produkční funkce.'],
+[8, 'Firma v dokonalé konkurenci maximalizuje zisk, když', ['p = MC na rostoucí části MC (a p ≥ min AVC)', 'p = AC', 'MC je minimální', 'AVC je minimální', 'TC je minimální'], 0, 'Podmínka optima.'],
+[8, 'Cena je přesně rovna minimu AC. Ekonomický zisk firmy je', ['nulový', 'kladný', 'záporný', 'rovný FC', 'nelze určit'], 0, 'Bod vyrovnání C.'],
+[8, 'Cena je pod minimem AVC. Firma', ['nevyrábí, ztráta = FC', 'vyrábí, kde p = MC', 'vyrábí, kde p = AC', 'zvýší cenu', 'nic z uvedeného'], 0, 'Výroba by ztrátu zvětšila.'],
+[8, 'Cena je mezi min AVC a min AC. Ztráta firmy, když vyrábí, je', ['menší než FC', 'větší než FC', 'rovna FC', 'nulová', 'nelze určit'], 0, '−FC < π < 0.'],
+[8, 'Krátkodobá nabídková křivka firmy v dokonalé konkurenci kopíruje křivku MC od', ['bodu ukončení činnosti (min AVC)', 'bodu vyrovnání (min AC)', 'počátku', 'maxima MC', 'nic z uvedeného'], 0, 'Dlouhodobá od bodu vyrovnání.'],
+[8, 'p = 30, v optimu q = 50, AC = 26. Zisk firmy je', ['200', '1 500', '1 300', '4', '−200'], 0, '(30 − 26) · 50 = 200.', 'z'],
+[8, 'Rostoucí část LAC odpovídá', ['nehospodárnosti z rozsahu (klesajícím výnosům z rozsahu)', 'úsporám z rozsahu', 'bodu uzavření', 'konstantním výnosům', 'nic z uvedeného'], 0, 'Velký závod je obtížně řiditelný.'],
+[8, 'Firma zjistí, že při současném výstupu je MC = 12 a AC = 15. Při mírném zvýšení výstupu AC', ['klesnou', 'vzrostou', 'se nezmění', 'budou rovny 12', 'nelze určit'], 0, 'MC < AC ⇒ AC klesají.', 'z'],
+[8, 'MC klesá. To znamená, že', ['každý další kus je levnější než předchozí', 'AC nutně rostou', 'firma prodělává', 'AFC rostou', 'nic z uvedeného'], 0, 'Slidy: MC klesá — každé další q levnější.'],
+[8, 'Firma zvažuje zakázku za 50 tis. Kč. Vyžádá si dodatečné náklady 40 tis. Kč; podíl na fixních nákladech by byl 15 tis. Kč. V krátkém období by zakázku', ['měla přijmout, dodatečný příjem převýší dodatečný náklad', 'měla odmítnout, celkové náklady 55 tis. převyšují příjem', 'měla přijmout jen za 55 tis. Kč', 'nemůže rozhodnout', 'nic z uvedeného'], 0, 'Fixní náklady platí tak jako tak; rozhoduje mezní úvaha.', 'z'],
+[8, 'Rozdíl mezi bodem vyrovnání a bodem ukončení činnosti je dán', ['průměrnými fixními náklady', 'mezními náklady', 'cenou', 'tržbami', 'nic z uvedeného'], 0, 'Min AC − min AVC souvisí s AFC.', 'z'],
+
+/* ===== 9 Tržní struktury ===== */
+[9, 'Tržní síla je', ['schopnost firmy ovlivnit cenu a výstup v odvětví', 'velikost firmy', 'počet zaměstnanců', 'zisk', 'nic z uvedeného'], 0, 'Měří se např. podílem na tržbách.'],
+[9, 'Předpokladem dokonalé konkurence NENÍ', ['diferencovaný produkt', 'mnoho prodávajících a kupujících', 'dokonalá informovanost', 'volný vstup a výstup', 'firma je příjemcem ceny'], 0, 'V DK je produkt homogenní.'],
+[9, 'Firma v dokonalé konkurenci zvýší cenu nad tržní. Prodá', ['nic, zákazníci přejdou ke konkurenci', 'o něco méně', 'stejně', 'víc', 'nic z uvedeného'], 0, 'Poptávka po produkci firmy je vodorovná.'],
+[9, 'Optimum firmy v dlouhodobé rovnováze DK splňuje', ['p = MC = min AC', 'p > MC', 'p = MR > MC', 'p < AC', 'nic z uvedeného'], 0, 'Nulový zisk, maximální efektivnost.'],
+[9, 'V dlouhodobé rovnováze DK platí MC = p = MU. To znamená, že', ['výrobci respektují preference spotřebitelů (alokační efektivnost)', 'firmy mají kladný zisk', 'spotřebitelé platí víc než MC', 'je ztráta mrtvé váhy', 'nic z uvedeného'], 0, 'Slidy přednášky 9.'],
+[9, 'Monopolní firma je', ['tvůrce ceny', 'příjemce ceny', 'bez tržní síly', 'vždy státní', 'nic z uvedeného'], 0, 'Volí množství a cenu z poptávky.'],
+[9, 'Příčinou vzniku monopolu NENÍ', ['nízké náklady vstupu do odvětví', 'úspory z rozsahu', 'vlastnictví jedinečného zdroje', 'státní regulace', 'patent'], 0, 'Nízké náklady vstupu monopolu brání.'],
+[9, 'Přirozený monopol je typický pro', ['síťová odvětví (vodovod, železnice)', 'zemědělství', 'restaurace', 'kadeřnictví', 'nic z uvedeného'], 0, 'Klesající AC v celém rozsahu poptávky.'],
+[9, 'Mezní příjem monopolu je nižší než cena, protože', ['aby prodal další kus, musí snížit cenu i u všech ostatních kusů', 'má vyšší náklady', 'platí daně', 'je regulován', 'nic z uvedeného'], 0, 'Proto MR leží pod poptávkou.'],
+[9, 'Poptávka p = 80 − Q. Mezní příjem monopolu je', ['MR = 80 − 2Q', 'MR = 80 − Q', 'MR = 40 − Q', 'MR = 80', 'MR = −1'], 0, 'TR = 80Q − Q².'],
+[9, 'Poptávka p = 80 − Q, MC = 20. Monopol vyrábí', ['30 kusů za cenu 50', '60 kusů za cenu 20', '40 kusů za cenu 40', '30 kusů za cenu 20', '20 kusů za cenu 60'], 0, '80 − 2Q = 20 ⇒ Q = 30, p = 50.', 'z'],
+[9, 'Poptávka p = 80 − Q, MC = AC = 20. Zisk monopolu je', ['900', '1 500', '1 800', '600', '450'], 0, '(50 − 20) · 30 = 900.', 'z'],
+[9, 'Monopol má v krátkém i dlouhém období', ['kladný ekonomický zisk díky bariérám vstupu', 'nulový zisk', 'záporný zisk', 'zisk jen krátkodobě', 'nic z uvedeného'], 0, 'Slidy: bariéry brání vstupu.'],
+[9, 'Alokační neefektivnost monopolu znamená, že', ['cena je vyšší než MC a vzniká ztráta mrtvé váhy', 'nevyrábí v minimu AC', 'má nulový zisk', 'vyrábí moc', 'nic z uvedeného'], 0, 'Výrobní neefektivnost je výroba mimo min AC.'],
+[9, 'Monopolistická konkurence se od monopolu liší hlavně', ['nízkými bariérami vstupu a mnoha firmami s blízkými substituty', 'homogenním produktem', 'tím, že firma je příjemcem ceny', 'nulovým počtem firem', 'nic z uvedeného'], 0, 'Krátkodobě se chová jako monopol, dlouhodobě nulový zisk.'],
+[9, 'Restaurace ve městě jsou typickým příkladem', ['monopolistické konkurence', 'dokonalé konkurence', 'monopolu', 'kartelu', 'monopsonu'], 0, 'Diferencovaný produkt, snadný vstup.'],
+[9, 'Oligopol je charakterizován', ['malým počtem vzájemně závislých firem a bariérami vstupu', 'jedinou firmou', 'mnoha malými firmami', 'homogenním produktem vždy', 'nic z uvedeného'], 0, 'Produkt může být homogenní i diferencovaný.'],
+[9, 'Ve vězňově dilematu Coca-Cola a Pepsi skončí bez spolupráce s tržbami', ['10 a 10 mil. $', '15 a 15 mil. $', '30 a 5 mil. $', '5 a 30 mil. $', '0 a 0'], 0, 'Obě zlevní na 5 $.'],
+[9, 'Nashova rovnováha je situace, kdy', ['žádný hráč si nepolepší jednostrannou změnou strategie', 'oba hráči mají maximální zisk', 'hráči spolupracují', 'jeden hráč vyhraje vše', 'nic z uvedeného'], 0, 'Ve vězňově dilematu: oba zlevní.', 'z'],
+[9, 'Cenový vůdce v modelu dominantní firmy určí množství podle', ['MR_L = MC_L na zbytkové poptávce', 'p = MC_L', 'p = AC', 'poptávky celého trhu', 'nic z uvedeného'], 0, 'Lem se pak chová jako příjemce ceny.'],
+[9, 'Konkurenční lem v modelu dominantní firmy vyrábí, kde', ['p_L = MC_F', 'MR = MC', 'p = AC', 'MC = 0', 'nic z uvedeného'], 0, 'Přijímá cenu vůdce.'],
+[9, 'Monopolní cena 60, MC 40. Lernerův index je', ['0,33', '0,67', '1,5', '20', '0,4'], 0, '(60 − 40)/60 = 1/3.'],
+[9, 'Cenová diskriminace je možná jen tehdy, když', ['firma má tržní sílu, rozliší zákazníky a zabrání přeprodeji', 'je na trhu dokonalá konkurence', 'všichni zákazníci mají stejnou ochotu platit', 'zboží lze snadno přeprodat', 'nic z uvedeného'], 0, 'Jinak by levně nakoupení přeprodali.', 'z'],
+[9, 'Množstevní slevy (čím víc koupíš, tím levnější kus) jsou', ['cenová diskriminace 2. stupně', '1. stupně', '3. stupně', 'dumping', 'kartel'], 0, 'Cena závisí na množství.'],
+[9, 'Oligopson je', ['trh, kde malý počet kupujících stojí proti mnoha prodávajícím', 'trh s jedním prodávajícím', 'trh s jedním kupujícím', 'kartel', 'nic z uvedeného'], 0, 'Slidy: výkup kakaových bobů.'],
+[9, 'Které tvrzení o monopolu NENÍ pravdivé?', ['monopol může stanovit libovolně vysokou cenu a prodat libovolné množství', 'monopol nemá nabídkovou křivku', 'poptávka monopolu je tržní poptávka', 'monopol vyrábí, kde MR = MC', 'monopol je cenový tvůrce'], 0, 'Je omezen poptávkou: vyšší cena = menší prodej.', 'z'],
+[9, 'Kartel složený ze všech firem na trhu se chová', ['jako monopol', 'jako dokonalá konkurence', 'jako monopolistická konkurence', 'jako monopson', 'nic z uvedeného'], 0, 'Společně volí množství, kde MR = MC.'],
+
+/* ===== 10 Antimonopolní politika a nerovnost ===== */
+[10, 'Strukturu trhu určuje zejména', ['počet firem, bariéry vstupu a tržní síla', 'jen počet zákazníků', 'výše daní', 'kurz měny', 'nic z uvedeného'], 0, 'Úvod přednášky 10.'],
+[10, 'Koncentrační poměr CR₃ pro podíly 30, 25, 20, 15, 10 % je', ['75 %', '55 %', '90 %', '100 %', '30 %'], 0, '30 + 25 + 20.'],
+[10, 'Herfindahlův index pro podíly 30, 25, 20, 15, 10 % je', ['2 250', '100', '1 500', '3 000', '2 000'], 0, '900 + 625 + 400 + 225 + 100 = 2 250.', 'z'],
+[10, 'Herfindahlův index trhu se 100 stejně velkými firmami je', ['100', '1 000', '1', '10 000', '0'], 0, '100 · 1² = 100.', 'z'],
+[10, 'Dvě firmy po 50 % se spojí. HHI vzroste z', ['5 000 na 10 000', '2 500 na 5 000', '100 na 200', '50 na 100', 'nezmění se'], 0, '2 · 2 500 → 10 000.', 'z'],
+[10, 'Proč je Herfindahlův index lepší než CR_n?', ['zahrnuje všechny firmy a velkým firmám dává větší váhu', 'je jednodušší spočítat', 'nevyžaduje podíly', 'je vždy menší', 'nic z uvedeného'], 0, 'Umocnění podílů zvýrazní dominantní firmy.'],
+[10, 'Lernerův index je teoreticky nejlepší, ale v praxi', ['se těžko zjišťují mezní náklady', 'nelze zjistit cenu', 'je vždy nula', 'platí jen pro DK', 'nic z uvedeného'], 0, 'Slidy.'],
+[10, 'Lernerův index monopolu s elasticitou poptávky −2 je', ['0,5', '2', '0,25', '1', '0'], 0, 'L = 1/|ε|.', 'z'],
+[10, 'V dokonalé konkurenci je Lernerův index', ['0', '1', '0,5', '100', 'záporný'], 0, 'p = MC.'],
+[10, 'Ve srovnání s DK je u nedokonalé konkurence přebytek spotřebitele A + B + C zmenšen na A. Plocha B je', ['část, kterou získá výrobce jako vyšší tržby', 'ztráta mrtvé váhy', 'výnos daně', 'přebytek výrobce v DK', 'nic z uvedeného'], 0, 'C je ztráta mrtvé váhy.'],
+[10, 'Úřad pro ochranu hospodářské soutěže (ÚOHS) se NEzabývá', ['stanovením výše daní', 'zakázanými dohodami', 'zneužitím dominantního postavení', 'spojováním soutěžitelů', 'veřejnými zakázkami a soutěží'], 0, 'Daně určuje parlament.'],
+[10, 'Zakázanou dohodou je například', ['dohoda konkurentů o rozdělení trhu podle regionů', 'společný výzkum s veřejným výsledkem', 'nákup materiálu u dodavatele', 'zvýšení ceny po zdražení vstupů', 'nic z uvedeného'], 0, 'Rozdělení trhu narušuje soutěž.'],
+[10, 'Dominantní postavení podle české úpravy se obvykle předpokládá od podílu kolem', ['40 %', '10 %', '25 %', '75 %', '100 %'], 0, 'Slidy.'],
+[10, 'Liberální kritici tvrdí, že výzkum a vývoj', ['je často možný jen ve velkých firmách, takže boj proti velikosti může škodit', 'je vždy lepší v malých firmách', 'nemá s tržní strukturou souvislost', 'musí dělat jen stát', 'nic z uvedeného'], 0, 'Argument ze slidů.'],
+[10, 'Lorenzova křivka ukazuje', ['kumulativní podíl příjmu, který má nejchudších x % populace', 'průměrný příjem', 'vztah daní a příjmu', 'příjem nejbohatšího 1 %', 'nic z uvedeného'], 0, 'Přímka 45° = dokonalá rovnost.'],
+[10, 'Nejchudších 50 % lidí má 20 % příjmu. Lorenzova křivka v bodě 50 % leží', ['pod diagonálou', 'na diagonále', 'nad diagonálou', 'na vodorovné ose', 'nelze určit'], 0, 'Při rovnosti by měli 50 %.'],
+[10, 'Giniho koeficient se počítá jako', ['A/(A + B)', 'B/A', 'A + B', '1 − A', 'nic z uvedeného'], 0, 'A je plocha mezi diagonálou a Lorenzovou křivkou.'],
+[10, 'Země X má Gini 0,25, země Y 0,45. Platí', ['v Y je větší nerovnost příjmů', 'v X je větší nerovnost', 'Y je chudší', 'X má vyšší průměrný příjem', 'nic z uvedeného'], 0, 'Gini neměří úroveň, jen rozdělení.'],
+[10, 'Mezigenerační elasticita příjmu 0,5 znamená, že', ['když příjem rodiče vzroste o 1 %, očekávaný příjem dítěte vzroste o 0,5 %', 'polovina dětí vydělá víc než rodiče', 'mobilita je dokonalá', 'nerovnost je 0,5', 'nic z uvedeného'], 0, 'Osa Gatsbyho křivky.', 'z'],
+[10, 'Podle přednášky je ekonomicky nejdůležitějším měřítkem postavení domácnosti', ['spotřeba (životní úroveň)', 'bohatství', 'příjem před zdaněním', 'počet nemovitostí', 'nic z uvedeného'], 0, 'I když se nejčastěji ignoruje.'],
+[10, 'Normativní výrok z přednášky zní, že na nerovnosti je důležité', ['že není důležitá; důležitá je skutečná životní úroveň, tedy chudoba', 'ji úplně odstranit', 'zvýšit daně bohatým', 'zakázat dědictví', 'nic z uvedeného'], 0, 'Výslovně označeno jako normativní výrok.'],
+[10, 'Podíl nejbohatšího 1 % na příjmech podle Piketty–Saez zahrnuje', ['příjmy před zdaněním včetně kapitálových zisků', 'příjmy po daních a transferech', 'jen mzdy', 'jen bohatství', 'nic z uvedeného'], 0, 'Proto vychází vyšší než u Auten–Splinter.'],
+[10, 'Determinantem nerovnosti podle slidů NENÍ', ['tvar Lafferovy křivky', 'stát nebo oblast', 'diskriminace podle rasy a pohlaví', 'profese', 'výkonnost'], 0, 'Laffer patří k přednášce 4.'],
+[10, 'Které tvrzení je pravdivé?', ['dva trhy se stejným CR₄ mohou mít velmi odlišný HHI', 'HHI je vždy menší než 1 000', 'CR₄ zahrnuje všechny firmy', 'HHI monopolu je 100', 'nic z uvedeného'], 0, 'CR nevidí rozdělení uvnitř největších firem.', 'z'],
+)
+;
+/* zamíchat pořadí možností u otázek z quiz4.js a quiz5.js (správná je v nich napsaná první) */
+for (let i = QB4_START; i < QB.length; i++) {
+  const q = QB[i]; if (q[2].some(o => /možnost/.test(o)) || /možnost[i]? [a-e]\b|\b[a-e]\)/.test(q[4])) continue;
+  const REF = /nic z uvedeného|žádn[ýá] z uvedených|všechn[ay] uvedené|všechna uvedená|vše výše|vše uvedené|nic nelze/i, r = rng(i * 2654435761 + 131);
+  const idx = q[2].map((_, k) => k), fixed = idx.filter(k => REF.test(q[2][k])), free = r.shuffle(idx.filter(k => !REF.test(q[2][k]))), ord = [...free, ...fixed];
+  q[3] = ord.indexOf(q[3]); q[2] = ord.map(k => q[2][k]);
+}
+
 /* ---------- početní příklady: šablony s náhodnými čísly ----------
    make(r) vrací { task, ans, unit, dp, sol: [kroky], wrong: [typické chyby], check() }.
    check() ověřuje výsledek nezávisle (dosazením / numericky); selfTest() projde všechny šablony. */
@@ -3454,13 +3752,19 @@ function startQuiz(key) {
   let idx = QB.map((_, i) => i);
   if (key === 'chyby') idx = qWrong();
   else if (key === 'zk') idx = idx.filter(i => QB[i][5] === 'z');
+  else if (key === 'pocty') {
+    /* 20 nových početních otázek z generátorů (při každém spuštění jiná čísla) */
+    const r = rng(Date.now() % 1e9), ids = [], gen = []; while (ids.length < 20) ids.push(...r.shuffle(FAM_IDS)); 
+    ids.slice(0, 20).forEach((id, k) => { const m = problemAsMC(makeProblem(id, r.int(1, 1e6)), r); gen.push([m.l, m.q, m.o, m.a, m.why, '']); });
+    state.qz = { key, set: gen.map((_, k) => 'g' + k), gen, i: 0, picks: {}, done: false }; return;
+  }
   else if (key !== 'vse') idx = idx.filter(i => QB[i][0] === +key);
   state.qz = { key, set: rng(Date.now() % 1e9).shuffle(idx), i: 0, picks: {}, done: false };
 }
 function viewQuizIndex() {
   const qs = qStat(), per = n => { const ids = QB.map((q, i) => [q, i]).filter(([q]) => q[0] === n); return [ids.filter(([, i]) => qs[i] === 1).length, ids.length]; };
   return band('', `<span class="eyebrow">Kvíz</span><h1 class="h1">Otázka po otázce</h1><p class="lead">Vyber odpověď a hned uvidíš, jestli je správně a proč. Web si pamatuje, co umíš a kde chybuješ.</p>
-<div class="ctas"><button class="pill" data-go="kviz-vse">Všechny otázky (${QB.length})</button><button class="pill ghost" data-go="kviz-zk">Jen na úrovni zkoušky (${QB.filter(q => q[5] === 'z').length})</button>${qWrong().length ? `<button class="pill ghost" data-go="kviz-chyby">Jen moje chyby (${qWrong().length})</button>` : ''}</div>`, 'center')
+<div class="ctas"><button class="pill" data-go="kviz-vse">Všechny otázky (${QB.length})</button><button class="pill ghost" data-go="kviz-zk">Jen na úrovni zkoušky (${QB.filter(q => q[5] === 'z').length})</button><button class="pill ghost" data-go="kviz-pocty">Početní (20 nových)</button>${qWrong().length ? `<button class="pill ghost" data-go="kviz-chyby">Jen moje chyby (${qWrong().length})</button>` : ''}</div>`, 'center')
     + band('alt', `<h2 class="h2">Podle přednášek</h2><div class="lgrid">${THEORY.map(t => { const [k, n] = per(t.n); return `<button class="lcard" data-go="kviz-${t.n}"><span class="no">Přednáška ${t.n}</span><b>${t.title}</b><span class="muted">umíš ${k} z ${n} · ${QB.filter(q => q[0] === t.n && q[5] === 'z').length} na úrovni zkoušky</span><div class="meter"><i style="width:${n ? 100 * k / n : 0}%"></i></div></button>`; }).join('')}</div>`);
 }
 function qHTML(q, i, opts = {}) {
@@ -3469,23 +3773,24 @@ function qHTML(q, i, opts = {}) {
 <div class="q-t">${text}</div><div class="opts">${o.map((t, j) => `<button type="button" class="opt${locked ? (j === a ? ' ok' : j === pick ? ' bad' : '') : ''}" data-opt="${j}" aria-pressed="${pick === j}"${locked ? ' tabindex="-1"' : ''}><span class="ol">${L[j].toLowerCase()}</span><span>${t}</span></button>`).join('')}</div>
 ${locked ? `<div class="why-box">${pick === a ? '<b class="okc">Správně.</b>' : `<b class="badc">Špatně, správně je ${L[a].toLowerCase()}).</b>`}<div>${why}</div><a class="more" href="#teorie-l${l}" data-go="teorie-l${l}">Výklad: přednáška ${l}, ${THEORY[l - 1].title}</a></div>` : ''}</article>`;
 }
-const qzScore = z => z.set.reduce((s, qi, j) => s + (z.picks[j] === QB[qi][3] ? 1 : 0), 0);
+const QQ = (z, qi) => typeof qi === 'string' ? z.gen[+qi.slice(1)] : QB[qi];
+const qzScore = z => z.set.reduce((s, qi, j) => s + (z.picks[j] === QQ(z, qi)[3] ? 1 : 0), 0);
 const qzNextOpen = (z, from) => { for (let d = 1; d <= z.set.length; d++) { const j = (from + d) % z.set.length; if (z.picks[j] == null) return j; } return -1; };
 function viewQuiz(key) {
   if (!state.qz || state.qz.key !== key) startQuiz(key);
-  const z = state.qz, n = z.set.length, title = key === 'vse' ? 'Všechny otázky' : key === 'chyby' ? 'Moje chyby' : key === 'zk' ? 'Otázky na úrovni zkoušky' : `Přednáška ${key}: ${THEORY[key - 1].title}`;
+  const z = state.qz, n = z.set.length, title = key === 'vse' ? 'Všechny otázky' : key === 'chyby' ? 'Moje chyby' : key === 'zk' ? 'Otázky na úrovni zkoušky' : key === 'pocty' ? 'Početní otázky (nová čísla)' : `Přednáška ${key}: ${THEORY[key - 1].title}`;
   if (!n) return band('', `<h1 class="h1">Žádné chyby</h1><p class="lead">Všechny otázky, na které jsi odpovídal(a), máš naposledy správně.</p><div class="ctas"><button class="pill" data-go="kviz">Zpět na kvíz</button></div>`, 'center');
   const answered = Object.keys(z.picks).length, sc = qzScore(z), open = n - answered;
   if (z.done) {
     const p = answered ? Math.round(100 * sc / answered) : 0;
-    return band('', `<span class="eyebrow">${title}</span><div class="res-big">${sc} / ${answered}</div><p class="lead">${answered ? `${p} % správně ze zodpovězených otázek.` : 'Zatím jsi nic nezodpověděl(a).'}${open ? ` Nezodpovězeno zůstalo ${open} z ${n}.` : ''} ${answered ? (p >= 80 ? 'Výborně, tohle umíš.' : p >= 60 ? 'Dobrý základ. Projdi si vysvětlení u chyb.' : 'Vrať se k teorii a zkus to znovu.') : ''}</p>
+    return band('', `<h1 class="vh">Výsledek kvízu: ${title}</h1><span class="eyebrow">${title}</span><div class="res-big">${sc} / ${answered}</div><p class="lead">${answered ? `${p} % správně ze zodpovězených otázek.` : 'Zatím jsi nic nezodpověděl(a).'}${open ? ` Nezodpovězeno zůstalo ${open} z ${n}.` : ''} ${answered ? (p >= 80 ? 'Výborně, tohle umíš.' : p >= 60 ? 'Dobrý základ. Projdi si vysvětlení u chyb.' : 'Vrať se k teorii a zkus to znovu.') : ''}</p>
 <div class="ctas">${open ? `<button class="pill" data-qresume>Pokračovat v nezodpovězených (${open})</button>` : ''}<button class="pill${open ? ' ghost' : ''}" data-qagain>Znovu (jiné pořadí)</button>${qWrong().length ? `<button class="pill ghost" data-go="kviz-chyby">Jen chyby (${qWrong().length})</button>` : ''}${/^\d+$/.test(key) ? `<button class="pill ghost" data-go="teorie-l${key}">Teorie k přednášce</button>` : ''}</div>`, 'center');
   }
   const qi = z.set[z.i], pick = z.picks[z.i] ?? null, nxt = qzNextOpen(z, z.i), last = z.i + 1 >= n;
   const qin = z.lastI !== z.i ? 'qin' : ''; z.lastI = z.i;
   return band('', `<h1 class="vh">Kvíz: ${title}</h1><div class="qnav"><button class="chip" data-go="kviz">← Všechny kvízy</button><span class="muted small">${title} · otázka ${z.i + 1} z ${n} · zodpovězeno ${answered} · správně ${sc}</span></div>
-${(m => z.set.length > 40 ? `<details class="qmap"><summary>Mapa otázek</summary>${m}</details>` : m)(`<div class="qprog" role="group" aria-label="Přehled otázek">${z.set.map((q2, j) => `<button type="button" class="${z.picks[j] != null ? (z.picks[j] === QB[q2][3] ? 'ok' : 'bad') : ''}${j === z.i ? ' cur' : ''}" data-qj="${j}" aria-label="Otázka ${j + 1}"></button>`).join('')}</div>`)}
-${qHTML(QB[qi], qi, { pick, reveal: true, cls: qin })}
+${(m => z.set.length > 40 ? `<details class="qmap"><summary>Mapa otázek</summary>${m}</details>` : m)(`<div class="qprog" role="group" aria-label="Přehled otázek">${z.set.map((q2, j) => `<button type="button" class="${z.picks[j] != null ? (z.picks[j] === QQ(z, q2)[3] ? 'ok' : 'bad') : ''}${j === z.i ? ' cur' : ''}" data-qj="${j}" aria-label="Otázka ${j + 1}"></button>`).join('')}</div>`)}
+${qHTML(QQ(z, qi), qi, { pick, reveal: true, cls: qin, numTag: typeof qi === 'string' })}
 <div class="tnav"><button class="pill ghost" data-qmove="-1"${z.i ? '' : ' disabled'}>← Předchozí</button>
 <div class="chips">${pick == null ? `<button class="chip" data-qdk>Nevím, ukaž odpověď</button>` : ''}${nxt >= 0 && nxt !== z.i + 1 && (pick != null || last) ? `<button class="chip" data-qj="${nxt}">Další nezodpovězená →</button>` : ''}<button class="chip" data-qend>Ukončit a vyhodnotit</button></div>
 ${last ? `<button class="pill" data-qend>Výsledek</button>` : `<button class="pill${pick == null ? ' ghost' : ''}" data-qmove="1">${pick == null ? 'Přeskočit →' : 'Další →'}</button>`}</div>
@@ -3494,9 +3799,9 @@ ${last ? `<button class="pill" data-qend>Výsledek</button>` : `<button class="p
 function quizMove(d) { const z = state.qz; if (!z) return; const j = z.i + d; if (j < 0) return; if (j >= z.set.length) { z.done = true; } else z.i = j; rerender(); scrollTo({ top: 0 }); }
 function quizPick(j) {
   const z = state.qz; if (!z || z.done || z.picks[z.i] != null) return;
-  const qi = z.set[z.i], ok = j === QB[qi][3];
+  const qi = z.set[z.i], ok = j === QQ(z, qi)[3];
   z.picks[z.i] = j;
-  const qs = qStat(); qs[qi] = ok ? 1 : 0; store.set('qs', qs);
+  if (typeof qi === 'number') { const qs = qStat(); qs[qi] = ok ? 1 : 0; store.set('qs', qs); }
   rerender();
 }
 
@@ -3621,7 +3926,7 @@ function render() {
   else if ((m = v.match(/^teorie-l(\d+)$/)) && THEORY[m[1] - 1]) html = viewTheory(+m[1]);
   else if (v === 'tahak') html = viewCheat();
   else if (v === 'kviz') html = viewQuizIndex();
-  else if ((m = v.match(/^kviz-(vse|chyby|zk|\d+)$/)) && (isNaN(m[1]) || THEORY[m[1] - 1])) html = viewQuiz(m[1]);
+  else if ((m = v.match(/^kviz-(vse|chyby|zk|pocty|\d+)$/)) && (isNaN(m[1]) || THEORY[m[1] - 1])) html = viewQuiz(m[1]);
   else if (v === 'priklady') html = viewProblemsIndex();
   else if ((m = v.match(/^priklady-([A-Z]\d)$/)) && FAM[m[1]]) html = viewProblems(m[1]);
   else if (v === 'testy') html = viewTests();
@@ -3677,7 +3982,7 @@ document.addEventListener('click', e => {
   const qj = t.closest('[data-qj]'); if (qj && state.qz) { state.qz.i = +qj.dataset.qj; rerender(); return; }
   if (t.closest('[data-qend]') && state.qz) { state.qz.done = true; rerender(); scrollTo({ top: 0 }); return; }
   if (t.closest('[data-qresume]') && state.qz) { const z = state.qz, j = qzNextOpen(z, -1); z.done = false; if (j >= 0) z.i = j; rerender(); return; }
-  if (t.closest('[data-qdk]')) { const z = state.qz; if (z && z.picks[z.i] == null) { const qi = z.set[z.i]; z.picks[z.i] = -1; const qs = qStat(); qs[qi] = 0; store.set('qs', qs); rerender(); } return; }
+  if (t.closest('[data-qdk]')) { const z = state.qz; if (z && z.picks[z.i] == null) { const qi = z.set[z.i]; z.picks[z.i] = -1; if (typeof qi === 'number') { const qs = qStat(); qs[qi] = 0; store.set('qs', qs); } rerender(); } return; }
   const tq = t.closest('[data-tq]'); if (tq && state.test && !state.test.done) { state.test.cur = +tq.dataset.tq; rerender(); return; }
   const tm = t.closest('[data-tmove]'); if (tm && state.test) { const T = state.test; T.cur = Math.max(0, Math.min(T.qs.length - 1, T.cur + +tm.dataset.tmove)); rerender(); return; }
   if (t.closest('[data-tflag]') && state.test) { const T = state.test; T.flag[T.cur] = !T.flag[T.cur]; rerender(); return; }
@@ -3711,7 +4016,7 @@ document.addEventListener('keydown', e => {
   }
   if (/^kviz-/.test(state.view) && state.qz) {
     const z = state.qz; if (z.done) return;
-    const k = 'abcde'.indexOf(e.key.toLowerCase()); if (k >= 0 && k < QB[z.set[z.i]][2].length && z.picks[z.i] == null) { quizPick(k); return; }
+    const k = 'abcde'.indexOf(e.key.toLowerCase()); if (k >= 0 && k < QQ(z, z.set[z.i])[2].length && z.picks[z.i] == null) { quizPick(k); return; }
     if (e.key === 'ArrowRight' || e.key.toLowerCase() === 's' || (e.key === 'Enter' && z.picks[z.i] != null)) { quizMove(1); return; }
     if (e.key === 'ArrowLeft') { quizMove(-1); return; }
   }
