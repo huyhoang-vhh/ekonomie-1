@@ -1488,6 +1488,13 @@ abbr.ab:hover, abbr.ab:focus-visible { background: color-mix(in srgb, var(--blue
 mjx-container[display="true"] { display: block; overflow-x: auto; overflow-y: hidden; max-width: 100%; }
 .prose, .box-b, .topic, .lsec { min-width: 0; max-width: 100%; }
 .tbl { max-width: 100%; overflow-x: auto; }
+.abox-s { font-size: 15px; font-weight: 600; color: var(--ink-2); margin-top: 4px; }
+.ablist.sym dt { color: var(--ink); font-weight: 600; }
+.ablist.sym > div { grid-template-columns: 4.2em minmax(0, 1fr); }
+mjx-container.fx { cursor: help; border-radius: 6px; }
+mjx-container.fx:hover, mjx-container.fx:focus-visible { background: color-mix(in srgb, var(--blue) 9%, transparent); outline: none; }
+#abtip .fxr { display: block; margin-top: 3px; }
+#abtip .fxr b { display: inline-block; min-width: 2.6em; }
 
 </style>
 
@@ -3696,11 +3703,11 @@ function abbrIn(t) {
   return seen;
 }
 function abbrBox(t) {
-  const ks = abbrIn(t); if (!ks.length) return '';
-  return `<section class="abox" aria-labelledby="ab${t.n}"><div class="abox-h"><h2 id="ab${t.n}">Zkratky v této přednášce</h2><button type="button" class="linkbtn" data-go="zkratky">Všechny zkratky a značky ›</button></div>
-<dl class="ablist">${ks.map(k => `<div><dt>${k}</dt><dd>${ABBR[k][0]} <span class="muted">· ${ABBR[k][1]}</span></dd></div>`).join('')}</dl></section>`;
+  const ks = abbrIn(t), sy = symsIn(t); if (!ks.length && !sy.length) return '';
+  return `<section class="abox" id="ab${t.n}" aria-labelledby="abh${t.n}"><div class="abox-h"><h2 id="abh${t.n}">Zkratky a značky v této přednášce</h2><button type="button" class="linkbtn" data-go="zkratky">Všechny zkratky a značky ›</button></div>
+${ks.length ? `<h3 class="abox-s">Zkratky</h3><dl class="ablist">${ks.map(k => `<div><dt>${k}</dt><dd>${ABBR[k][0]} <span class="muted">· ${ABBR[k][1]}</span></dd></div>`).join('')}</dl>` : ''}
+${sy.length ? `<h3 class="abox-s">Značky ve vzorcích</h3><dl class="ablist sym">${sy.map(k => `<div><dt>${symShow(k, t.n)}</dt><dd>${symMean(t.n, k)}</dd></div>`).join('')}</dl><p class="muted small">Tip: klepni na kterýkoli vzorec ve výkladu a uvidíš, co znamenají jeho značky.</p>` : ''}</section>`;
 }
-
 /* vysvětlivky přímo v textu: v každém oddílu se podtrhne první výskyt každé zkratky */
 function markAbbr(root) {
   root.querySelectorAll('.kostka, .lsec .prose').forEach(sec => {
@@ -3721,10 +3728,10 @@ function markAbbr(root) {
 }
 /* bublina s vysvětlením: najetí myší, fokus klávesnicí i klepnutí na mobilu */
 let abTip = null;
-function abShow(el) {
+function abShow(el) { const k = el.dataset.ab, d = ABBR[k]; if (d) abShowHTML(el, `<b>${k}</b> = ${d[0]} <i>${d[1]}</i><span>${d[2]}</span>`); }
+function abShowHTML(el, html) {
   if (!abTip) { abTip = document.createElement('div'); abTip.id = 'abtip'; abTip.setAttribute('role', 'tooltip'); document.body.appendChild(abTip); }
-  const k = el.dataset.ab, d = ABBR[k]; if (!d) return;
-  abTip.innerHTML = `<b>${k}</b> = ${d[0]} <i>${d[1]}</i><span>${d[2]}</span>`; abTip.classList.add('on');
+  abTip.innerHTML = html; abTip.classList.add('on');
   const r = el.getBoundingClientRect(), w = abTip.offsetWidth, h = abTip.offsetHeight;
   const x = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2)), above = r.top - h - 8 > 56;
   abTip.style.left = x + 'px'; abTip.style.top = (above ? r.top - h - 8 : r.bottom + 8) + 'px';
@@ -3734,7 +3741,7 @@ document.addEventListener('mouseover', e => { const a = e.target.closest && e.ta
 document.addEventListener('mouseout', e => { if (e.target.closest && e.target.closest('abbr.ab')) abHide(); });
 document.addEventListener('focusin', e => { if (e.target.matches && e.target.matches('abbr.ab')) abShow(e.target); });
 document.addEventListener('focusout', e => { if (e.target.matches && e.target.matches('abbr.ab')) abHide(); });
-document.addEventListener('click', e => { const a = e.target.closest && e.target.closest('abbr.ab'); if (a) abShow(a); else abHide(); });
+document.addEventListener('click', e => { const a = e.target.closest && e.target.closest('abbr.ab'); if (a) abShow(a); else if (!(e.target.closest && e.target.closest('mjx-container.fx'))) abHide(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') abHide(); });
 addEventListener('scroll', abHide, { passive: true });
 
@@ -3749,6 +3756,73 @@ function viewAbbr() {
 <section class="abgroup"><h2 class="h3">Značky ve vzorcích a grafech</h2><dl class="abfull sym">${SYMB.filter(([s, d]) => !q || sFold(s + ' ' + d).includes(q)).map(([s, d]) => `<div><dt>${s.replace(/_(\w)/g, '<sub>$1</sub>')}</dt><dd>${d}</dd></div>`).join('')}</dl></section>`, 'narrow');
 }
 document.addEventListener('input', e => { if (e.target.id === 'abq') { state.abq = e.target.value; const pos = e.target.selectionStart; rerender(); const el = document.getElementById('abq'); if (el) { el.focus(); el.setSelectionRange(pos, pos); } } });
+
+/* ---------- značky ve vzorcích: význam podle přednášky ----------
+   Klíč je značka tak, jak ji vrátí texTokens() z TeXu (např. p_D, p_{min}, \pi, MRS_{12}). */
+const SY_ = (o) => o;
+const SYM_COMMON = SY_({ p: 'cena', q: 'množství (jedné firmy nebo jednoho kupujícího)', Q: 'množství (na celém trhu)', '\\Delta': 'změna (rozdíl dvou hodnot)', d: 'd ve zlomku znamená derivaci (velmi malou změnu), např. dTC/dq', '\\varepsilon': 'elasticita' });
+const SYMLEC = {
+  2: { X: 'statek X (na vodorovné ose PPF)', Y: 'statek Y (na svislé ose PPF)', 'E₁, E₂, E₃': 'body (kombinace výroby) na PPF nebo mimo ni' },
+  3: { D: 'poptávka (demand)', S: 'nabídka (supply)', Q_D: 'poptávané množství', Q_S: 'nabízené množství', Q_A: 'poptávané množství statku A', p_B: 'cena jiného statku B', 'p*': 'rovnovážná cena', p_A: 'cena statku A',
+    'p_{min}': 'nejnižší cena, při které se vyplatí vyrábět', 'q_{max}': 'technologicky maximální výstup', Y: 'důchod (příjem) spotřebitele', a: 'a, b: čísla v lineární poptávce Q = a − bp (a = množství při nulové ceně, b = o kolik klesne Q, když cena vzroste o 1)', b: 'viz a', c: 'c, d: čísla v lineární nabídce Q = c + dp (d = o kolik vzroste Q, když cena vzroste o 1)', d: 'viz c', k: 'konstanta (pevná částka), např. Q = k/p' },
+  4: { Q_D: 'poptávané množství', Q_S: 'nabízené množství', p_D: 'cena, kterou platí kupující (včetně daně)', p_S: 'cena, kterou dostane prodávající (po odečtení daně)', p_0: 'původní cena', p_1: 'nová cena', 'p_{max}': 'cenový strop (nejvyšší povolená cena)', 'p_{min}': 'minimální cena (nejnižší povolená cena)', q_0: 'původní množství', q_1: 'nové množství', q_D: 'poptávané množství při regulované ceně', q_S: 'nabízené množství při regulované ceně', q_t: 'množství prodané po zavedení daně', t: 'daň na jednotku (např. Kč za kus)', w: 'mzda', 'w_{min}': 'minimální mzda', a: 'a, b: čísla v poptávce Q_D = a − bp', b: 'viz a', c: 'c, d: čísla v nabídce Q_S = c + dp', d: 'viz c (jinde d také znamená derivaci)', L: 'bod L: vrchol Lafferovy křivky (sazba s nejvyšším výnosem)' },
+  5: { U: 'užitek', Y: 'důchod spotřebitele', x_1: 'množství statku 1', x_2: 'množství statku 2', p_1: 'cena statku 1', p_2: 'cena statku 2', p_n: 'cena n-tého (posledního) statku', MU_1: 'mezní užitek statku 1', MU_2: 'mezní užitek statku 2', MU_n: 'mezní užitek n-tého statku', MRS_12: 'mezní míra substituce statku 1 za statek 2', 'MRS_{12}': 'mezní míra substituce statku 1 za statek 2', a: 'a, b: exponenty v užitku U = x₁ᵃ x₂ᵇ (jak moc si spotřebitel cení každého statku)', b: 'viz a', 'E₁, E₂, E₃': 'optimum před změnou ceny, pomocný bod a optimum po změně' },
+  6: { Q: 'výstup (množství výroby)', q: 'výstup', x: 'množství vstupu', x_1: 'množství vstupu 1', x_2: 'množství vstupu 2', f: 'produkční funkce (krátké období)', F: 'produkční funkce (dlouhé období, všechny vstupy se mění)', K: 'kapitál (stroje, budovy)', L: 'práce (počet pracovníků)', A: 'technologická konstanta v Cobb-Douglasově funkci (úroveň technologie)', '\\alpha': 'α, β: exponenty Cobb-Douglasovy funkce; jejich součet určuje výnosy z rozsahu', '\\beta': 'viz α', '\\sigma': 'elasticita substituce: jak snadno lze jeden vstup nahradit druhým', a: 'a, b: čísla (koeficienty) ve funkci; u výnosů z rozsahu a = kolikrát zvětšíme všechny vstupy', b: 'viz a', MP_L: 'mezní produkt práce', MP_K: 'mezní produkt kapitálu', MP_1: 'mezní produkt vstupu 1', MP_2: 'mezní produkt vstupu 2', AP_L: 'průměrný produkt práce', 'MRTS_{12}': 'mezní míra technické substituce vstupu 1 za vstup 2', r: 'cena kapitálu (úrok)' },
+  7: { p: 'cena výstupu (výrobku)', q: 'výstup', x: 'množství vstupu', x_1: 'množství vstupu 1', x_2: 'množství vstupu 2', w: 'cena vstupu, u práce mzda', w_1: 'cena vstupu 1', w_2: 'cena vstupu 2', r: 'cena kapitálu (úrok, nájem strojů)', k: 'fixní (neměnné) množství kapitálu v krátkém období', l: 'množství práce', C: 'celkové náklady (výše izokosty)', '\\pi': 'zisk', a: 'a, b: čísla (koeficienty) v produkční funkci', b: 'viz a', MP_L: 'mezní produkt práce', MP_1: 'mezní produkt vstupu 1', MP_2: 'mezní produkt vstupu 2', 'E, E₁, E₂': 'body optima (dotyk izozisku nebo izokosty)', 'f₁, f₂, f₃': 'různé technologie (produkční funkce), mezi kterými firma volí' },
+  8: { p: 'cena výrobku', q: 'výstup (počet kusů)', w: 'mzda (cena práce)', l: 'množství práce', r: 'cena kapitálu', k: 'fixní množství kapitálu', '\\pi': 'zisk', p_B: 'cena v bodě ukončení činnosti (= minimum AVC)', p_C: 'cena v bodě vyrovnání (= minimum AC)', AP_L: 'průměrný produkt práce', MP_L: 'mezní produkt práce', B: 'bod B: bod ukončení činnosti (MC = AVC)', C: 'bod C: bod vyrovnání (MC = AC)' },
+  9: { p: 'cena', q: 'množství', D: 'poptávka', '\\pi': 'zisk', a: 'a, b: čísla v lineární poptávce p = a − bq', b: 'viz a', p_A: 'cena, nad kterou vyrábí jen konkurenční lem', p_B: 'cena bodu ukončení činnosti; u dominantní firmy cena, pod kterou vyrábí jen vůdce', p_C: 'cena v bodě vyrovnání (minimum AC)', p_L: 'cena, kterou stanoví cenový vůdce (leader)', q_L: 'výstup cenového vůdce', q_F: 'výstup konkurenčního lemu (followers)', q_M: 'celkové množství na trhu', MC_L: 'mezní náklady vůdce', MC_F: 'mezní náklady lemu', MR_L: 'mezní příjem vůdce' },
+  10: { p: 'cena', CR_n: 'koncentrační poměr n největších firem', CR_2: 'koncentrační poměr dvou největších firem', S_i: 'tržní podíl i-té firmy (v procentech)', n: 'počet největších firem, které sčítáme', N: 'počet všech firem na trhu', i: 'pořadí firmy (1., 2., …)', L: 'Lernerův index (p − MC)/p', '\\varepsilon': 'cenová elasticita poptávky', G: 'Giniho koeficient', A: 'plocha mezi přímkou rovnosti a Lorenzovou křivkou', B: 'plocha pod Lorenzovou křivkou', x: 'x % populace (počítáno od nejchudších)' }
+};
+/* značky, které se v lekci objevují mimo vzorce (body v grafech): vždy se zobrazí v rámečku */
+const SYM_PLAIN = { 2: ['E₁, E₂, E₃'], 3: ['p*'], 5: ['E₁, E₂, E₃'], 7: ['E, E₁, E₂', 'f₁, f₂, f₃'], 8: ['B', 'C'], 10: ['x'] };
+const TEX_SKIP = /^\\(dfrac|frac|tfrac|cdot|quad|qquad|Rightarrow|iff|left|right|lt|le|ge|gt|sum|min|max|ln|gtreqless|bar|dots|approx|text|mathrm|,|;|!)$/;
+/* rozdělí TeX na značky: příkazy (\pi), zkratky velkými písmeny (MRS_{12}) a jednotlivá písmena s indexem (p_D, x_1) */
+function texTokens(tex) {
+  const out = [], s = String(tex).replace(/\\text\{[^}]*\}|\\mathrm\{[^}]*\}/g, ' ').replace(/\\(min|max|ln|sum)\b/g, ' ');
+  s.replace(/\\[a-zA-Z]+|[A-Z]{2,}(?:_\{[^}]*\}|_[A-Za-z0-9])?|[A-Za-z](?:_\{[^}]*\}|_[A-Za-z0-9])?/g, m => { if (!TEX_SKIP.test(m) && !out.includes(m)) out.push(m); return m; });
+  return out;
+}
+const symShow = (k, n) => (k === 'k' && (n === 7 || n === 8)) ? 'k̄' : k.replace(/^\\pi$/, 'π').replace(/^\\varepsilon$/, 'ε').replace(/^\\sigma$/, 'σ').replace(/^\\alpha$/, 'α').replace(/^\\beta$/, 'β').replace(/^\\Delta$/, 'Δ')
+  .replace(/_\{([^}]*)\}|_([A-Za-z0-9])/, (_, a, b) => `<sub>${a || b}</sub>`);
+/* význam značky v dané přednášce (zkratky bere ze slovníku ABBR) */
+function symMean(n, k) {
+  const L = SYMLEC[n] || {};
+  if (L[k] != null && L[k] !== '') return L[k];
+  if (ABBR[k]) return ABBR[k][0];
+  if (SYM_COMMON[k]) return SYM_COMMON[k];
+  const m = k.match(/^([A-Z]{2,})_/); if (m && ABBR[m[1]]) return ABBR[m[1]][0] + ' (s indexem)';
+  return null;
+}
+function lectTex(t) { const src = t.key.join(' ') + ' ' + t.secs.map(s => s.t + ' ' + s.html).join(' '), tex = []; src.replace(/\\\(([\s\S]*?)\\\)|\\\[([\s\S]*?)\\\]/g, (m, a, b) => { tex.push(a || b); return m; }); return tex; }
+/* značky (ne zkratky) použité v přednášce, v pořadí výskytu */
+function symsIn(t) {
+  const ks = []; lectTex(t).forEach(x => texTokens(x).forEach(k => { if (!ABBR[k] && !ks.includes(k)) ks.push(k); }));
+  (SYM_PLAIN[t.n] || []).forEach(k => { if (!ks.includes(k)) ks.push(k); });
+  return ks.filter(k => symMean(t.n, k));
+}
+/* kontrola pokrytí: značky bez vysvětlení (má být prázdné) */
+window.symCheck = () => THEORY.map(t => [t.n, (() => { const miss = []; lectTex(t).forEach(x => texTokens(x).forEach(k => { if (!symMean(t.n, k) && !miss.includes(k)) miss.push(k); })); return miss; })()]).filter(([, m]) => m.length);
+
+/* klepnutí / najetí na vzorec ukáže význam jeho značek */
+const FX_TEX = new WeakMap();
+function markFormulas(root, n) {
+  if (!window.MathJax || !MathJax.startup || !MathJax.startup.document) return;
+  for (const it of MathJax.startup.document.math) { const el = it.typesetRoot; if (el && root.contains(el)) FX_TEX.set(el, it.math); }
+  root.querySelectorAll('.topic mjx-container').forEach(el => {
+    const tex = FX_TEX.get(el); if (!tex) return;
+    const ks = texTokens(tex).filter(k => symMean(n, k)); if (!ks.length) return;
+    el.classList.add('fx'); el.tabIndex = 0; el.dataset.fxn = n; el.setAttribute('role', 'button'); el.setAttribute('aria-label', 'Co znamenají značky ve vzorci: ' + ks.map(k => symShow(k, n).replace(/<[^>]+>/g, '') + ' = ' + symMean(n, k)).join('; '));
+  });
+}
+function fxShow(el) {
+  const n = +el.dataset.fxn, ks = texTokens(FX_TEX.get(el) || '').filter(k => symMean(n, k)); if (!ks.length) return;
+  abShowHTML(el, `<b>Značky ve vzorci</b>${ks.slice(0, 10).map(k => `<span class="fxr"><b>${symShow(k, n)}</b> ${symMean(n, k)}</span>`).join('')}`);
+}
+document.addEventListener('click', e => { const f = e.target.closest && e.target.closest('mjx-container.fx'); if (f) fxShow(f); });
+document.addEventListener('focusin', e => { if (e.target.matches && e.target.matches('mjx-container.fx')) fxShow(e.target); });
+document.addEventListener('focusout', e => { if (e.target.matches && e.target.matches('mjx-container.fx')) abHide(); });
+document.addEventListener('mouseover', e => { const f = e.target.closest && e.target.closest('mjx-container.fx'); if (f && matchMedia('(hover: hover)').matches) fxShow(f); });
+document.addEventListener('mouseout', e => { const f = e.target.closest && e.target.closest('mjx-container.fx'); if (f && !f.contains(e.relatedTarget)) abHide(); });
 
 /* ---------- stav a navigace ---------- */
 const $view = document.getElementById('view');
@@ -4111,7 +4185,7 @@ function typeset(el) {
   if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetClear && MathJax.typesetClear([el]); return MathJax.typesetPromise([el]).catch(() => { }); }
   return Promise.resolve();
 }
-function typesetAll() { const p = typeset($view); if (/^teorie-l\d+$/.test(state.view) && !$view.dataset.ab) { $view.dataset.ab = 1; Promise.resolve(p).then(() => markAbbr($view)); } }
+function typesetAll() { const p = typeset($view); if (/^teorie-l\d+$/.test(state.view) && !$view.dataset.ab) { $view.dataset.ab = 1; Promise.resolve(p).then(() => { markAbbr($view); markFormulas($view, +state.view.slice(8)); }); } }
 
 /* ---------- události ---------- */
 document.addEventListener('click', e => {
