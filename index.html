@@ -1454,6 +1454,41 @@ details.qmap > .qprog { padding-top: 10px; flex-direction: row; }
 .qprog button:hover { box-shadow: inset 0 0 0 2px var(--ink-2); }
 @media (max-width: 734px) { .qprog button { width: 24px; height: 24px; } }
 
+/* --- zkratky: rámeček v přednášce, vysvětlivky v textu, souhrnná stránka --- */
+.linkbtn { all: unset; cursor: pointer; color: var(--link); font-size: 15px; display: inline-flex; align-items: center; min-height: 24px; border-radius: 6px; }
+.linkbtn:hover { text-decoration: underline; text-underline-offset: 3px; }
+.linkbtn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.abox { background: var(--tile); border-radius: var(--r-card); padding: 18px 22px; box-shadow: var(--card-edge), var(--card-sh); display: flex; flex-direction: column; gap: 10px; scroll-margin-top: 84px; }
+.band:not(.alt):not(.dark) .abox { background: var(--tile-on-bg); }
+.abox-h { display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline; justify-content: space-between; }
+.abox h2 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
+.ablist { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px 20px; }
+.ablist > div { display: grid; grid-template-columns: 3.4em minmax(0, 1fr); gap: 8px; align-items: baseline; font-size: 15px; line-height: 1.35; }
+.ablist dt, .abfull dt { font-weight: 700; color: var(--link); font-variant-numeric: tabular-nums; }
+.ablist dd, .abfull dd { margin: 0; }
+.ablist .muted { font-size: 13px; }
+abbr.ab { text-decoration: underline dotted color-mix(in srgb, var(--link) 70%, transparent); text-decoration-thickness: 1.5px; text-underline-offset: 3px; cursor: help; border-radius: 3px; }
+abbr.ab:hover, abbr.ab:focus-visible { background: color-mix(in srgb, var(--blue) 12%, transparent); outline: none; }
+#abtip { position: fixed; z-index: 60; max-width: min(320px, calc(100vw - 16px)); background: var(--ink); color: var(--bg); border-radius: 12px; padding: 10px 14px; font-size: 14px; line-height: 1.45; box-shadow: 0 10px 30px rgba(0,0,0,.25); pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity .12s, transform .12s; }
+#abtip.on { opacity: 1; transform: none; }
+#abtip i { opacity: .75; }
+#abtip span { display: block; margin-top: 3px; opacity: .9; }
+@media (prefers-reduced-motion: reduce) { #abtip { transition: none; } }
+.abgroup { display: flex; flex-direction: column; gap: 10px; }
+.abgroup + .abgroup { margin-top: 8px; }
+.abfull { margin: 0; background: var(--tile); border-radius: var(--r-card); box-shadow: var(--card-edge); padding: 4px 18px; }
+.abfull > div { display: grid; grid-template-columns: 4.2em minmax(0, 1fr); gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.abfull > div:last-child { border-bottom: 0; }
+.abfull dd { display: flex; flex-wrap: wrap; gap: 2px 8px; font-size: 15px; line-height: 1.45; }
+.abfull dd span:not(.muted) { flex-basis: 100%; color: var(--ink-2); }
+.abfull.sym dt { color: var(--ink); font-weight: 600; }
+/* dlouhé odkazy na materiály se na úzkém displeji zalomí */
+.done-note .chip, .semrow .chip, .note a.chip { white-space: normal; text-align: left; max-width: 100%; }
+/* dlouhé vzorce a tabulky se na mobilu posouvají uvnitř sebe, stránka nepřetéká */
+mjx-container[display="true"] { display: block; overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+.prose, .box-b, .topic, .lsec { min-width: 0; max-width: 100%; }
+.tbl { max-width: 100%; overflow-x: auto; }
+
 </style>
 
 <header class="gnav"><div class="gnav-in">
@@ -1870,7 +1905,7 @@ ${idea('Jak poznat, že je trh ovládaný pár firmami? Sečti jejich podíly (C
 <p>Strukturu trhu určuje počet firem, bariéry vstupu a tržní síla (jak firma ovlivní cenu a množství).</p>
 \[CR_n = \sum_{i=1}^{n} S_i,\qquad HHI = \sum_{i=1}^{N} S_i^2,\qquad L = \frac{p - MC}{p}\]
 ${tbl(['Ukazatel', 'Rozsah', 'Pozn.'], [['koncentrační poměr \\(CR_n\\)', '0–100 %', 'jen n největších firem'], ['Herfindahlův index', '≈0 (DK) až 10 000 (monopol)', 'všechny firmy, podíly v %; citlivý na velké firmy'], ['Lernerův index', '0 (DK) až 1', 'teoreticky nejlepší, ale MC se v praxi těžko zjišťuje; monopol \\(L = 1/|\\varepsilon|\\)']])}
-${ex('Čtyři firmy', R`<p>Podíly 40, 30, 20, 10 %: \(CR_2 = 70\,\%\), \(HHI = 1600 + 900 + 400 + 100 = 3000\).</p>
+${ex('Čtyři firmy', R`<p>Podíly 40, 30, 20, 10 %: \(CR_2 = 70\,\%\), \(HHI = 1600 + 900 + 400 + 100\) \(= 3000\).</p>
 ${fig('hhi', 'Koncentrační poměr a Herfindahlův index. Nastav podíly čtyř největších firem.')}`)}`),
   S('Porovnání tržních struktur', R`
 ${tbl(['Struktura', 'Cena vs. DK', 'Množství', 'Dlouhodobý zisk'], [['dokonalá konkurence', '\\(p^* = \\min AC\\)', 'nejvyšší', '0'], ['monopolistická konkurence', 'vyšší', 'nižší', '0'], ['oligopol', 'vyšší', 'nižší', '> 0'], ['monopol, kartel', 'nejvyšší', 'nejnižší', '> 0']])}
@@ -2512,7 +2547,7 @@ function initFigs(root) {
     const base = Object.assign({}, def.hid || {}, ...ctl.map(c => ({ [c[0]]: c[5] })), ...opt.map(o => ({ [o[0]]: o[3] }))), optK = new Set(opt.map(o => o[0])), isNum = k => typeof base[k] === 'number' && !optK.has(k);
     const val = { ...base }, dec = s => (String(s).split('.')[1] || '').length;
     const cap = f.querySelector('figcaption'); const capHTML = cap ? cap.outerHTML : '';
-    f.innerHTML = (steps.length ? `<div class="fsteps" role="group" aria-label="Kroky výkladu">${steps.map((s, i) => `<button type="button" class="fstep" data-s="${i}"><b>${i + 1}</b>${s[0]}</button>`).join('')}<button type="button" class="fplay" data-play>▶ Přehrát</button></div><div class="fnote" aria-live="polite" hidden></div>` : '')
+    f.innerHTML = (steps.length ? `<div class="fsteps scroll" role="group" aria-label="Kroky výkladu">${steps.map((s, i) => `<button type="button" class="fstep" data-s="${i}"><b>${i + 1}</b>${s[0]}</button>`).join('')}<button type="button" class="fplay" data-play>▶ Přehrát</button></div><div class="fnote" aria-live="polite" hidden></div>` : '')
       + `<div class="fbox"></div>`
       + (ctl.length || opt.length ? `<div class="fctl">${opt.map(([k, l, ch]) => `<div class="fopt"><span>${l}</span><div class="seg">${ch.map(([cv, ct]) => `<button type="button" data-ok="${k}" data-ov="${cv}">${ct}</button>`).join('')}</div></div>`).join('')}${ctl.map(([k, l, a, b, s]) => `<label><span>${l.replace(/_(\w)/, '<sub>$1</sub>')}: <b data-o="${k}"></b></span><input type="range" min="${a}" max="${b}" step="${s}" data-k="${k}"></label>`).join('')}<button type="button" class="chip" data-reset>↺ Výchozí</button></div>` : '')
       + capHTML;
@@ -3543,6 +3578,7 @@ function sIndex() {
   });
   GLOSS.forEach(([n, cz, en, ex]) => out.push({ k: 'Pojem', t: `${cz} (${en})`, d: ex, go: 'teorie-l' + n }));
   FORMULAS.forEach(([n, name]) => out.push({ k: 'Vzorec', t: name, d: `Tahák · přednáška ${n}`, go: 'tahak' }));
+  Object.entries(ABBR).forEach(([k, v]) => out.push({ k: 'Zkratka', t: `${k} – ${v[0]}`, d: `${v[1]} · ${v[2]}`, go: 'zkratky' }));
   [['kviz', 'Kvíz', `${QB.length} otázek podle přednášek`], ['testy', 'Cvičné testy', 'testy s časem a hodnocením'], ['priklady', 'Příklady', 'počítání krok za krokem'],
    ['karticky', 'Kartičky', 'pojmy česky ↔ anglicky'], ['tahak', 'Tahák vzorců', 'všechny vzorce na jedné stránce'], ['terminy', 'Termíny a zkouška', 'předtermíny, řádné termíny']].forEach(([go, t, d]) => out.push({ k: 'Stránka', t, d, go }));
   out.forEach(o => { o.ft = sFold(o.t); o.fd = sFold(o.d); });
@@ -3599,6 +3635,121 @@ document.addEventListener('keydown', e => {
   }
 }, true);
 
+/* ---------- zkratky a značky: slovník, rámeček v přednášce, vysvětlivky v textu a souhrnná stránka ----------
+   ABBR[zkratka] = [český název, anglicky, krátké vysvětlení, přednáška, kde se zavádí] */
+const ABBR = {
+  OC: ['náklady příležitosti', 'opportunity cost', 'hodnota nejlepší alternativy, které se volbou vzdáš', 1],
+  PPF: ['hranice produkčních možností', 'production possibility frontier', 'všechny kombinace dvou statků, které lze vyrobit s danými zdroji a technologií', 2],
+  PED: ['cenová elasticita poptávky', 'price elasticity of demand', 'o kolik % se změní poptávané množství, když cena vzroste o 1 %', 3],
+  YED: ['důchodová elasticita poptávky', 'income elasticity of demand', 'o kolik % se změní poptávka, když důchod vzroste o 1 %', 3],
+  XED: ['křížová elasticita poptávky', 'cross elasticity of demand', 'o kolik % se změní poptávka po statku, když cena jiného statku vzroste o 1 %', 3],
+  PES: ['cenová elasticita nabídky', 'price elasticity of supply', 'o kolik % se změní nabízené množství, když cena vzroste o 1 %', 3],
+  CS: ['přebytek spotřebitele', 'consumer surplus', 'rozdíl mezi tím, kolik by kupující zaplatil, a tím, kolik skutečně platí', 3],
+  PS: ['přebytek výrobce', 'producer surplus', 'rozdíl mezi cenou a mezními náklady výrobce', 3],
+  DWL: ['ztráta mrtvé váhy', 'deadweight loss', 'přebytek, který kvůli dani nebo regulaci nezíská nikdo', 4],
+  MU: ['mezní užitek', 'marginal utility', 'o kolik vzroste užitek z další jednotky statku', 5],
+  TU: ['celkový užitek', 'total utility', 'celkové uspokojení ze spotřebovaného množství', 5],
+  MRS: ['mezní míra substituce', 'marginal rate of substitution', 'kolik jednoho statku jsi ochoten dát za jednotku druhého; sklon indiferenční křivky', 5],
+  ICC: ['důchodová spotřební křivka', 'income-consumption curve', 'spojuje optima spotřebitele při různých důchodech', 5],
+  PCC: ['cenová spotřební křivka', 'price-consumption curve', 'spojuje optima při různých cenách jednoho statku', 5],
+  SE: ['substituční efekt', 'substitution effect', 'změna spotřeby jen kvůli změně relativních cen, při stejném užitku', 5],
+  IE: ['důchodový efekt', 'income effect', 'změna spotřeby kvůli změně reálného důchodu', 5],
+  TE: ['celkový cenový efekt', 'total price effect', 'součet substitučního a důchodového efektu', 5],
+  TP: ['celkový produkt', 'total product', 'kolik se celkem vyrobí', 6],
+  AP: ['průměrný produkt', 'average product', 'výstup na jednotku vstupu (TP/L)', 6],
+  MP: ['mezní produkt', 'marginal product', 'o kolik vzroste výstup s další jednotkou vstupu', 6],
+  MRTS: ['mezní míra technické substituce', 'marginal rate of technical substitution', 'kolik kapitálu nahradí jeden pracovník při stejném výstupu; sklon izokvanty', 6],
+  TC: ['celkové náklady', 'total cost', 'všechny náklady na daný výstup, TC = FC + VC', 8],
+  FC: ['fixní náklady', 'fixed cost', 'náklady, které se platí i při nulové výrobě (nájem)', 8],
+  VC: ['variabilní náklady', 'variable cost', 'náklady, které rostou s výrobou (materiál)', 8],
+  AC: ['průměrné náklady', 'average cost', 'náklady na jeden kus, AC = TC/q', 8],
+  AFC: ['průměrné fixní náklady', 'average fixed cost', 'fixní náklady na jeden kus, AFC = FC/q', 8],
+  AVC: ['průměrné variabilní náklady', 'average variable cost', 'variabilní náklady na jeden kus, AVC = VC/q', 8],
+  MC: ['mezní náklady', 'marginal cost', 'o kolik vzrostou náklady, když vyrobíš o kus víc', 8],
+  SAC: ['krátkodobé průměrné náklady', 'short-run average cost', 'průměrné náklady při dané velikosti závodu', 8],
+  LAC: ['dlouhodobé průměrné náklady', 'long-run average cost', 'nejnižší průměrné náklady, když lze měnit i velikost závodu', 8],
+  TR: ['celkový příjem (tržby)', 'total revenue', 'cena × prodané množství', 9],
+  AR: ['průměrný příjem', 'average revenue', 'příjem na jeden kus, AR = TR/q = p', 9],
+  MR: ['mezní příjem', 'marginal revenue', 'o kolik vzrostou tržby s dalším prodaným kusem', 9],
+  DK: ['dokonalá konkurence', 'perfect competition', 'mnoho firem se stejným produktem, žádná neovlivní cenu', 9],
+  CR: ['koncentrační poměr', 'concentration ratio', 'součet tržních podílů n největších firem (CRₙ)', 10],
+  HHI: ['Herfindahlův index', 'Herfindahl-Hirschman index', 'součet čtverců tržních podílů všech firem (0 až 10 000)', 10],
+  'ÚOHS': ['Úřad pro ochranu hospodářské soutěže', 'Office for the Protection of Competition', 'český antimonopolní úřad', 10]
+};
+/* značky ve vzorcích a grafech: [značka, význam] */
+const SYMB = [
+  ['p', 'cena'], ['q, Q', 'množství (q jedna firma, Q celý trh)'], ['D', 'poptávka (demand)'], ['S', 'nabídka (supply)'], ['p*, q*', 'rovnovážná cena a množství'],
+  ['p_D, p_S', 'cena, kterou platí kupující, a cena, kterou dostane prodávající (při dani)'], ['t', 'daň na jednotku'], ['ε', 'elasticita'], ['Δ', 'změna (rozdíl)'],
+  ['Y', 'důchod spotřebitele'], ['x₁, x₂', 'množství statku 1 a 2'], ['p₁, p₂', 'ceny statku 1 a 2'], ['U', 'užitek'],
+  ['L', 'práce (počet pracovníků); v přednášce 10 také Lernerův index'], ['K', 'kapitál'], ['w', 'mzda, cena práce'], ['r', 'cena kapitálu (úrok)'], ['C', 'celkové náklady na izokostě'],
+  ['σ', 'elasticita substituce vstupů'], ['π', 'zisk'], ['Sᵢ', 'tržní podíl i-té firmy (v %)'], ['G', 'Giniho koeficient']
+];
+const AB_KEYS = Object.keys(ABBR).sort((a, b) => b.length - a.length);
+const AB_RE = new RegExp(`(?<![A-Za-zÀ-ž0-9\\\\])(${AB_KEYS.join('|')})(?![A-Za-zÀ-ž])`, 'g');
+const abTitle = k => `${k} = ${ABBR[k][0]} (${ABBR[k][1]}): ${ABBR[k][2]}`;
+
+/* zkratky, které se v přednášce vyskytují (v pořadí prvního výskytu, včetně vzorců a „V kostce“) */
+function abbrIn(t) {
+  const txt = (t.key.join(' ') + ' ' + t.secs.map(s => s.t + ' ' + s.html).join(' ')).replace(/<[^>]+>/g, ' ');
+  const seen = []; let m; AB_RE.lastIndex = 0;
+  while ((m = AB_RE.exec(txt))) if (!seen.includes(m[1])) seen.push(m[1]);
+  return seen;
+}
+function abbrBox(t) {
+  const ks = abbrIn(t); if (!ks.length) return '';
+  return `<section class="abox" aria-labelledby="ab${t.n}"><div class="abox-h"><h2 id="ab${t.n}">Zkratky v této přednášce</h2><button type="button" class="linkbtn" data-go="zkratky">Všechny zkratky a značky ›</button></div>
+<dl class="ablist">${ks.map(k => `<div><dt>${k}</dt><dd>${ABBR[k][0]} <span class="muted">· ${ABBR[k][1]}</span></dd></div>`).join('')}</dl></section>`;
+}
+
+/* vysvětlivky přímo v textu: v každém oddílu se podtrhne první výskyt každé zkratky */
+function markAbbr(root) {
+  root.querySelectorAll('.kostka, .lsec .prose').forEach(sec => {
+    const done = new Set(), walker = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT, { acceptNode: n => n.parentElement.closest('mjx-container, svg, a, button, abbr, h2, h3, figure, .tbl th, script, style') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+    const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+    for (const node of nodes) {
+      const s = node.nodeValue; if (/\\[(\[)\]]/.test(s)) continue; /* text s nevysázeným TeXem nechat být */
+      AB_RE.lastIndex = 0; let m, last = 0, frag = null;
+      while ((m = AB_RE.exec(s))) {
+        if (done.has(m[1])) continue; done.add(m[1]); frag = frag || document.createDocumentFragment();
+        frag.append(s.slice(last, m.index));
+        const a = document.createElement('abbr'); a.className = 'ab'; a.tabIndex = 0; a.dataset.ab = m[1]; a.setAttribute('aria-label', abTitle(m[1])); a.textContent = m[1];
+        frag.append(a); last = m.index + m[1].length;
+      }
+      if (frag) { frag.append(s.slice(last)); node.replaceWith(frag); }
+    }
+  });
+}
+/* bublina s vysvětlením: najetí myší, fokus klávesnicí i klepnutí na mobilu */
+let abTip = null;
+function abShow(el) {
+  if (!abTip) { abTip = document.createElement('div'); abTip.id = 'abtip'; abTip.setAttribute('role', 'tooltip'); document.body.appendChild(abTip); }
+  const k = el.dataset.ab, d = ABBR[k]; if (!d) return;
+  abTip.innerHTML = `<b>${k}</b> = ${d[0]} <i>${d[1]}</i><span>${d[2]}</span>`; abTip.classList.add('on');
+  const r = el.getBoundingClientRect(), w = abTip.offsetWidth, h = abTip.offsetHeight;
+  const x = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2)), above = r.top - h - 8 > 56;
+  abTip.style.left = x + 'px'; abTip.style.top = (above ? r.top - h - 8 : r.bottom + 8) + 'px';
+}
+const abHide = () => { if (abTip) abTip.classList.remove('on'); };
+document.addEventListener('mouseover', e => { const a = e.target.closest && e.target.closest('abbr.ab'); if (a) abShow(a); });
+document.addEventListener('mouseout', e => { if (e.target.closest && e.target.closest('abbr.ab')) abHide(); });
+document.addEventListener('focusin', e => { if (e.target.matches && e.target.matches('abbr.ab')) abShow(e.target); });
+document.addEventListener('focusout', e => { if (e.target.matches && e.target.matches('abbr.ab')) abHide(); });
+document.addEventListener('click', e => { const a = e.target.closest && e.target.closest('abbr.ab'); if (a) abShow(a); else abHide(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') abHide(); });
+addEventListener('scroll', abHide, { passive: true });
+
+/* souhrnná stránka #zkratky */
+function viewAbbr() {
+  const by = THEORY.map(t => [t, Object.keys(ABBR).filter(k => ABBR[k][3] === t.n)]).filter(([, ks]) => ks.length);
+  const q = sFold(state.abq || '');
+  const hit = k => !q || sFold(k + ' ' + ABBR[k].join(' ')).includes(q);
+  return band('', `<span class="eyebrow">Teorie</span><h1 class="h1">Zkratky a značky</h1><p class="lead">Všechny zkratky z výkladu s vysvětlením, seřazené podle přednášky, kde se poprvé objeví.</p>
+<input type="search" class="search" id="abq" placeholder="Hledat zkratku, např. MC nebo náklady" aria-label="Hledat zkratku" value="${esc(state.abq || '')}">`, 'center')
+    + band('alt', `${by.map(([t, ks]) => { const vis = ks.filter(hit); return vis.length ? `<section class="abgroup"><h2 class="h3"><button type="button" class="linkbtn" data-go="teorie-l${t.n}">${t.n}. ${t.title}</button></h2><dl class="abfull">${vis.map(k => `<div><dt>${k}</dt><dd><b>${ABBR[k][0]}</b> <span class="muted">${ABBR[k][1]}</span><span>${ABBR[k][2]}</span></dd></div>`).join('')}</dl></section>` : ''; }).join('') || '<p class="lead">Nic nenalezeno. Zkus jiné slovo.</p>'}
+<section class="abgroup"><h2 class="h3">Značky ve vzorcích a grafech</h2><dl class="abfull sym">${SYMB.filter(([s, d]) => !q || sFold(s + ' ' + d).includes(q)).map(([s, d]) => `<div><dt>${s.replace(/_(\w)/g, '<sub>$1</sub>')}</dt><dd>${d}</dd></div>`).join('')}</dl></section>`, 'narrow');
+}
+document.addEventListener('input', e => { if (e.target.id === 'abq') { state.abq = e.target.value; const pos = e.target.selectionStart; rerender(); const el = document.getElementById('abq'); if (el) { el.focus(); el.setSelectionRange(pos, pos); } } });
+
 /* ---------- stav a navigace ---------- */
 const $view = document.getElementById('view');
 const TEST_RE = /^test-(\d+)$/;
@@ -3622,10 +3773,10 @@ const testsDone = () => { let c = 0; for (let i = 1; i <= N_TESTS; i++) if (test
 const glKnown = () => store.get('gk', {});
 
 const NAV = [
-  { id: 'teorie', l: 'Teorie', sub: () => [['teorie', 'Všechny přednášky', 'Přehled 1–10 s grafy'], ...LECT.map(([n, t]) => ['teorie-l' + n, `${n}. ${t}`, THEORY[n - 1].short]), ['tahak', 'Tahák vzorců', 'Všechny vzorce na jedné stránce']] },
+  { id: 'teorie', l: 'Teorie', sub: () => [['teorie', 'Všechny přednášky', 'Přehled 1–10 s grafy'], ...LECT.map(([n, t]) => ['teorie-l' + n, `${n}. ${t}`, THEORY[n - 1].short]), ['tahak', 'Tahák vzorců', 'Všechny vzorce na jedné stránce'], ['zkratky', 'Zkratky a značky', 'Co znamená MC, AC, PPF…']] },
   { id: 'kviz', l: 'Kvíz' }, { id: 'priklady', l: 'Příklady' }, { id: 'testy', l: 'Testy' }, { id: 'karticky', l: 'Kartičky' }, { id: 'terminy', l: 'Termíny' }
 ];
-const navCur = v => TEST_RE.test(v) || v === 'nahodny' ? 'testy' : v === 'tahak' ? 'teorie' : v.split('-')[0];
+const navCur = v => TEST_RE.test(v) || v === 'nahodny' ? 'testy' : v === 'tahak' || v === 'zkratky' ? 'teorie' : v.split('-')[0];
 function renderNav() {
   const v = state.view, cur = navCur(v);
   document.getElementById('links').innerHTML = NAV.map(n => n.sub
@@ -3715,7 +3866,7 @@ const readMap = () => store.get('rd', {});
 function viewTheoryIndex() {
   const rd = readMap(), done = THEORY.filter(t => rd[t.n]).length, nxt = THEORY.find(t => !rd[t.n]) || THEORY[0];
   return band('', `<span class="eyebrow">Teorie</span><h1 class="h1">Deset přednášek krok za krokem</h1><p class="lead">Každá přednáška začíná shrnutím „V kostce“, pak jde výklad s grafy, které si můžeš přehrát krok po kroku, a na konci rychlá kontrola.</p>
-<div class="ctas"><button class="pill" data-go="teorie-l${nxt.n}">${done ? 'Pokračovat' : 'Začít'}: ${nxt.n}. ${nxt.short}</button><button class="pill ghost" data-go="tahak">Tahák vzorců</button></div>
+<div class="ctas"><button class="pill" data-go="teorie-l${nxt.n}">${done ? 'Pokračovat' : 'Začít'}: ${nxt.n}. ${nxt.short}</button><button class="pill ghost" data-go="tahak">Tahák vzorců</button><button class="pill ghost" data-go="zkratky">Zkratky a značky</button></div>
 <div class="lprog"><div class="meter"><i style="width:${10 * done}%"></i></div><span class="muted small">prostudováno ${done} z 10 přednášek</span></div>`, 'center')
     + band('alt', `<div class="lgrid lgrid-t">${THEORY.map(t => `<button class="lcard${rd[t.n] ? ' done' : ''}" data-go="teorie-l${t.n}"><span class="no">Přednáška ${t.n}${rd[t.n] ? ' · ✓ prostudováno' : ''}</span><b>${t.title}</b><span class="muted">${t.key[0]}</span><span class="lmeta">${t.secs.length} oddílů · ${(t.secs.map(x => x.html).join('').match(/data-fig=/g) || []).length} grafů · ${QB.filter(q => q[0] === t.n).length} otázek</span></button>`).join('')}</div>
 ${HAS_SLIDES ? `<div class="note"><b>Původní slidy z přednášek (verze 2026/27)</b><div class="chips">${THEORY.map(t => `<a class="chip" href="${slideHref(t.n)}" target="_blank" rel="noopener">${t.n}. ${t.short} ↗</a>`).join('')}</div></div>` : ''}
@@ -3731,11 +3882,12 @@ ${c.set.map((qi, k) => qHTML(QB[qi], qi, { pick: c.pick[qi] ?? null, reveal: tru
 }
 function viewTheory(n) {
   const t = THEORY[n - 1], prev = THEORY[n - 2], next = THEORY[n], rd = readMap();
-  const toc = `<nav class="ltoc" aria-label="Obsah přednášky"><span class="lbl">Přednáška ${n}</span><a href="#s${n}-0" data-jump="s${n}-0">V kostce</a>${t.secs.map((s, i) => `<a href="#s${n}-${i + 1}" data-jump="s${n}-${i + 1}"><span>${n}.${i + 1}</span>${s.t}</a>`).join('')}<a href="#s${n}-chk" data-jump="s${n}-chk"><span>✓</span>Rychlá kontrola</a>
+  const toc = `<nav class="ltoc" aria-label="Obsah přednášky"><span class="lbl">Přednáška ${n}</span><a href="#s${n}-0" data-jump="s${n}-0">V kostce</a>${abbrIn(t).length ? `<a href="#ab${n}" data-jump="ab${n}">Zkratky</a>` : ''}${t.secs.map((s, i) => `<a href="#s${n}-${i + 1}" data-jump="s${n}-${i + 1}"><span>${n}.${i + 1}</span>${s.t}</a>`).join('')}<a href="#s${n}-chk" data-jump="s${n}-chk"><span>✓</span>Rychlá kontrola</a>
 <span class="lbl lbl2">Materiály</span><div class="ltoc-x">${HAS_SLIDES ? `<a class="lf" href="${slideHref(n)}" target="_blank" rel="noopener"><span>Slidy z přednášky</span><small>PDF · ${SLIDE_PAGES[n - 1]} stran ↗</small></a>` : ''}${semItems(n).map(([t, f, k]) => `<a class="lf" href="seminare/${f}.pdf" target="_blank" rel="noopener"><span>Seminář ${n}: ${t}</span><small>PDF · ${k} ${pgWord(k)} ↗</small></a>`).join('')}<button type="button" class="lf" data-go="kviz-${n}"><span>Kvíz k přednášce ${n}</span><small>${QB.filter(q => q[0] === n).length} otázek</small></button></div></nav>`;
   return band('', `<span class="eyebrow">Přednáška ${n} z 10${rd[n] ? ' · ✓ prostudováno' : ''}</span><h1 class="h1">${t.title}</h1>
 <div class="ctas">${slideLink(n, 'pill ghost')}<button class="pill ghost" data-go="kviz-${n}">Kvíz k přednášce ${n}</button></div>${semItems(n).length ? `<div class="chips semrow"><span class="muted small">Seminář ${n}:</span>${semItems(n).map(it => `<a class="chip" href="seminare/${it[1]}.pdf" target="_blank" rel="noopener">${it[0]} ↗</a>`).join('')}</div>` : ''}`, 'center')
     + band('alt', `<div class="lwrap">${toc}<div class="topic"><div class="kostka" id="s${n}-0"><h2>V kostce: co si odnést</h2><ul>${t.key.map(k => `<li>${k}</li>`).join('')}</ul><p class="muted small">Tip: grafy mají kroky 1, 2, 3… a tlačítko ▶ Přehrát. Posuvníky pod grafem si zkus sám.</p></div>
+${abbrBox(t)}
 ${t.secs.map((s, i) => `<section class="lsec" id="s${n}-${i + 1}"><h2 class="h2 sh"><span class="num">${n}.${i + 1}</span>${s.t}</h2><div class="prose">${s.html}</div></section>`).join('')}
 ${lectureCheck(n)}
 <div class="note done-note"><b>${rd[n] ? '✓ Tuhle přednášku máš prostudovanou.' : 'Máš přečteno?'}</b><div class="chips">${semLink(n)}<button class="chip" data-read="${n}"${rd[n] ? ' aria-pressed="true"' : ''}>${rd[n] ? 'Zrušit označení' : '✓ Označit jako prostudované'}</button><button class="chip" data-go="kviz-${n}">Kvíz k přednášce ${n}</button>${FAM_IDS.filter(id => FAM[id].l === n).map(id => `<button class="chip" data-go="priklady-${id}">Příklady: ${FAM[id].title}</button>`).join('')}<button class="chip" data-gl="${n}">Kartičky pojmů</button></div></div>
@@ -3925,6 +4077,7 @@ function render() {
   else if (v === 'teorie') html = viewTheoryIndex();
   else if ((m = v.match(/^teorie-l(\d+)$/)) && THEORY[m[1] - 1]) html = viewTheory(+m[1]);
   else if (v === 'tahak') html = viewCheat();
+  else if (v === 'zkratky') html = viewAbbr();
   else if (v === 'kviz') html = viewQuizIndex();
   else if ((m = v.match(/^kviz-(vse|chyby|zk|pocty|\d+)$/)) && (isNaN(m[1]) || THEORY[m[1] - 1])) html = viewQuiz(m[1]);
   else if (v === 'priklady') html = viewProblemsIndex();
@@ -3935,9 +4088,9 @@ function render() {
   else if (v === 'karticky') html = viewCards();
   else if (v === 'terminy') html = viewTerms();
   else { html = viewNotFound(); }
-  $view.innerHTML = html;
+  $view.innerHTML = html; delete $view.dataset.ab;
   renderNav();
-  const nv = NAV.find(n => n.id === navCur(state.view)), tm = state.view.match(/^teorie-l(\d+)$/), tt = tm ? THEORY[tm[1] - 1].title : state.view === 'tahak' ? 'Tahák' : nv?.l;
+  const nv = NAV.find(n => n.id === navCur(state.view)), tm = state.view.match(/^teorie-l(\d+)$/), tt = tm ? THEORY[tm[1] - 1].title : state.view === 'tahak' ? 'Tahák' : state.view === 'zkratky' ? 'Zkratky a značky' : nv?.l;
   document.title = state.view === 'domu' ? 'EKONOMIE I' : html.includes('Tahle stránka neexistuje') ? 'Stránka nenalezena · EKONOMIE I' : `${tt} · EKONOMIE I`;
   initFigs($view); typesetAll(); initToc();
   if (state.test && !state.test.done && (TEST_RE.test(state.view) || state.view === 'nahodny')) startClock();
@@ -3958,7 +4111,7 @@ function typeset(el) {
   if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetClear && MathJax.typesetClear([el]); return MathJax.typesetPromise([el]).catch(() => { }); }
   return Promise.resolve();
 }
-function typesetAll() { typeset($view); }
+function typesetAll() { const p = typeset($view); if (/^teorie-l\d+$/.test(state.view) && !$view.dataset.ab) { $view.dataset.ab = 1; Promise.resolve(p).then(() => markAbbr($view)); } }
 
 /* ---------- události ---------- */
 document.addEventListener('click', e => {
